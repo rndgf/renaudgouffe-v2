@@ -1,0 +1,150 @@
+---
+import PageLayout from "@/layouts/Base";
+import { Image } from "@astrojs/image/components";
+import aboutImg from "../assets/about-astro.png";
+
+const meta = {
+	title: "Curriculum Vitae",
+	description: "Retrouvez ici mon CV en ligne.",
+};
+---
+
+<PageLayout meta={meta}>
+  <section class="space-y-6">
+    <h1 class="title">Curriculum Vitae</h1>
+    <h2 class="font-bold">Depuis 2010</h2>
+    <p>Je fais du développement PHP depuis 2003 et j'ai une passion pour le web, le beau code et les projets ecommerce depuis 1999.</p>
+    <p>Et en 2010, je suis devenu Lead Developer Magento dans l'excellente agence web <a href="http://www.colorz.fr" rel="nofollow" target="_blank">Colorz</a>, j'ai donc une grande expertise sur cette plateforme sur laquelle je développe depuis 2009.<br/></p>
+    <p>Depuis 2019, j'occupe le poste de chef de projet technique e-commerce où je mets mon expertise tant fonctionnelle que technique au service de nos clients que j'accompagne sur leurs problématiques quelle que soit leur plateforme ecommerce (shopify, magento...) et leur écosystème.</p>
+    <p>En 2022, l'agence Colorz devient "Shopify Plus Partner" et  depuis, j'ai depuis acquis une grande expérience sur l'ensemble de l'écosystème Shopify.</p>
+    <h2 class="font-bold">Et avant ?</h2>
+    <p>Avant cela, j'ai travaillé pendant 7 ans aux développements d'applications web dans une SSII pour des grands comptes (Bayer, Saint-Gobain, Glaxo, Rémy Cointreau&hellip;) et dans des domaines fonctionnels variés (ressources humaines, achats/ventes, marketing/communication, contrôle de gestion, relation clients, gestion commerciale&hellip;).</p>
+  </section>
+
+  <section class="mt-16">
+    <h2 class="title mb-4 text-xl">Compétences techniques</h2>
+     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
+        <tbody>
+          <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Langages</td>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">PHP, SQL, Javascript</td>
+            </tr>
+            <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Framework PHP</td>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Symfony, Laravel, Laminas</td>
+            </tr>
+            <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">CMS</td>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento 1, Magento 2, Shopify</td>
+            </tr>
+            <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">SGBD</td>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">MySQL, PostgreSQL, Redis, Elastic</td>
+            </tr>
+            <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">VCS</td>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Git</td>
+            </tr>
+            <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Serveurs web</td>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Nginx, Apache</td>
+            </tr>
+            <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">OS</td>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">LAMP, Unix, Mac OS, Windows</td>
+            </tr>
+            <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Projets</td>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Gestion d'équipe technique<br>Gestion technique de projets</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+<section class="mt-16">
+    <h2 class="title mb-4 text-xl">Expériences professionnelles</h2>
+     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
+        <tbody>
+          <tr>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">depuis 2020</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Chef de projet technique<br>Senior Lead Developer</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.colorz.fr/" rel="nofollow" target="_blank">Colorz</a></td>
+          </tr>
+          <tr>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2015 &raquo; 2020</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Responsable technique e-commerce</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.colorz.fr/" rel="nofollow" target="_blank">Colorz</a></td>
+          </tr>
+          <tr>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2010 &raquo; 2014</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Lead Developer magento</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.colorz.fr/" rel="nofollow" target="_blank">Colorz</a></td>
+          </tr>
+          <tr>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2005 &raquo; 2010</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"> Développeur web</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.ftel.fr/" target="_blank" rel="nofollow">FTEL</a></td>
+          </tr>
+          <tr>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2003 &raquo; 2005</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Contrat de professionnalisation (BTS)</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.ftel.fr/" target="_blank" rel="nofollow">FTEL</a></td>
+          </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="mt-16">
+    <h2 class="title mb-4 text-xl">Expériences freelance</h2>
+     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
+        <tbody>
+          <tr>
+            <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Depuis 2009</td>
+            <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="freelance-magento.html"><strong>Freelance magento</strong></a></td>
+        </tr>
+        <tr>
+            <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Depuis 2005</td>
+            <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="freelance-magento.html">Freelance en développement web</a></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+
+<section class="mt-16">
+    <h2 class="title mb-4 text-xl">Formation</h2>
+     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
+        <tbody>
+          <tr>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2003 &raquo; 2005</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">BTS "Conception et développement multimédia" réalisé <strong>en alternance</strong></td>
+          </tr>
+        <tr>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">1998 &raquo; 2003</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Licence en Géographie</td>
+          </tr>
+        <tr>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">1998</td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Baccalauréat Littéraire</td>
+          </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="mt-16">
+    <h2 class="title mb-4 text-xl">Environnement de travail</h2>
+     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
+        <tbody>
+          <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Ubuntu, Terminal, Docker</td>
+            </tr>
+        <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">PHPStorm, Sublime text</td>
+            </tr>
+        <tr>
+                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Git, CI/CD, Gitlab</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+</PageLayout>

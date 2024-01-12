@@ -1,104 +1,25 @@
 ---
 import { getCollection } from "astro:content";
 import PageLayout from "@/layouts/Base";
-import PostPreview from "@/components/blog/PostPreview";
-import SocialList from "@/components/SocialList";
-import { sortMDByDate } from "@/utils";
-
-const MAX_POSTS = 10;
-const allPosts = await getCollection("post");
-const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 ---
 
-<PageLayout meta={{ title: "Home" }}>
+<PageLayout meta={{ title: "Accueil" }}>
 	<section>
-		<h1 class="title mb-6">Hello World!</h1>
+		<h1 class="title mb-6">
+      Consultant technique e-commerce<br/>
+      Développeur web<br/>
+      <span class="text-shopify">Shopify</span> & <span class="text-magento">Magento</span></h1>
 		<p class="mb-4">
-			Hi, I’m a theme for Astro, an example of how you can use this starter to create a personal
-			blog. If you want to know more about how you can customise me, add more posts, and make it
-			your own, click on one the github icon link below which will take you to my repo.
+			Développeur et chef de projet technique expérimenté, spécialisé dans le e-commerce et notamment sur les plateformes <strong class="text-shopify">Shopify</strong> et <strong class="text-magento">Magento Adobe Commerce</strong>.</p>
+    <p class="mb-4">
+      Je suis passionné depuis près de 20 ans par le développement web et tout particulièrement par la mise en place de sites e-commerce.
+    </p>
+    <p class="mb-4">
+      Depuis plus de 12 ans, j'accompagne avec succès de grandes marques dans la réalisation de leurs projets e-commerce au sein d'une importante agence digitale parisienne pour laquelle j'accompagne depuis plus de 12 ans <a href="/references.html">de grandes marques</a> dans la réussite de leur projets e-commerce.
+    </p>
+    <p class="mb-4">
+      Fort de cette expérience, je vous mes services en tant que chef de projet technique e-commerce et/ou développeur web.
 		</p>
-		<SocialList />
-	</section>
-	<section aria-label="Blog post list" class="mt-16">
-		<h2 class="title mb-4 text-xl">Posts</h2>
-		<ul class="space-y-4 sm:space-y-2">
-			{
-				allPostsByDate.map((p) => (
-					<li class="flex flex-col gap-x-2 sm:flex-row">
-						<PostPreview post={p} />
-					</li>
-				))
-			}
-		</ul>
-	</section>
-	<section class="mt-16">
-		<h2 class="title mb-4 text-xl">Technologies</h2>
-		<ul class="space-y-4 sm:space-y-2">
-			<li>
-				<a
-					href="https://astro.build"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="cactus-link inline-block"
-					>Astro
-				</a>:
-				<p class="inline-block sm:mt-2">Build fast websites, faster.</p>
-			</li>
-			<li>
-				<a
-					href="https://docs.astro.build/en/guides/integrations-guide/image/"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="cactus-link inline-block"
-					>@astro/image
-				</a>:
-				<p class="inline-block sm:mt-2">
-					An Astro integration for optimising images in Astro projects.
-				</p>
-			</li>
-			<li>
-				<a
-					href="https://tailwindcss.com"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="cactus-link inline-block"
-					>Tailwind CSS
-				</a>:
-				<p class="inline-block sm:mt-2">
-					Rapidly build modern websites without ever leaving your HTML.
-				</p>
-			</li>
-			<li>
-				<a
-					href="https://www.markdownguide.org/"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="cactus-link inline-block"
-					>Markdown
-				</a>:
-				<p class="inline-block sm:mt-2">Simple and easy-to-use markup language.</p>
-			</li>
-			<li>
-				<a
-					href="https://mdxjs.com/"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="cactus-link inline-block"
-					>MDX
-				</a>:
-				<p class="inline-block sm:mt-2">Markdown for the component era.</p>
-			</li>
-			<li>
-				<a
-					href="https://github.com/vercel/satori"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="cactus-link inline-block"
-					>Satori
-				</a>:
-				<p class="inline-block sm:mt-2">Generating png Open Graph images for blog posts</p>
-			</li>
-		</ul>
+		<p>Je vis à Rouen, en Normandie, et travaille principalement en distanciel.</p>
 	</section>
 </PageLayout>

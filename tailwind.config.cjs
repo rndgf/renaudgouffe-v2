@@ -20,6 +20,8 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
+        shopify: '#5E8E3E',
+        magento: '#EB6006',
 				bgColor: "var(--theme-bg)",
 				textColor: "var(--theme-text)",
 				link: "var(--theme-link)",

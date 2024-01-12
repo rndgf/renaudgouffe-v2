@@ -1,22 +1,23 @@
 export const MENU_LINKS = [
 	{
-		title: "Home",
+		title: "Accueil",
 		path: "/",
 	},
 	{
-		title: "About",
-		path: "/about",
+		title: "À propos",
+		path: "/cv.html",
 	},
 	{
-		title: "Blog",
-		path: "/posts",
+		title: "Références",
+		path: "/references.html",
 	},
+  {
+    title: "Contact",
+    path: "/contact.html",
+  }
 ];
 
 // ! Remember to add your own socials
 export const SOCIAL_LINKS = {
-	github: "https://github.com/chrismwilliams/astro-cactus",
-	twitter: "https://github.com/chrismwilliams/astro-cactus",
-	discord: "https://github.com/chrismwilliams/astro-cactus",
-	email: "me@example.com",
+	email: "contact@renaudgouffe.fr",
 };
