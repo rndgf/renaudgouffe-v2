@@ -7,10 +7,10 @@ const meta = {
   title: "À propos de ce site",
   description: "I'm a starter theme for Astro.build",
 };
+const year = new Date().getFullYear();
 ---
 
 <PageLayout meta={meta}>
-
   <!-- SVG DEFINITION -->
   <svg class="hidden" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
@@ -40,17 +40,17 @@ const meta = {
   <section>
     <p>
       Les sites listés dans la section "Agence" sont quelques projets réalisés en équipe au sein de l'agence
-      <a href="https://www.colorz.fr" rel="nofollow" target="_blank">Colorz</a> entre 2010 et 2021.
+      <a href="https://www.colorz.fr" rel="nofollow" target="_blank">Colorz</a> entre 2010 et {year}.
     </p>
-    <p class="mt-4">J'y travaille depuis 2010, et j'ai successivement occupé les postes de :</p>
-    <ul>
+    <p class="mt-2">J'y travaille depuis 2010, et j'ai successivement occupé les postes de :</p>
+    <ul class="mt-4 list-inside list-disc">
       <li>Lead developer</li>
       <li>Senior lead developer</li>
       <li><strong>Chef de projet technique e-commerce</strong> (rôle actuel)</li>
     </ul>
   </section>
 
-  <section class="mt-16">
+  <section class="mt-10">
     <h2 class="title mb-4 text-xl">Agence Colorz</h2>
     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
       <tbody>
@@ -177,8 +177,7 @@ const meta = {
     </table>
   </section>
 
-
-  <section class="mt-16">
+  <section class="mt-10">
     <h2 class="title mb-4 text-xl">Freelance</h2>
     <table class="w-full">
       <tbody>
