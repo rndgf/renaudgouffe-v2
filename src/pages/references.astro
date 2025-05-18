@@ -1,257 +1,215 @@
 ---
 import PageLayout from "@/layouts/Base";
-import {Image} from "@astrojs/image/components";
-import aboutImg from "../assets/about-astro.png";
 
 const meta = {
-  title: "À propos de ce site",
-  description: "I'm a starter theme for Astro.build",
+  title: "Références",
+  description: "Liste des projets réalisés en équipe au sein de l'agence Colorz entre 2010 et 2024.",
+  robots: "noindex"
 };
+
 const year = new Date().getFullYear();
+
+const agences = [
+  { name: "Memoritz", tech: "Shopify / Mirakl / Symfony", year: "2025" },
+  { name: "Vtwonen", tech: "Shopify / Mirakl / Symfony", year: "2024" },
+  { name: "Mathon", tech: "Shopify / Mirakl / Symfony", year: "2024" },
+  { name: "Fleux", tech: "Shopify / Cegid / Symfony", year: "2023" },
+  { name: "Sabon", tech: "Shopify", year: "2022" },
+  { name: "Le Club Leader Price", tech: "Shopify / Symfony", year: "2022" },
+  { name: "Chaumet", tech: "Magento 2", year: "2021" },
+  { name: "Redline", tech: "Magento 2", year: "2019" },
+  { name: "Natalys", tech: "Magento / Mirakl", year: "2017" },
+  { name: "Merci Paris", tech: "Magento", year: "2016" },
+  { name: "Make My Lemonade", tech: "Magento", year: "2016" },
+  { name: "Patricia Blanchet", tech: "Magento", year: "2016" },
+  { name: "Rudy's", tech: "Magento", year: "2015" },
+  { name: "The Beautyst", tech: "Magento / Mirakl", year: "2015" },
+  { name: "Hartford", tech: "Magento", year: "2014" },
+  { name: "Colette", tech: "Magento", year: "2012" },
+  { name: "Gemmyo", tech: "Magento", year: "2012" },
+  { name: "émoi-émoi", tech: "Magento", year: "2011 → 2019" },
+  { name: "émoi-émoi", tech: "Shopify", year: "2020 → 2022" },
+  { name: "Jimmy Fairly", tech: "Magento", year: "2011 → 2013" },
+  { name: "Green Republic", tech: "Magento / Marketplace", year: "2010" },
+];
+
+const freelance = [
+  { name: "Luzaka", tech: "Magento 2", year: "2017 → 2022" },
+  { name: "Harmony Paris", tech: "Magento", year: "2014 → 2016" },
+  { name: "Christofle", tech: "Magento", year: "2014" },
+  { name: "Skinizi", tech: "Magento", year: "2007 → 2014" },
+  { name: "Poladdict", tech: "Magento", year: "2012" },
+  { name: "Willemy Charpente", tech: "WordPress", year: "2012" },
+  { name: "Pierre Sancinéna", tech: "WordPress", year: "2009" },
+  { name: "Inédit Joaillier", tech: "Sur-mesure", year: "2008" },
+  { name: "La conspiration", tech: "Sur-mesure", year: "2008" },
+  { name: "Ville de Gravigny", tech: "Sur-mesure", year: "2004" },
+];
+
+// Mapping techno -> styles CSS
+const techColors = {
+  Shopify: "background-color: #5E8E3E; color: white;",
+  Mirakl: "background-color: #10243A; color: white;",
+  Magento: "background-color: #ff7200; color: white;",
+  Magento2: "background-color: #EB1000; color: white;",
+  Symfony: "background-color: black; color: white;",
+  WordPress: "background-color: #3858E9; color: white;",
+  "Sur-mesure": "background-color: gray; color: white;",
+  Marketplace: "background-color: purple; color: white;",
+  Cegid: "background-color: #0046FE; color: white;"
+};
+
+function getTechColor(tech) {
+  if (tech.toLowerCase() == "magento") return techColors["Magento"];
+  if (tech.toLowerCase() == "magento 2") return techColors["Magento2"];
+  return techColors[tech] || "background-color: #374151; color: white;";
+}
+
+// Fonction utilitaire pour extraire les années des projets, y compris les plages "2011 → 2013"
+function extractYears(yearStr) {
+  if (!yearStr) return [];
+  if (yearStr.includes("→")) {
+    const [start, end] = yearStr.split("→").map((y) => y.trim());
+    // gestion cas "depuis XXXX" on ignore pour simplifier
+    if (start.toLowerCase().startsWith("depuis")) return [];
+    const startYear = parseInt(start, 10);
+    const endYear = parseInt(end, 10);
+    if (isNaN(startYear) || isNaN(endYear)) return [];
+    const years = [];
+    for (let y = startYear; y <= endYear; y++) years.push(y.toString());
+    return years;
+  }
+  if (yearStr.toLowerCase().startsWith("depuis")) {
+    // Prends l'année de départ uniquement
+    const y = yearStr.match(/\d{4}/);
+    return y ? [y[0]] : [];
+  }
+  return [yearStr];
+}
+
+// Regroupement par année pour agences et freelance
+const agencesByYear = {};
+for (const projet of agences) {
+  const years = extractYears(projet.year);
+  years.forEach((y) => {
+    if (!agencesByYear[y]) agencesByYear[y] = [];
+    agencesByYear[y].push(projet);
+  });
+}
+
+const freelanceByYear = {};
+for (const projet of freelance) {
+  const years = extractYears(projet.year);
+  years.forEach((y) => {
+    if (!freelanceByYear[y]) freelanceByYear[y] = [];
+    freelanceByYear[y].push(projet);
+  });
+}
+
+// Années à afficher (toutes années où il y a au moins un projet)
+const allYearsSet = new Set([
+  ...Object.keys(agencesByYear),
+  ...Object.keys(freelanceByYear),
+]);
+const allYears = Array.from(allYearsSet)
+  .map((y) => parseInt(y, 10))
+  .filter((y) => !isNaN(y))
+  .sort((a, b) => b - a);
 ---
 
 <PageLayout meta={meta}>
-  <!-- SVG DEFINITION -->
-  <svg class="hidden" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-      <symbol id="colorz-full" viewBox="0 0 115 26">
-        <path d="M114.6,8.2c-0.3,0.4-0.6,0.8-1,1.1c-0.4,0.3-0.9,0.4-1.4,0.4c-0.5,0-1-0.1-1.4-0.4c-0.4-0.3-0.8-0.6-1-1.1s-0.4-0.9-0.4-1.4
-              c0-0.5,0.1-1,0.4-1.4c0.3-0.5,0.6-0.8,1.1-1.1c0.4-0.2,0.9-0.4,1.4-0.4s1,0.1,1.4,0.4c0.4,0.2,0.8,0.6,1.1,1.1
-              c0.3,0.5,0.4,0.9,0.4,1.4C115,7.2,114.9,7.7,114.6,8.2z M114.1,5.6c-0.2-0.4-0.5-0.6-0.8-0.8c-0.4-0.2-0.7-0.3-1.1-0.3
-              c-0.4,0-0.8,0.1-1.1,0.3c-0.4,0.2-0.6,0.5-0.8,0.8c-0.2,0.4-0.3,0.8-0.3,1.2c0,0.4,0.1,0.8,0.3,1.1c0.2,0.4,0.5,0.6,0.8,0.8
-              c0.4,0.2,0.7,0.3,1.1,0.3c0.4,0,0.8-0.1,1.1-0.3s0.6-0.5,0.8-0.8c0.2-0.4,0.3-0.7,0.3-1.1C114.4,6.4,114.3,6,114.1,5.6z M112.9,7.3
-              c0,0,0.1,0.2,0.2,0.4l0.4,0.6h-0.8l-0.3-0.5c-0.2-0.3-0.3-0.5-0.4-0.6s-0.3-0.1-0.4-0.1h-0.1v1.2h-0.7V5.2h0.6c0.6,0,0.9,0,1,0
-              c0.2,0,0.4,0.1,0.5,0.1c0.1,0.1,0.2,0.2,0.3,0.3s0.1,0.3,0.1,0.4c0,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.3,0.2-0.6,0.3
-              c0.1,0,0.2,0.1,0.2,0.1C112.8,7.1,112.8,7.2,112.9,7.3z M112.6,6.4c0.1-0.1,0.1-0.2,0.1-0.2c0-0.1,0-0.2-0.1-0.2
-              c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.3-0.1-0.7-0.1h-0.2v0.9h0.2c0.4,0,0.6,0,0.7-0.1C112.5,6.5,112.5,6.4,112.6,6.4z M107.9,19.9v5.5
-              H90L98.8,10h-7.4V4.4h16.9l-8.8,15.5H107.9z M84.5,25.4H79V5h5.5v1.5c1.6-1.3,3.5-2,5.5-2V10c-3,0-5.5,2.5-5.5,5.5V25.4z M66.4,26
-              c-6.1,0-11-5-11-11c0-6.1,4.9-11,11-11c6.1,0,11,5,11,11C77.4,21,72.5,26,66.4,26z M66.4,9.4c-3,0-5.5,2.5-5.5,5.5
-              c0,3,2.5,5.5,5.5,5.5c3,0,5.5-2.5,5.5-5.5C71.9,11.9,69.4,9.4,66.4,9.4z M48.3,0.8h5.5v24.6h-5.5V0.8z M35.7,26c-6.1,0-11-5-11-11
-              c0-6.1,4.9-11,11-11c6.1,0,11,5,11,11C46.7,21,41.8,26,35.7,26z M35.7,9.4c-3,0-5.5,2.5-5.5,5.5c0,3,2.5,5.5,5.5,5.5
-              c3,0,5.5-2.5,5.5-5.5C41.2,11.9,38.8,9.4,35.7,9.4z M13,20.5c2.8,0,5.2-1.5,6.4-3.7l4.8,2.8C21.9,23.4,17.8,26,13,26
-              C5.8,26,0,20.2,0,13C0,5.8,5.8,0,13,0c4.8,0,9,2.6,11.2,6.5l-4.8,2.8C18.1,7,15.7,5.5,13,5.5c-4.1,0-7.5,3.4-7.5,7.5
-              C5.5,17.1,8.8,20.5,13,20.5z"/>
-      </symbol>
-      <symbol id="colorz-mini" viewBox="0 0 40 40">
-        <path d="M0,40h40V0H0V40z M17,10c0,3.5,1.3,6.7,3.8,9.2c2.5,2.5,5.7,3.8,9.2,3.8v7C19.1,30,10,21,10,10H17z"/>
-      </symbol>
-    </defs>
-  </svg>
-  <section>
-    <p>
-      Les sites listés dans la section "Agence" sont quelques projets réalisés en équipe au sein de l'agence
-      <a href="https://www.colorz.fr" rel="nofollow" target="_blank">Colorz</a> entre 2010 et {year}.
+  <section class="max-w-3xl mx-auto px-4 text-center mb-12">
+    <p class="text-lg text-slate-700 dark:text-slate-300">
+      Les sites listés dans la section <strong>Agence</strong> sont des projets réalisés en équipe au sein de l'agence
+      <a
+        href="https://www.colorz.fr"
+        target="_blank"
+        rel="nofollow"
+        class="text-accent underline hover:no-underline"
+      >
+        Colorz
+      </a>
+      entre 2010 et {year}, où j'occupe le poste de <strong>Solution Architect</strong> et <strong>Lead Developer</strong>.
     </p>
-    <p class="mt-2">J'y travaille depuis 2010, et j'ai successivement occupé les postes de :</p>
-    <ul class="mt-4 list-inside list-disc">
-      <li>Lead developer</li>
-      <li>Senior lead developer</li>
-      <li><strong>Chef de projet technique e-commerce</strong> (rôle actuel)</li>
-    </ul>
   </section>
+  <section class="max-w-6xl mx-auto px-4 py-8 space-y-12">
+    {allYears.map((annee) => {
+      const agenceProjects = agencesByYear[annee] || [];
+      const freelanceProjects = freelanceByYear[annee] || [];
 
-  <section class="mt-10">
-    <h2 class="title mb-4 text-xl">Agence Colorz</h2>
-    <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
-      <tbody>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Mathon</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Shopify Plus /
-          Mirakl / Symfony
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2023</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Fleux</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Shopify plus /
-          Cegid / Symfony
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2023</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Sabon</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Shopify Plus
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2022</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Le Club Leader
-          Price
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Shopify /
-          Symfony
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2022</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Chaumet</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento 2</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2021</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Redline</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento 2</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2019</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Natalys</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento /
-          Mirakl
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2017</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Merci</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2016</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Make My
-          Lemonade
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2016</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Patricia
-          Blanchet
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2016</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Rudy's</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2015</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">The Beautyst
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento /
-          Mirakl
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2015</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Hartford</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2014</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Colette</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2012</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Gemmyo</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2012</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">émoi-émoi</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento /
-          Shopify
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2011 &raquo;
-          2022
-        </td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Jimmy Fairly
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2011 (v1), 2012
-          (v2)
-        </td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Green
-          Republic
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento
-          (marketplace)
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2010</td>
-      </tr>
-      </tbody>
-    </table>
+      // N'affiche pas l'année si aucun projet
+      if (agenceProjects.length === 0 && freelanceProjects.length === 0) {
+        return null;
+      }
+
+      return (
+        <section key={annee}>
+          <h2 class="text-3xl font-bold mb-6 border-b border-gray-300 pb-2">{annee}</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Bloc Agence uniquement si projets */}
+            {agenceProjects.length > 0 && (
+              <div>
+                <h3 class="text-xl font-semibold mb-4 text-accent">Agence Colorz</h3>
+                <ul class="space-y-3">
+                  {agenceProjects.map(({ name, tech, year }) => {
+                    const techBadges = tech
+                      .split(/[\/,]/)
+                      .map((t) => t.trim())
+                      .filter(Boolean);
+                    return (
+                      <li key={name} class="flex flex-wrap items-center gap-4">
+                        <span class="font-semibold">{name}</span>
+                        <div class="flex flex-wrap gap-1">
+                          {techBadges.map((t) => (
+                            <span
+                              key={t}
+                              class="px-2 py-0.5 text-xs font-mono uppercase rounded"
+                              style={`${getTechColor(t)}`}
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+
+            {/* Bloc Freelance uniquement si projets */}
+            {freelanceProjects.length > 0 && (
+              <div>
+                <h3 class="text-xl font-semibold mb-4 text-accent">Freelance</h3>
+                <ul class="space-y-3">
+                  {freelanceProjects.map(({ name, tech, year }) => {
+                    const techBadges = tech
+                      .split(/[\/,]/)
+                      .map((t) => t.trim())
+                      .filter(Boolean);
+                    return (
+                      <li key={name} class="flex flex-wrap items-center gap-4">
+                        <span class="font-semibold">{name}</span>
+                        <div class="flex flex-wrap gap-1">
+                          {techBadges.map((t) => (
+                            <span
+                              key={t}
+                              class="px-2 py-0.5 text-xs font-mono uppercase rounded"
+                              style={`${getTechColor(t)}`}
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
+      );
+    })}
   </section>
-
-  <section class="mt-10">
-    <h2 class="title mb-4 text-xl">Freelance</h2>
-    <table class="w-full">
-      <tbody>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Luzaka</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Migration
-          Magento 1<br/>Migration Magento 2<br/>Support technique
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2017 &raquo;
-          2023
-        </td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Harmony Paris
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2014 &raquo;
-          2016
-        </td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Christofle</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2014</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Skinizi</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2007 &raquo;
-          2014
-        </td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Poladdict</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Magento</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2012</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Willemy
-          Charpente
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Wordpress</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2012</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Pierre
-          Sancinéna
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Wordpress</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2009</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Inédit
-          Joaillier
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Sur-mesure</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2008</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">La
-          conspiration
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Sur-mesure</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2008</td>
-      </tr>
-      <tr>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Ville de
-          Gravigny
-        </td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Sur-mesure</td>
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2004</td>
-      </tr>
-      </tbody>
-    </table>
-  </section>
-
 </PageLayout>

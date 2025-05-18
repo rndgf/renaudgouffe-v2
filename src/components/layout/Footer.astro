@@ -1,15 +1,57 @@
 ---
-import { MENU_LINKS } from "@/data/constants";
-
 const year = new Date().getFullYear();
 ---
 
-<footer
-	class="mt-auto flex w-full flex-col items-center justify-center gap-y-2 pt-20 pb-4 text-center align-top text-gray-500 sm:flex-row sm:justify-between sm:text-xs"
->
-	<div class="mr-0 sm:mr-4">
-		Copyright &copy; {year}
-		- RNDGF -
-		<span><a href="/a-propos">À propos de ce site</a></span>
-	</div>
+<footer class="mt-auto w-full pt-20 pb-6 text-center text-sm text-textColor/60">
+  <div class="max-w-4xl mx-auto flex flex-col items-center justify-between gap-4 px-4 sm:flex-row">
+    <div class="text-xs sm:text-sm">
+      &copy; {year} <span class="font-semibold tracking-wide text-textColor">RNDGF</span>
+    </div>
+    <div class="flex flex-wrap gap-4 text-sm">
+      <a href="/a-propos" class="hover:underline">À propos de ce site</a>
+      <a href="/cv" class="hover:underline">CV</a>
+      <a href="/freelance" class="hover:underline">Freelance</a>
+    </div>
+  </div>
+
+  <!-- Palette selector -->
+  <div class="w-full flex gap-1 h-2 mt-8">
+    <button class="flex-1 bg-[#f25c54]" data-palette="default" title="Rouge brique" />
+    <button class="flex-1 bg-[#ff8c42]" data-palette="orange" title="Orange" />
+    <button class="flex-1 bg-[#ffd54f]" data-palette="gold" title="Or doux" />
+    <button class="flex-1 bg-[#6fcf97]" data-palette="green" title="Vert menthe" />
+    <button class="flex-1 bg-[#4dd0e1]" data-palette="teal" title="Bleu-vert" />
+    <button class="flex-1 bg-[#539df1]" data-palette="blue" title="Bleu" />
+    <button class="flex-1 bg-[#2c3e50]" data-palette="navy" title="Bleu nuit" />
+    <button class="flex-1 bg-[#b388ff]" data-palette="purple" title="Violet" />
+    <button class="flex-1 bg-[#ff77a9]" data-palette="pink" title="Rose" />
+    <button class="flex-1 bg-[#888888]" data-palette="gray" title="Gris" />
+  </div>
+
+  <!-- JS pour changer la palette -->
+  <script>
+    const buttons = document.querySelectorAll("[data-palette]");
+    const html = document.documentElement;
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const newPalette = btn.dataset.palette;
+
+        html.classList.forEach(cls => {
+          if (cls.startsWith("palette-")) html.classList.remove(cls);
+        });
+
+        html.classList.add(`palette-${newPalette}`);
+        localStorage.setItem("preferred-palette", newPalette);
+      });
+    });
+
+    // Appliquer la palette au chargement si définie
+    const saved = localStorage.getItem("preferred-palette");
+    if (saved) {
+      html.classList.add(`palette-${saved}`);
+    } else {
+      html.classList.add("palette-default");
+    }
+  </script>
 </footer>

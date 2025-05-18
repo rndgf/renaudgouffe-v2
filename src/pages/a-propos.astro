@@ -1,19 +1,18 @@
 ---
 import PageLayout from "@/layouts/Base";
-import { Image } from "@astrojs/image/components";
-import aboutImg from "../assets/about-astro.png";
 
 const meta = {
-	title: "À propos de ce site",
-	description: "",
+  title: "À propos de ce site",
+  description: "",
 };
 ---
 
 <PageLayout meta={meta}>
-	<div class="space-y-6">
-		<h1 class="title">À propos de ce site</h1>
-		<p>
-        Ce site est propulsé par <a href="https://astro.build/">Astro</a>, décoré avec le template <a href="https://github.com/chrismwilliams/astro-cactus">Astro Cactus</a>, versionné avec <a href="http://git-scm.com/">Git</a> et hébergé par <a href="https://www.gandi.net/">gandi</a>.
-		</p>
-	</div>
+  <div class="max-w-2xl mx-auto prose prose-cactus text-textColor px-4">
+    <h1 class="title">À propos de ce site</h1>
+
+    <p>
+      Ce site est propulsé par <a href="https://astro.build/" target="_blank">Astro</a>, décoré avec le template <a href="https://github.com/chrismwilliams/astro-cactus" target="_blank">Astro Cactus</a>, versionné avec <a href="http://git-scm.com/" target="_blank">Git</a> et hébergé chez <a href="https://www.gandi.net/" target="_blank">Gandi</a>.
+    </p>
+  </div>
 </PageLayout>

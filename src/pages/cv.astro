@@ -1,150 +1,142 @@
 ---
 import PageLayout from "@/layouts/Base";
-import { Image } from "@astrojs/image/components";
-import aboutImg from "../assets/about-astro.png";
 
 const meta = {
-	title: "Curriculum Vitae",
-	description: "Retrouvez ici mon CV en ligne.",
+  title: "Curriculum Vitae",
+  description: "Retrouvez ici mon CV en ligne.",
 };
+
+const timelineItems = [
+  {
+    category: "Expériences professionnelles",
+    events: [
+      {
+        date: "Depuis 2022",
+        title: "Solution Architect / Lead Developer Shopify",
+        company: "Colorz",
+        url: "http://www.colorz.fr/",
+        description: "Partenaire Shopify Plus, développement et architecture technique."
+      },
+      {
+        date: "Depuis 2020",
+        title: "Senior technical consultant / Senior Lead Developer",
+        company: "Colorz",
+        url: "http://www.colorz.fr/",
+      },
+      {
+        date: "2015 → 2020",
+        title: "Senior Lead Developer",
+        company: "Colorz",
+        url: "http://www.colorz.fr/",
+      },
+      {
+        date: "2010 → 2014",
+        title: "Lead Developer Magento",
+        company: "Colorz",
+        url: "http://www.colorz.fr/",
+      },
+      {
+        date: "2005 → 2010",
+        title: "Développeur web",
+        company: "FTEL",
+        url: "http://www.ftel.fr/",
+      },
+      {
+        date: "2003 → 2005",
+        title: "Contrat de professionnalisation (BTS)",
+        company: "FTEL",
+        url: "http://www.ftel.fr/",
+      },
+    ],
+  },
+  {
+    category: "Expériences freelance",
+    events: [
+      {
+        date: "Depuis 2021",
+        title: "Freelance Shopify",
+        url: "freelance-shopify",
+        isLink: true,
+      },
+      {
+        date: "Depuis 2009",
+        title: "Freelance Magento",
+      },
+      {
+        date: "Depuis 2005",
+        title: "Freelance en développement web",
+      },
+    ],
+  },
+  {
+    category: "Formation",
+    events: [
+      {
+        date: "2003 → 2005",
+        title: `BTS "Conception et développement multimédia" (alternance)`,
+      },
+      {
+        date: "1998 → 2003",
+        title: "Licence en Géographie",
+      },
+      {
+        date: "1998",
+        title: "Baccalauréat Littéraire",
+      },
+    ],
+  },
+];
 ---
 
 <PageLayout meta={meta}>
-  <section class="space-y-6">
-    <h1 class="title">Curriculum Vitae</h1>
-    <h2 class="font-bold">Depuis 2010</h2>
-    <p>Je fais du développement PHP depuis 2003 et j'ai une passion pour le web, le beau code et les projets ecommerce depuis 1999.</p>
-    <p>Et en 2010, je suis devenu Lead Developer Magento dans l'excellente agence web <a href="http://www.colorz.fr" rel="nofollow" target="_blank">Colorz</a>, j'ai donc une grande expertise sur cette plateforme sur laquelle je développe depuis 2009.<br/></p>
-    <p>Depuis 2019, j'occupe le poste de chef de projet technique e-commerce en plus de mon rôle de senior lead developer où je mets mon expertise tant fonctionnelle que technique au service de nos clients que j'accompagne sur leurs problématiques quel que soit leur écosystème.</p>
-    <p>En 2022, l'agence Colorz devient "Shopify Plus Partner" et  depuis, j'ai depuis acquis une grande expérience sur l'ensemble de l'écosystème Shopify.</p>
-    <h2 class="font-bold">Et avant ?</h2>
-    <p>Avant cela, j'ai travaillé pendant 7 ans aux développements d'applications web dans une SSII pour des grands comptes (Bayer, Saint-Gobain, Glaxo, Rémy Cointreau&hellip;) et dans des domaines fonctionnels variés (ressources humaines, achats/ventes, marketing/communication, contrôle de gestion, relation clients, gestion commerciale&hellip;).</p>
+
+  <section class="max-w-4xl mx-auto mt-10 px-4">
+
+    <h1 class="title mb-8 text-center">Curriculum Vitae</h1>
+
+    <section class="bg-accent/10 dark:bg-accent/20 border-l-4 border-accent p-6 rounded-md shadow-md mb-12 max-w-3xl mx-auto">
+      <h2 class="font-bold text-2xl mb-4 text-accent">tldr;</h2>
+      <ul class="list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300 text-lg leading-relaxed">
+        <li>Développeur PHP passionné depuis 2003, avec un intérêt constant pour le web et l’e-commerce depuis 1999.</li>
+        <li>Lead Developer Magento chez <a href="http://www.colorz.fr" target="_blank" rel="nofollow" class="text-accent underline">Colorz</a> depuis 2010, expert confirmé de cette plateforme.</li>
+        <li>Depuis 2019, chef de projet technique e-commerce, accompagnant des clients sur leurs enjeux fonctionnels et techniques.</li>
+        <li>Depuis 2022, Solution Architect et Lead Developer Shopify chez Colorz, partenaire Shopify Plus.</li>
+      </ul>
+    </section>
+
+    <div class="relative border-l-2 border-slate-300 dark:border-slate-600 pl-8">
+
+      {timelineItems.map(({ category, events }) => (
+        <>
+          <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 mt-12">{category}</h2>
+          <div class="space-y-8">
+            {events.map(({ date, title, company, url, description, isLink }) => (
+              <div class="relative">
+                <span class="absolute -left-5 top-1.5 w-4 h-4 bg-accent rounded-full border-2 border-white dark:border-black"></span>
+                <time class="block text-sm text-slate-500 dark:text-slate-400 mb-1">{date}</time>
+                <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+                  {isLink ? (
+                    <a href={url} class="text-accent hover:underline">{title}</a>
+                  ) : (
+                    title
+                  )}
+                </h3>
+                {company && (
+                  <p class="text-sm text-slate-600 dark:text-slate-400">
+                    <a href={url} target="_blank" rel="nofollow" class="hover:underline">{company}</a>
+                  </p>
+                )}
+                {description && (
+                  <p class="mt-1 text-slate-700 dark:text-slate-300">{description}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
+      ))}
+
+    </div>
+
   </section>
-
-  <section class="mt-10">
-    <h2 class="title mb-4 text-xl">Compétences techniques</h2>
-     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
-        <tbody>
-          <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Langages</td>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">PHP, SQL, Javascript</td>
-            </tr>
-            <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Frameworks PHP</td>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Symfony 6, Laravel, Laminas</td>
-            </tr>
-            <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">CMS</td>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Shopify. Shopify Plus, Magento 1, Magento 2</td>
-            </tr>
-            <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">SGBD</td>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">MySQL, PostgreSQL, Redis, Elastic</td>
-            </tr>
-            <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">VCS</td>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Git</td>
-            </tr>
-            <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Serveurs web</td>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Nginx, Apache</td>
-            </tr>
-            <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">OS</td>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">LAMP, Unix, Mac OS, Windows</td>
-            </tr>
-            <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Projets</td>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Gestion d'équipe technique<br>Gestion technique de projets</td>
-            </tr>
-        </tbody>
-    </table>
-</section>
-<section class="mt-10">
-    <h2 class="title mb-4 text-xl">Expériences professionnelles</h2>
-     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
-        <tbody>
-          <tr>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">depuis 2020</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Chef de projet technique<br>Senior Lead Developer</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.colorz.fr/" rel="nofollow" target="_blank">Colorz</a></td>
-          </tr>
-          <tr>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2015 &raquo; 2020</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Responsable technique e-commerce</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.colorz.fr/" rel="nofollow" target="_blank">Colorz</a></td>
-          </tr>
-          <tr>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2010 &raquo; 2014</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Lead Developer magento</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.colorz.fr/" rel="nofollow" target="_blank">Colorz</a></td>
-          </tr>
-          <tr>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2005 &raquo; 2010</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"> Développeur web</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.ftel.fr/" target="_blank" rel="nofollow">FTEL</a></td>
-          </tr>
-          <tr>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2003 &raquo; 2005</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Contrat de professionnalisation (BTS)</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="http://www.ftel.fr/" target="_blank" rel="nofollow">FTEL</a></td>
-          </tr>
-        </tbody>
-    </table>
-</section>
-
-<section class="mt-10">
-    <h2 class="title mb-4 text-xl">Expériences freelance</h2>
-     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
-        <tbody>
-          <tr>
-            <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Depuis 2009</td>
-            <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="freelance-magento.html"><strong>Freelance magento</strong></a></td>
-        </tr>
-        <tr>
-            <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Depuis 2005</td>
-            <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><a href="freelance-magento.html">Freelance en développement web</a></td>
-        </tr>
-        </tbody>
-    </table>
-</section>
-
-
-<section class="mt-10">
-    <h2 class="title mb-4 text-xl">Formation</h2>
-     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
-        <tbody>
-          <tr>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">2003 &raquo; 2005</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">BTS "Conception et développement multimédia" réalisé <strong>en alternance</strong></td>
-          </tr>
-        <tr>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">1998 &raquo; 2003</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Licence en Géographie</td>
-          </tr>
-        <tr>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">1998</td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Baccalauréat Littéraire</td>
-          </tr>
-        </tbody>
-    </table>
-</section>
-
-<section class="mt-10">
-    <h2 class="title mb-4 text-xl">Environnement de travail</h2>
-     <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 text-sm shadow-sm">
-        <tbody>
-          <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Ubuntu, Terminal, Docker</td>
-            </tr>
-        <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">PHPStorm, Sublime text</td>
-            </tr>
-        <tr>
-                <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">Git, CI/CD, Gitlab</td>
-            </tr>
-        </tbody>
-    </table>
-</section>
 
 </PageLayout>

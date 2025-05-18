@@ -20,18 +20,19 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-        shopify: '#5E8E3E',
-        magento: '#EB6006',
+				shopify: "#5E8E3E",
+				magento: "#EB6006",
 				bgColor: "var(--theme-bg)",
 				textColor: "var(--theme-text)",
 				link: "var(--theme-link)",
 				accent: "var(--theme-accent)",
 				"accent-2": "var(--theme-accent-2)",
+				darkBgLight: "#242627",
 			},
 			fontFamily: {
-				// Add any custom fonts here
-				sans: [...fontFamily.sans],
-				serif: [...fontFamily.serif],
+				// Override ou étend ta config actuelle
+				sans: ["Inter", ...fontFamily.sans], // Titres, UI modernes
+				serif: ["Merriweather", ...fontFamily.serif], // Paragraphes, texte d'accroche
 			},
 			transitionProperty: {
 				height: "height",

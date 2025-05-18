@@ -1,23 +1,27 @@
 ---
 import PageLayout from "@/layouts/Base";
-import { Image } from "@astrojs/image/components";
-import aboutImg from "../assets/about-astro.png";
 
 const meta = {
-	title: "Oops! You found a missing page!",
-	description: "Oops! It looks like this page is lost in space!",
+  title: "Page introuvable | Consultant Shopify freelance",
+  description: "La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil pour continuer votre navigation.",
 };
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="title mb-6">404 | Oops something went wrong</h1>
-	<p class="mb-8">Please use the navigation to find your way back</p>
-	<div class="my-4 grid justify-center">
-		<Image
-			class="rotate-180"
-			src={aboutImg}
-			alt="A cartoon cactus looking at the 'Astro.build' logo"
-			loading="eager"
-		/>
-	</div>
+  <section class="text-center mt-20 font-sans max-w-3xl mx-auto px-4 flex flex-col gap-6">
+    <i class="fas fa-search-minus text-7xl text-accent mx-auto mb-6"></i>
+    <h1 class="text-5xl font-extrabold text-accent">404 – page introuvable</h1>
+    <p class="text-lg text-textColor max-w-md mx-auto leading-relaxed">
+      La page que vous cherchez semble inexistante.<br/>
+      Pas d’inquiétude, revenez à l’accueil pour reprendre votre navigation ou contactez-moi si besoin.
+    </p>
+
+    <a
+      href="/"
+      class="inline-block mt-8 bg-accent text-white font-semibold px-12 py-4 rounded text-lg transition hover:bg-accent-2 hover:scale-105"
+      aria-label="Retour à la page d'accueil"
+    >
+      Retour à l’accueil
+    </a>
+  </section>
 </PageLayout>

@@ -1,34 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather&display=swap');
+
 @tailwind base;
 
 @layer base {
 	:root {
 		color-scheme: light;
-		--theme-bg: #fafafa;
-		--theme-link: #567c77;
-		--theme-text: #22272a;
-		--theme-accent: #cc2a42;
-		--theme-accent-2: #111;
-		--theme-quote: #cc2a42;
-		--theme-menu-bg: rgb(250 250 250 / 0.85);
+		--theme-bg: #fdfdfd;
+		--theme-text: #1d1f21;
+		--theme-link: #396c7d;
+		--theme-accent: #c62828;
+		--theme-accent-2: #222;
+		--theme-quote: #c62828;
+		--theme-menu-bg: rgba(255, 255, 255, 0.9);
 	}
 
 	:root.dark {
 		color-scheme: dark;
-		--theme-bg: #001524;
-		--theme-link: #d480aa;
-		--theme-text: #c9cacc;
-		--theme-accent: #15616D;
-		--theme-accent-2: #eee;
-		--theme-quote: #ccffb6;
-		--theme-menu-bg: rgb(29 31 33 / 0.85);
+		--theme-bg: #1a1c1e;
+		--theme-text: #e0e0e2;
+		--theme-link: #6fb7c5;
+		--theme-accent: #f25c54;
+		--theme-accent-2: #bdbdbd;
+		--theme-quote: #ffa07a;
+		--theme-menu-bg: rgba(26, 28, 30, 0.9);
 	}
 
+:root.dark.palette-default {
+  color-scheme: dark;
+  --theme-bg: #1a1c1e;
+  --theme-text: #e0e0e2;
+  --theme-link: #6fb7c5;
+  --theme-accent: #f25c54;
+  --theme-accent-2: #bdbdbd;
+  --theme-quote: #ffa07a;
+  --theme-menu-bg: rgba(26, 28, 30, 0.9);
+
+  --quote-bg: #242627;
+  --quote-text: #cccccc;
+}
+
+:root.dark.palette-orange {
+  color-scheme: dark;
+  --theme-bg: #2a211c;
+  --theme-text: #f3e2d0;
+  --theme-link: #e27d32;
+  --theme-accent: #e55b00;
+  --theme-accent-2: #c97c4f;
+  --theme-quote: #f2b179;
+  --theme-menu-bg: rgba(42, 33, 28, 0.9);
+
+  --quote-bg: #3b2d26;
+  --quote-text: #f3e2d0;
+}
+
+:root.dark.palette-green {
+  color-scheme: dark;
+  --theme-bg: #1c2b1c;
+  --theme-text: #dcefdc;
+  --theme-link: #6cc57a;
+  --theme-accent: #4ca64c;
+  --theme-accent-2: #8ec98e;
+  --theme-quote: #a7d8a7;
+  --theme-menu-bg: rgba(28, 43, 28, 0.9);
+
+  --quote-bg: #264126;
+  --quote-text: #dcefdc;
+}
+
+:root.dark.palette-blue {
+  color-scheme: dark;
+  --theme-bg: #1a2430;
+  --theme-text: #d0e6f6;
+  --theme-link: #599edc;
+  --theme-accent: #2f6fda;
+  --theme-accent-2: #8ab1f7;
+  --theme-quote: #a1c4ff;
+  --theme-menu-bg: rgba(26, 36, 48, 0.9);
+
+  --quote-bg: #253345;
+  --quote-text: #d0e6f6;
+}
+
+:root.dark.palette-purple {
+  color-scheme: dark;
+  --theme-bg: #2b1d35;
+  --theme-text: #eadcf5;
+  --theme-link: #a678d1;
+  --theme-accent: #9045c7;
+  --theme-accent-2: #bb92d4;
+  --theme-quote: #caa2e8;
+  --theme-menu-bg: rgba(43, 29, 53, 0.9);
+
+  --quote-bg: #3c2a49;
+  --quote-text: #eadcf5;
+}
+
+:root.dark.palette-teal {
+  color-scheme: dark;
+  --theme-bg: #1b2d2d;
+  --theme-text: #d3f0f0;
+  --theme-link: #4db6b6;
+  --theme-accent: #229191;
+  --theme-accent-2: #6fc0c0;
+  --theme-quote: #82d6d6;
+  --theme-menu-bg: rgba(27, 45, 45, 0.9);
+
+  --quote-bg: #274141;
+  --quote-text: #d3f0f0;
+}
+
+:root.dark.palette-pink {
+  color-scheme: dark;
+  --theme-bg: #3b2b32;
+  --theme-text: #f9dce6;
+  --theme-link: #d97ca7;
+  --theme-accent: #dc4b7a;
+  --theme-accent-2: #ea9ebf;
+  --theme-quote: #f4bad7;
+  --theme-menu-bg: rgba(59, 43, 50, 0.9);
+
+  --quote-bg: #503b43;
+  --quote-text: #f9dce6;
+}
+
+:root.dark.palette-yellow {
+  color-scheme: dark;
+  --theme-bg: #332b1c;
+  --theme-text: #f9eccf;
+  --theme-link: #e1d67d;
+  --theme-accent: #d6c63f;
+  --theme-accent-2: #f0e77d;
+  --theme-quote: #f6f3a3;
+  --theme-menu-bg: rgba(51, 43, 28, 0.9);
+
+  --quote-bg: #4a432a;
+  --quote-text: #f9eccf;
+}
+
+:root.dark.palette-gray {
+  color-scheme: dark;
+  --theme-bg: #2b2b2b;
+  --theme-text: #d0d0d0;
+  --theme-link: #8a8a8a;
+  --theme-accent: #6e6e6e;
+  --theme-accent-2: #a0a0a0;
+  --theme-quote: #b0b0b0;
+  --theme-menu-bg: rgba(43, 43, 43, 0.9);
+
+  --quote-bg: #3a3a3a;
+  --quote-text: #d0d0d0;
+}
+
+:root.dark.palette-red {
+  color-scheme: dark;
+  --theme-bg: #301c1c;
+  --theme-text: #f4cccc;
+  --theme-link: #dc4b4b;
+  --theme-accent: #c13b3b;
+  --theme-accent-2: #e67575;
+  --theme-quote: #f7a2a2;
+  --theme-menu-bg: rgba(48, 28, 28, 0.9);
+
+  --quote-bg: #4b2a2a;
+  --quote-text: #f4cccc;
+}
+
+
+html {
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a, button, input, select {
+	transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+/* Utilitaires Tailwind custom */
+.bg-quoteBg {
+  background-color: var(--quote-bg);
+}
+
+.text-quoteText {
+  color: var(--quote-text);
+}
+
+
+
 	html {
-		@apply h-full scroll-smooth border-t-2 border-textColor;
+		@apply h-full scroll-smooth;
 	}
 
 	html body {
-		@apply mx-auto flex h-full max-w-3xl flex-col bg-bgColor px-8 pt-16 font-mono text-sm font-normal text-textColor antialiased;
+		@apply mx-auto flex h-full max-w-3xl flex-col bg-bgColor px-8 pt-16 font-sans text-sm font-normal text-textColor antialiased;
+	}
+	section p {
+		margin-bottom: 1rem;
+		line-height: 1.6;
 	}
 }
 
