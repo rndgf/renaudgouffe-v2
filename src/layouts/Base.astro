@@ -1,38 +1,31 @@
 ---
-import type { SiteMeta } from "@/data/siteMeta";
-import BaseHead from "@/components/BaseHead";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { siteConfig } from "@/site-config";
+import type { SiteMeta } from "@/types";
+import BaseHead from "@/components/BaseHead.astro";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import { siteConfig } from "@/site.config";
 
 interface Props {
-	meta: SiteMeta;
+  meta: SiteMeta;
 }
 
 const {
-	meta: { title, description = siteConfig.description },
+  meta: { title, description = siteConfig.description },
 } = Astro.props;
 ---
 
-<html lang={siteConfig.lang} class="dark palette-default">
-	<head>
-		<BaseHead title={title} description={description}/>		
-		<script>
-	(function() {
-		try {
-			const theme = localStorage.getItem('theme') || 'dark';
-			const palette = localStorage.getItem('palette') || 'palette-default';
-			document.documentElement.classList.add(theme, palette);
-		} catch (e) {}
-	})();
-</script>
-
-	</head>
-	<body>
-		<Header />
-		<main id="main" class="flex-1">
-			<slot />
-		</main>
-		<Footer />
-	</body>
+<html
+  lang={siteConfig.lang}
+  class="dark font-merriweather bg-radial-[at_25%_25%] from-zinc-900 from-40% to-rose-900"
+>
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+  <body>
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
 </html>

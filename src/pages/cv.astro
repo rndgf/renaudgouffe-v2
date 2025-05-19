@@ -1,5 +1,5 @@
 ---
-import PageLayout from "@/layouts/Base";
+import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
   title: "Curriculum Vitae",
@@ -15,7 +15,7 @@ const timelineItems = [
         title: "Solution Architect Shopify",
         company: "Colorz",
         url: "http://www.colorz.fr/",
-        description: ""
+        description: "",
       },
       {
         date: "2020 -> 2022",
@@ -54,7 +54,7 @@ const timelineItems = [
     events: [
       {
         date: "Depuis 2021",
-        title: "Freelance Shopify"
+        title: "Freelance Shopify",
       },
       {
         date: "Depuis 2009",
@@ -87,52 +87,84 @@ const timelineItems = [
 ---
 
 <PageLayout meta={meta}>
-
   <section class="max-w-4xl mx-auto mt-10 px-4">
-
-    <section class="bg-accent/10 dark:bg-accent/20 border-l border-accent p-6 mb-12 max-w-3xl mx-auto">
+    <section
+      class="bg-accent/20 border-l border-accent p-6 mb-12 mx-autor rounded-lg"
+    >
       <h2 class="font-bold text-2xl mb-4 text-accent">tldr;</h2>
-      <ul class="list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
-        <li>Développeur PHP passionné depuis 2003, avec un intérêt constant pour le web et l’e-commerce depuis 1999.</li>
-        <li>Lead Developer Magento chez <a href="http://www.colorz.fr" target="_blank" rel="nofollow" class="text-accent underline">Colorz</a> depuis 2010, expert confirmé de cette plateforme.</li>
-        <li>Depuis 2019, chef de projet technique e-commerce, accompagnant des clients sur leurs enjeux fonctionnels et techniques.</li>
-        <li>Depuis 2022, Solution Architect et Lead Developer Shopify chez Colorz.</li>
+      <ul class="list-disc list-inside space-y-2 text-sm leading-relaxed">
+        <li>
+          Développeur PHP passionné depuis 2003, avec un intérêt constant pour
+          le web et l’e-commerce depuis 1999.
+        </li>
+        <li>
+          Lead Developer Magento chez <a
+            href="http://www.colorz.fr"
+            target="_blank"
+            rel="nofollow"
+            class="text-accent underline">Colorz</a
+          > depuis 2010, expert confirmé de cette plateforme.
+        </li>
+        <li>
+          Depuis 2019, chef de projet technique e-commerce, accompagnant des
+          clients sur leurs enjeux fonctionnels et techniques.
+        </li>
+        <li>
+          Depuis 2022, Solution Architect et Lead Developer Shopify chez Colorz.
+        </li>
       </ul>
     </section>
 
-    <div class="relative border-l-2 border-slate-300 dark:border-slate-600 pl-8">
-
-      {timelineItems.map(({ category, events }) => (
-        <>
-          <h2 class="text-2xl font-bold text-accent mb-6 mt-12">{category}</h2>
-          <div class="space-y-8">
-            {events.map(({ date, title, company, url, description, isLink }) => (
-              <div class="relative">
-                <span class="absolute -left-5 top-1.5 w-2 h-2 bg-accent rounded-full"></span>
-                <time class="block text-sm text-slate-500 dark:text-slate-400 mb-1">{date}</time>
-                <h3 class="font-semibold text-slate-900 dark:text-slate-100">
-                  {isLink ? (
-                    <a href={url} class="text-accent hover:underline">{title}</a>
-                  ) : (
-                    title
-                  )}
-                </h3>
-                {company && (
-                  <p class="text-sm text-slate-600 dark:text-slate-400">
-                    <a href={url} target="_blank" rel="nofollow" class="hover:underline">{company}</a>
-                  </p>
-                )}
-                {description && (
-                  <p class="mt-1 text-slate-700 dark:text-slate-300">{description}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </>
-      ))}
-
+    <div
+      class="relative border-l-2 border-zinc-300 dark:border-zinc-600 pl-8 rounded-lg"
+    >
+      {
+        timelineItems.map(({ category, events }) => (
+          <>
+            <h2 class="text-2xl font-bold text-accent mb-6 mt-12">
+              {category}
+            </h2>
+            <div class="space-y-8">
+              {events.map(
+                ({ date, title, company, url, description, isLink }) => (
+                  <div class="relative">
+                    <span class="absolute -left-5 top-1.5 w-2 h-2 bg-accent rounded-full" />
+                    <time class="block text-sm text-zinc-500 dark:text-zinc-400 mb-1">
+                      {date}
+                    </time>
+                    <h3 class="font-semibold text-zinc-900 dark:text-zinc-100">
+                      {isLink ? (
+                        <a href={url} class="text-accent hover:underline">
+                          {title}
+                        </a>
+                      ) : (
+                        title
+                      )}
+                    </h3>
+                    {company && (
+                      <p class="text-sm text-zinc-600 dark:text-zinc-400">
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="nofollow"
+                          class="hover:underline"
+                        >
+                          {company}
+                        </a>
+                      </p>
+                    )}
+                    {description && (
+                      <p class="mt-1 text-zinc-700 dark:text-zinc-300">
+                        {description}
+                      </p>
+                    )}
+                  </div>
+                )
+              )}
+            </div>
+          </>
+        ))
+      }
     </div>
-
   </section>
-
 </PageLayout>

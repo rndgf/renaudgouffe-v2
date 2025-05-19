@@ -1,109 +1,123 @@
 ---
-import PageLayout from "@/layouts/Base";
+import PageLayout from "@/layouts/Base.astro";
 ---
 
-<PageLayout meta={{ title: "Consultant technique e-commerce et développeur Shopify" }}>
- <section class="text-center mt-8 font-sans max-w-4xl mx-auto px-4 flex flex-col gap-6">
-  <i class="fab fa-shopify text-5xl text-accent mb-2"></i>
+<PageLayout
+  meta={{ title: "Consultant technique e-commerce et développeur Shopify" }}
+>
+  <!-- Introduction -->
+  <section
+    class="mt-8 px-4 text-center font-sans flex flex-col gap-6 max-w-screen-md mx-auto"
+  >
+    <i class="fab fa-shopify text-7xl text-shopify mb-2"></i>
 
-  <h1 class="text-4xl sm:text-5xl font-extrabold text-accent">
-    Consultant Shopify<br/>Architecte e-commerce<br/>Développeur senior
-  </h1>
-  <p class="text-lg text-textColor">
-    J’accompagne les e-commerçants dans leurs projets techniques complexes :
-    <strong>replatforming</strong>, <strong>développement spécifique</strong> (middleware),
-    <strong>Shopify Functions</strong>, <strong>checkout personnalisé</strong>, etc.
-  </p>
-</section>
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-accent">
+      Consultant Shopify<br />Architecte e-commerce<br />Développeur senior
+    </h1>
+
+    <p class="text-lg text-textColor">
+      J’accompagne les e-commerçants dans leurs projets Shopify :
+      <strong>replatforming</strong>, <strong>migration vers Shopify</strong>, <strong
+        >développement spécifique</strong
+      >
+      <strong>Shopify Functions</strong>, <strong>UI Extensions</strong>, <strong
+        >checkout personnalisé</strong
+      >...
+    </p>
+  </section>
 
   <!-- Services -->
-<section class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto mt-16 px-4 font-sans">
-  {[
+  <section
+    class="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-16 px-4 font-sans max-w-screen-md mx-auto"
+  >
     {
-      category: "Migration",
-      title: "Passez à Shopify sans stress",
-      text: "Reprise de données, architecture adaptée et accompagnement jusqu’au go-live.",
-      icon: "fas fa-random",
-    },
-    {
-      category: "Intégrations",
-      title: "Des outils qui communiquent",
-      text: "Connecteurs sur-mesure entre Shopify et votre système d'information (ERP, PIM, OMS).",
-      icon: "fas fa-plug",
-    },
-    {
-      category: "Personnalisation",
-      title: "Un checkout qui vous ressemble",
-      text: "Shopify Functions, promotions avancées, UI Extensions. Offrez une expérience d’achat fluide et sur-mesure.",
-      icon: "fas fa-shopping-cart",
-    },
-    {
-      category: "Support technique",
-      title: "Un regard expert sur votre site",
-      text: "Audit, refonte, support technique et montée en qualité. J’interviens en appui de vos équipes internes ou agences.",
-      icon: "fas fa-tools",
-    },
-  ].map(({ category, title, text, icon }) => (
-    <div
-      class="group relative flex flex-col gap-4 p-6 rounded border border-zinc-700 hover:border-accent hover:shadow-lg transition duration-200"
-      tabindex="0"
-      role="group"
-      aria-label={title}
-    >
-      <div class="flex items-center justify-between">
-        <i class={`${icon} text-accent text-2xl`}></i>
-        <span class="font-mono text-xs uppercase tracking-wide text-zinc-500">{category}</span>
-      </div>
+      [
+        {
+          category: "Migration",
+          title: "Passez à Shopify sans stress",
+          text: "Reprise de données, architecture adaptée et accompagnement jusqu’au go-live.",
+          icon: "fas fa-random",
+        },
+        {
+          category: "Intégrations",
+          title: "Des outils qui communiquent",
+          text: "Connecteurs sur-mesure entre Shopify et votre système d'information (ERP, PIM, OMS).",
+          icon: "fas fa-plug",
+        },
+        {
+          category: "Personnalisation",
+          title: "Un checkout qui vous ressemble",
+          text: "Shopify Functions, promotions avancées, UI Extensions. Offrez une expérience d’achat fluide et sur-mesure.",
+          icon: "fas fa-shopping-cart",
+        },
+        {
+          category: "Support technique",
+          title: "Un regard expert sur votre site",
+          text: "Audit, refonte, support technique et montée en qualité. J’interviens en appui de vos équipes internes ou agences.",
+          icon: "fas fa-tools",
+        },
+      ].map(({ category, title, text, icon }) => (
+        <div
+          class="group relative flex flex-col gap-4 p-6 rounded border bg-darkBgLight/30 border-zinc-700"
+          tabindex="0"
+          role="group"
+          aria-label={title}
+        >
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-xs uppercase tracking-wide text-accent">
+              {category}
+            </span>
+            <i class={`${icon} text-zinc-400/50 text-2xl`} />
+          </div>
 
-      <h3 class="text-xl font-bold text-zinc-100">{title}</h3>
-      <p class="text-sm text-zinc-400">{text}</p>
-    </div>
-  ))}
-</section>
-
-  <!-- Références -->
-  <section class="mt-24 text-center px-4">
-    <h2 class="text-2xl font-bold text-zinc-200 mb-2">Projets & Références</h2>
-    <p class="text-zinc-400 mb-6">
-      Découvrez une sélection de projets réalisés en agence ou en freelance.
-    </p>
-    <a
-      href="/references"
-      class="inline-block border border-accent text-accent px-4 py-2 rounded hover:bg-accent hover:text-white transition"
-    >
-      Voir les références
-    </a>
+          <h3 class="text-xl font-bold text-zinc-100">{title}</h3>
+          <p class="text-sm text-zinc-400">{text}</p>
+        </div>
+      ))
+    }
   </section>
 
   <!-- Citation / Confiance -->
-<section
-  class="max-w-2xl mx-auto my-24 px-6 py-10 rounded-lg font-serif italic text-lg text-center bg-quoteBg text-quoteText"
->
-  <p class="mb-4">
-    Mon expertise, forgée au sein de l’agence 
-    <a href="https://www.colorz.fr" target="_blank" rel="nofollow" class="underline text-accent hover:text-accent-2">
-      Colorz
-    </a>, repose sur une compréhension approfondie des enjeux techniques et métiers pour garantir la réussite de vos projets e-commerce.
-  </p>
-  <p class="mb-4">
-    Fort de plus de 15 ans d’expérience, j’accompagne encore aujourd’hui de nombreux clients chez Colorz en tant que <strong>Solution Architect</strong> et <strong>Lead Developer</strong>.
-  </p>
-</section>
+  <section
+    class="mt-16 p-8 px-4 max-w-screen-md mx-auto rounded-lg font-serif italic text-lg text-center bg-darkBgLight/30"
+  >
+    <p class="mb-4">
+      Mon expertise, forgée au sein de l’agence
+      <a
+        href="https://www.colorz.fr"
+        target="_blank"
+        rel="nofollow"
+        class="underline text-accent hover:text-accent2"
+      >
+        Colorz
+      </a>, repose sur une compréhension approfondie des enjeux techniques et
+      métiers pour garantir la réussite de vos projets e-commerce.
+    </p>
+    <p class="mb-4">
+      Fort de plus de 15 ans d’expérience, j’accompagne encore aujourd’hui de
+      nombreux clients chez Colorz en tant que <strong
+        >Solution Architect</strong
+      > et <strong>Lead Developer</strong>.
+    </p>
+  </section>
 
   <!-- Call to Action -->
-  <section class="mt-24 text-center max-w-xl mx-auto px-4 font-sans">
-    <h2 class="text-3xl font-extrabold mb-6">Discutons de votre projet</h2>
+  <section class="mt-24 text-center max-w-screen-sm mx-auto px-4 font-sans">
+    <h2 class="text-3xl font-extrabold mb-6">
+      <i class="fab fa-shopify text-3xl mb-2 mr-2"></i>
+      Discutons de votre projet Shopify
+    </h2>
     <p class="text-textColor text-lg mb-10">
-      Vous êtes un e-commerçant, une agence ou un porteur de projet Shopify ? Parlons de vos besoins et de vos enjeux techniques.
+      Vous êtes un e-commerçant, une agence ou un porteur de projet Shopify ?
+      Parlons de vos besoins et de vos enjeux techniques.
     </p>
     <a
-  href="mailto:renaud.gouffe@gmail.com"
-  class="inline-block bg-accent text-white font-semibold px-16 py-5 rounded text-xl transition hover:bg-accent-2 hover:scale-105"
-  aria-label="Contacter Renaud Gouffé par email"
->
-  Me contacter
-</a>
-
+      href="mailto:renaud.gouffe@gmail.com"
+      class="inline-block bg-accent/90 text-white font-semibold px-16 py-5 rounded text-xl transition hover:bg-rose-700/90 hover:scale-105"
+      aria-label="Contacter Renaud Gouffé par email"
+    >
+      Me contacter
+    </a>
   </section>
 
   <!-- Font Awesome CDN -->

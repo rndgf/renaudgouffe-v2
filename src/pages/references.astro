@@ -1,10 +1,11 @@
 ---
-import PageLayout from "@/layouts/Base";
+import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
   title: "Références",
-  description: "Liste des projets réalisés en équipe au sein de l'agence Colorz entre 2010 et 2024.",
-  robots: "noindex"
+  description:
+    "Liste des projets réalisés en équipe au sein de l'agence Colorz entre 2010 et 2024.",
+  robots: "noindex",
 };
 
 const year = new Date().getFullYear();
@@ -57,7 +58,7 @@ const techColors = {
   WordPress: "background-color: #3858E9; color: white;",
   "Sur-mesure": "background-color: gray; color: white;",
   Marketplace: "background-color: purple; color: white;",
-  Cegid: "background-color: #0046FE; color: white;"
+  Cegid: "background-color: #0046FE; color: white;",
 };
 
 function getTechColor(tech) {
@@ -118,96 +119,109 @@ const allYears = Array.from(allYearsSet)
 ---
 
 <PageLayout meta={meta}>
-  <section class="max-w-3xl mx-auto px-4 text-center mb-12">
-    <p class="text-lg text-slate-700 dark:text-slate-300">
-      Les sites listés dans la section <strong>Agence</strong> sont des projets réalisés en équipe au sein de l'agence
+  <section class="max-w-3xl mx-auto px-4 text-center mb-12 mt-8">
+    <p class="text-lg bg-accent/20 p-6 mb-12 mx-autor rounded-lg">
+      Les sites listés dans la section <strong>Agence</strong> sont des projets réalisés
+      en équipe au sein de l'agence
       <a
         href="https://www.colorz.fr"
         target="_blank"
         rel="nofollow"
-        class="text-accent underline hover:no-underline"
-      >Colorz</a>
+        class="theme-accent underline hover:no-underline">Colorz</a
+      >
       entre 2010 et {year}.
     </p>
   </section>
   <section class="max-w-6xl mx-auto px-4 py-8 space-y-12">
-    {allYears.map((annee) => {
-      const agenceProjects = agencesByYear[annee] || [];
-      const freelanceProjects = freelanceByYear[annee] || [];
+    {
+      allYears.map((annee) => {
+        const agenceProjects = agencesByYear[annee] || [];
+        const freelanceProjects = freelanceByYear[annee] || [];
 
-      // N'affiche pas l'année si aucun projet
-      if (agenceProjects.length === 0 && freelanceProjects.length === 0) {
-        return null;
-      }
+        // N'affiche pas l'année si aucun projet
+        if (agenceProjects.length === 0 && freelanceProjects.length === 0) {
+          return null;
+        }
 
-      return (
-        <section key={annee}>
-          <h2 class="text-3xl font-bold mb-6 border-b border-gray-300 pb-2">{annee}</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Bloc Agence uniquement si projets */}
-            {agenceProjects.length > 0 && (
-              <div>
-                <h3 class="text-xl font-semibold mb-4 text-accent">Agence</h3>
-                <ul class="space-y-3">
-                  {agenceProjects.map(({ name, tech, year }) => {
-                    const techBadges = tech
-                      .split(/[\/,]/)
-                      .map((t) => t.trim())
-                      .filter(Boolean);
-                    return (
-                      <li key={name} class="flex flex-wrap items-center gap-4">
-                        <span class="font-semibold">{name}</span>
-                        <div class="flex flex-wrap gap-1">
-                          {techBadges.map((t) => (
-                            <span
-                              key={t}
-                              class="px-2 py-0.5 text-[0.6em] font-mono uppercase rounded"
-                              style={`${getTechColor(t)}`}
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            )}
+        return (
+          <section key={annee}>
+            <h2 class="text-3xl text-zinc-300/40 font-mono font-bold mb-6 border-b border-zinc-300/40 pb-2">
+              {annee}
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Bloc Agence uniquement si projets */}
+              {agenceProjects.length > 0 && (
+                <div>
+                  <h3 class="text-xl font-semibold mb-4 text-accent">Agence</h3>
+                  <ul class="space-y-3">
+                    {agenceProjects.map(({ name, tech, year }) => {
+                      const techBadges = tech
+                        .split(/[\/,]/)
+                        .map((t) => t.trim())
+                        .filter(Boolean);
+                      return (
+                        <li
+                          key={name}
+                          class="flex flex-wrap items-center gap-4"
+                        >
+                          <span class="font-semibold">{name}</span>
+                          <div class="flex flex-wrap gap-1">
+                            {techBadges.map((t) => (
+                              <span
+                                key={t}
+                                class="px-2 py-0.5 text-[0.6em] font-mono uppercase rounded"
+                                style={`${getTechColor(t)}`}
+                              >
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
 
-            {/* Bloc Freelance uniquement si projets */}
-            {freelanceProjects.length > 0 && (
-              <div>
-                <h3 class="text-xl font-semibold mb-4 text-accent">Freelance</h3>
-                <ul class="space-y-3">
-                  {freelanceProjects.map(({ name, tech, year }) => {
-                    const techBadges = tech
-                      .split(/[\/,]/)
-                      .map((t) => t.trim())
-                      .filter(Boolean);
-                    return (
-                      <li key={name} class="flex flex-wrap items-center gap-4">
-                        <span class="font-semibold">{name}</span>
-                        <div class="flex flex-wrap gap-1">
-                          {techBadges.map((t) => (
-                            <span
-                              key={t}
-                              class="px-2 py-0.5 text-[0.6em] font-mono uppercase rounded"
-                              style={`${getTechColor(t)}`}
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            )}
-          </div>
-        </section>
-      );
-    })}
+              {/* Bloc Freelance uniquement si projets */}
+              {freelanceProjects.length > 0 && (
+                <div>
+                  <h3 class="text-xl font-semibold mb-4 text-accent">
+                    Freelance
+                  </h3>
+                  <ul class="space-y-3">
+                    {freelanceProjects.map(({ name, tech, year }) => {
+                      const techBadges = tech
+                        .split(/[\/,]/)
+                        .map((t) => t.trim())
+                        .filter(Boolean);
+                      return (
+                        <li
+                          key={name}
+                          class="flex flex-wrap items-center gap-4"
+                        >
+                          <span class="font-semibold">{name}</span>
+                          <div class="flex flex-wrap gap-1">
+                            {techBadges.map((t) => (
+                              <span
+                                key={t}
+                                class="px-2 py-0.5 text-[0.6em] font-mono uppercase rounded"
+                                style={`${getTechColor(t)}`}
+                              >
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </section>
+        );
+      })
+    }
   </section>
 </PageLayout>

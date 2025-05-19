@@ -4,16 +4,17 @@ const url = new URL(Astro.request.url);
 
 <header
   id="main-header"
-  class="group relative mb-16 flex w-full flex-col items-center"
+  class="group relative mb-6 flex w-full flex-col items-center"
 >
-  <!-- Logo centré -->
   <div class="flex flex-col items-center text-center">
     <a
       href="/"
       class="inline-flex flex-col items-center text-center hover:opacity-100"
       aria-current={url.pathname === "/" ? "page" : false}
     >
-      <span class="text-4xl font-bold tracking-tight text-zinc-200 font-sans sm:text-5xl">
+      <span
+        class="text-4xl font-bold tracking-tight text-zinc-200 font-montserrat sm:text-5xl"
+      >
         RNDGF
       </span>
       <span class="mt-1 text-xs font-mono text-zinc-400 tracking-wide">
@@ -22,4 +23,3 @@ const url = new URL(Astro.request.url);
     </a>
   </div>
 </header>
-
