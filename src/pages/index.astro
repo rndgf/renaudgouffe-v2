@@ -16,7 +16,6 @@ import PageLayout from "@/layouts/Base";
   </p>
 </section>
 
-
   <!-- Services -->
 <section class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto mt-16 px-4 font-sans">
   {[
@@ -28,8 +27,8 @@ import PageLayout from "@/layouts/Base";
     },
     {
       category: "Intégrations",
-      title: "Des outils qui communiquent enfin",
-      text: "Connecteurs sur-mesure entre Shopify et vos outils (ERP, PIM, OMS). Moins d’erreurs, plus d’automatisation.",
+      title: "Des outils qui communiquent",
+      text: "Connecteurs sur-mesure entre Shopify et votre système d'information (ERP, PIM, OMS).",
       icon: "fas fa-plug",
     },
     {
@@ -39,8 +38,8 @@ import PageLayout from "@/layouts/Base";
       icon: "fas fa-shopping-cart",
     },
     {
-      category: "Expertise",
-      title: "Un regard senior sur votre site",
+      category: "Support technique",
+      title: "Un regard expert sur votre site",
       text: "Audit, refonte, support technique et montée en qualité. J’interviens en appui de vos équipes internes ou agences.",
       icon: "fas fa-tools",
     },
@@ -52,8 +51,8 @@ import PageLayout from "@/layouts/Base";
       aria-label={title}
     >
       <div class="flex items-center justify-between">
-        <span class="text-xs uppercase tracking-wide text-zinc-500">{category}</span>
         <i class={`${icon} text-accent text-2xl`}></i>
+        <span class="font-mono text-xs uppercase tracking-wide text-zinc-500">{category}</span>
       </div>
 
       <h3 class="text-xl font-bold text-zinc-100">{title}</h3>
@@ -61,7 +60,6 @@ import PageLayout from "@/layouts/Base";
     </div>
   ))}
 </section>
-
 
   <!-- Références -->
   <section class="mt-24 text-center px-4">
@@ -88,17 +86,9 @@ import PageLayout from "@/layouts/Base";
     </a>, repose sur une compréhension approfondie des enjeux techniques et métiers pour garantir la réussite de vos projets e-commerce.
   </p>
   <p class="mb-4">
-    Fort de plus de 15 ans d’expérience dans ce secteur dynamique, j’accompagne encore aujourd’hui de nombreux clients chez Colorz en tant que <strong>Solution Architect</strong> et <strong>Lead Developer</strong>, alliant rigueur, innovation et pragmatisme.
-  </p>
-  <p>
-    Vous pouvez consulter quelques-unes de ces 
-    <a href="/references" class="underline text-accent hover:text-accent-2">
-      références
-    </a> pour découvrir la qualité de mes interventions.
+    Fort de plus de 15 ans d’expérience, j’accompagne encore aujourd’hui de nombreux clients chez Colorz en tant que <strong>Solution Architect</strong> et <strong>Lead Developer</strong>.
   </p>
 </section>
-
-
 
   <!-- Call to Action -->
   <section class="mt-24 text-center max-w-xl mx-auto px-4 font-sans">

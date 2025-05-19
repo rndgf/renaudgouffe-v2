@@ -12,14 +12,14 @@ const timelineItems = [
     events: [
       {
         date: "Depuis 2022",
-        title: "Solution Architect / Lead Developer Shopify",
+        title: "Solution Architect Shopify",
         company: "Colorz",
         url: "http://www.colorz.fr/",
-        description: "Partenaire Shopify Plus, développement et architecture technique."
+        description: ""
       },
       {
-        date: "Depuis 2020",
-        title: "Senior technical consultant / Senior Lead Developer",
+        date: "2020 -> 2022",
+        title: "Senior technical consultant",
         company: "Colorz",
         url: "http://www.colorz.fr/",
       },
@@ -31,7 +31,7 @@ const timelineItems = [
       },
       {
         date: "2010 → 2014",
-        title: "Lead Developer Magento",
+        title: "Lead Developer",
         company: "Colorz",
         url: "http://www.colorz.fr/",
       },
@@ -54,9 +54,7 @@ const timelineItems = [
     events: [
       {
         date: "Depuis 2021",
-        title: "Freelance Shopify",
-        url: "freelance-shopify",
-        isLink: true,
+        title: "Freelance Shopify"
       },
       {
         date: "Depuis 2009",
@@ -92,15 +90,13 @@ const timelineItems = [
 
   <section class="max-w-4xl mx-auto mt-10 px-4">
 
-    <h1 class="title mb-8 text-center">Curriculum Vitae</h1>
-
-    <section class="bg-accent/10 dark:bg-accent/20 border-l-4 border-accent p-6 rounded-md shadow-md mb-12 max-w-3xl mx-auto">
+    <section class="bg-accent/10 dark:bg-accent/20 border-l border-accent p-6 mb-12 max-w-3xl mx-auto">
       <h2 class="font-bold text-2xl mb-4 text-accent">tldr;</h2>
-      <ul class="list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300 text-lg leading-relaxed">
+      <ul class="list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
         <li>Développeur PHP passionné depuis 2003, avec un intérêt constant pour le web et l’e-commerce depuis 1999.</li>
         <li>Lead Developer Magento chez <a href="http://www.colorz.fr" target="_blank" rel="nofollow" class="text-accent underline">Colorz</a> depuis 2010, expert confirmé de cette plateforme.</li>
         <li>Depuis 2019, chef de projet technique e-commerce, accompagnant des clients sur leurs enjeux fonctionnels et techniques.</li>
-        <li>Depuis 2022, Solution Architect et Lead Developer Shopify chez Colorz, partenaire Shopify Plus.</li>
+        <li>Depuis 2022, Solution Architect et Lead Developer Shopify chez Colorz.</li>
       </ul>
     </section>
 
@@ -108,11 +104,11 @@ const timelineItems = [
 
       {timelineItems.map(({ category, events }) => (
         <>
-          <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 mt-12">{category}</h2>
+          <h2 class="text-2xl font-bold text-accent mb-6 mt-12">{category}</h2>
           <div class="space-y-8">
             {events.map(({ date, title, company, url, description, isLink }) => (
               <div class="relative">
-                <span class="absolute -left-5 top-1.5 w-4 h-4 bg-accent rounded-full border-2 border-white dark:border-black"></span>
+                <span class="absolute -left-5 top-1.5 w-2 h-2 bg-accent rounded-full"></span>
                 <time class="block text-sm text-slate-500 dark:text-slate-400 mb-1">{date}</time>
                 <h3 class="font-semibold text-slate-900 dark:text-slate-100">
                   {isLink ? (

@@ -10,12 +10,12 @@ const meta = {
 const year = new Date().getFullYear();
 
 const agences = [
-  { name: "Memoritz", tech: "Shopify / Mirakl / Symfony", year: "2025" },
-  { name: "Vtwonen", tech: "Shopify / Mirakl / Symfony", year: "2024" },
-  { name: "Mathon", tech: "Shopify / Mirakl / Symfony", year: "2024" },
-  { name: "Fleux", tech: "Shopify / Cegid / Symfony", year: "2023" },
+  { name: "Memoritz", tech: "Shopify / Mirakl", year: "2025" },
+  { name: "Vtwonen", tech: "Shopify / Mirakl", year: "2024" },
+  { name: "Mathon", tech: "Shopify / Mirakl", year: "2024" },
+  { name: "Fleux", tech: "Shopify / Cegid", year: "2023" },
   { name: "Sabon", tech: "Shopify", year: "2022" },
-  { name: "Le Club Leader Price", tech: "Shopify / Symfony", year: "2022" },
+  { name: "Le Club Leader Price", tech: "Shopify", year: "2022" },
   { name: "Chaumet", tech: "Magento 2", year: "2021" },
   { name: "Redline", tech: "Magento 2", year: "2019" },
   { name: "Natalys", tech: "Magento / Mirakl", year: "2017" },
@@ -27,17 +27,18 @@ const agences = [
   { name: "Hartford", tech: "Magento", year: "2014" },
   { name: "Colette", tech: "Magento", year: "2012" },
   { name: "Gemmyo", tech: "Magento", year: "2012" },
-  { name: "émoi-émoi", tech: "Magento", year: "2011 → 2019" },
-  { name: "émoi-émoi", tech: "Shopify", year: "2020 → 2022" },
-  { name: "Jimmy Fairly", tech: "Magento", year: "2011 → 2013" },
+  { name: "émoi-émoi", tech: "Magento", year: "2011" },
+  { name: "émoi-émoi", tech: "Shopify", year: "2020" },
+  { name: "Jimmy Fairly", tech: "Magento", year: "2011" },
   { name: "Green Republic", tech: "Magento / Marketplace", year: "2010" },
 ];
 
 const freelance = [
-  { name: "Luzaka", tech: "Magento 2", year: "2017 → 2022" },
-  { name: "Harmony Paris", tech: "Magento", year: "2014 → 2016" },
+  { name: "Luzaka", tech: "Magento", year: "2017" },
+  { name: "Luzaka", tech: "Magento 2", year: "2021" },
+  { name: "Harmony Paris", tech: "Magento", year: "2014" },
   { name: "Christofle", tech: "Magento", year: "2014" },
-  { name: "Skinizi", tech: "Magento", year: "2007 → 2014" },
+  { name: "Skinizi", tech: "Magento", year: "2007" },
   { name: "Poladdict", tech: "Magento", year: "2012" },
   { name: "Willemy Charpente", tech: "WordPress", year: "2012" },
   { name: "Pierre Sancinéna", tech: "WordPress", year: "2009" },
@@ -70,7 +71,6 @@ function extractYears(yearStr) {
   if (!yearStr) return [];
   if (yearStr.includes("→")) {
     const [start, end] = yearStr.split("→").map((y) => y.trim());
-    // gestion cas "depuis XXXX" on ignore pour simplifier
     if (start.toLowerCase().startsWith("depuis")) return [];
     const startYear = parseInt(start, 10);
     const endYear = parseInt(end, 10);
@@ -126,10 +126,8 @@ const allYears = Array.from(allYearsSet)
         target="_blank"
         rel="nofollow"
         class="text-accent underline hover:no-underline"
-      >
-        Colorz
-      </a>
-      entre 2010 et {year}, où j'occupe le poste de <strong>Solution Architect</strong> et <strong>Lead Developer</strong>.
+      >Colorz</a>
+      entre 2010 et {year}.
     </p>
   </section>
   <section class="max-w-6xl mx-auto px-4 py-8 space-y-12">
@@ -149,7 +147,7 @@ const allYears = Array.from(allYearsSet)
             {/* Bloc Agence uniquement si projets */}
             {agenceProjects.length > 0 && (
               <div>
-                <h3 class="text-xl font-semibold mb-4 text-accent">Agence Colorz</h3>
+                <h3 class="text-xl font-semibold mb-4 text-accent">Agence</h3>
                 <ul class="space-y-3">
                   {agenceProjects.map(({ name, tech, year }) => {
                     const techBadges = tech
@@ -163,7 +161,7 @@ const allYears = Array.from(allYearsSet)
                           {techBadges.map((t) => (
                             <span
                               key={t}
-                              class="px-2 py-0.5 text-xs font-mono uppercase rounded"
+                              class="px-2 py-0.5 text-[0.6em] font-mono uppercase rounded"
                               style={`${getTechColor(t)}`}
                             >
                               {t}
@@ -194,7 +192,7 @@ const allYears = Array.from(allYearsSet)
                           {techBadges.map((t) => (
                             <span
                               key={t}
-                              class="px-2 py-0.5 text-xs font-mono uppercase rounded"
+                              class="px-2 py-0.5 text-[0.6em] font-mono uppercase rounded"
                               style={`${getTechColor(t)}`}
                             >
                               {t}
