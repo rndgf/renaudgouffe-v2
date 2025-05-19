@@ -119,10 +119,18 @@ const allYears = Array.from(allYearsSet)
 ---
 
 <PageLayout meta={meta}>
-  <section class="max-w-3xl mx-auto px-4 text-center mb-12 mt-8">
-    <p class="text-lg bg-accent/20 p-6 mb-12 mx-autor rounded-lg">
-      Les sites listés dans la section <strong>Agence</strong> sont des projets réalisés
-      en équipe au sein de l'agence
+  <section
+    class="flex flex-col sm:flex-row items-center bg-accent/10 border border-accent/30 rounded-lg p-8 m-12 max-w-4xl mx-auto gap-4"
+  >
+    <img
+      src="/assets/icons/colorz.svg"
+      alt="Logo Colorz"
+      class="w-16 h-16 object-contain invert brightness-0"
+      loading="lazy"
+    />
+    <div class="text-accent/90 text-base max-w-xl">
+      Les références citées dans la section <strong>Agence</strong> sont des projets
+      réalisés en équipe au sein de l'agence
       <a
         href="https://www.colorz.fr"
         target="_blank"
@@ -130,8 +138,9 @@ const allYears = Array.from(allYearsSet)
         class="theme-accent underline hover:no-underline">Colorz</a
       >
       entre 2010 et {year}.
-    </p>
+    </div>
   </section>
+
   <section class="max-w-6xl mx-auto px-4 py-8 space-y-12">
     {
       allYears.map((annee) => {

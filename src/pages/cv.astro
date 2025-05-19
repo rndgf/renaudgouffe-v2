@@ -15,25 +15,28 @@ const timelineItems = [
         title: "Solution Architect Shopify",
         company: "Colorz",
         url: "http://www.colorz.fr/",
-        description: "",
+        svgIcon: "/assets/icons/colorz.svg",
       },
       {
         date: "2020 -> 2022",
         title: "Senior technical consultant",
         company: "Colorz",
         url: "http://www.colorz.fr/",
+        svgIcon: "/assets/icons/colorz.svg",
       },
       {
         date: "2015 → 2020",
         title: "Senior Lead Developer",
         company: "Colorz",
         url: "http://www.colorz.fr/",
+        svgIcon: "/assets/icons/colorz.svg",
       },
       {
         date: "2010 → 2014",
         title: "Lead Developer",
         company: "Colorz",
         url: "http://www.colorz.fr/",
+        svgIcon: "/assets/icons/colorz.svg",
       },
       {
         date: "2005 → 2010",
@@ -55,14 +58,17 @@ const timelineItems = [
       {
         date: "Depuis 2021",
         title: "Freelance Shopify",
+        icon: "fab fa-shopify",
       },
       {
         date: "Depuis 2009",
         title: "Freelance Magento",
+        icon: "fab fa-magento",
       },
       {
         date: "Depuis 2005",
         title: "Freelance en développement web",
+        icon: "fas fa-code",
       },
     ],
   },
@@ -72,14 +78,17 @@ const timelineItems = [
       {
         date: "2003 → 2005",
         title: `BTS "Conception et développement multimédia" (alternance)`,
+        icon: "fas fa-graduation-cap",
       },
       {
         date: "1998 → 2003",
         title: "Licence en Géographie",
+        icon: "fas fa-university",
       },
       {
         date: "1998",
         title: "Baccalauréat Littéraire",
+        icon: "fas fa-book",
       },
     ],
   },
@@ -88,9 +97,46 @@ const timelineItems = [
 
 <PageLayout meta={meta}>
   <section class="max-w-4xl mx-auto mt-10 px-4">
-    <section
-      class="bg-accent/20 border-l border-accent p-6 mb-12 mx-autor rounded-lg"
+    <!-- Header avec photo et titre -->
+    <div
+      class="flex flex-col sm:flex-row items-center sm:items-center gap-6 mb-10"
     >
+      <img
+        src="/me.jpg"
+        alt="Photo de profil"
+        class="w-32 h-32 rounded-full object-cover shadow-md border border-zinc-200 shrink-0"
+      />
+      <div class="text-center sm:text-left">
+        <h1 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+          Curriculum Vitae
+        </h1>
+        <p class="text-zinc-500 dark:text-zinc-400 mt-1">
+          Développeur e-commerce | Architecte technique | Shopify & Magento
+        </p>
+      </div>
+    </div>
+
+    <section
+      class="flex flex-col sm:flex-row items-center bg-accent/10 border border-accent/30 rounded-lg p-4 mb-12 max-w-4xl mx-auto gap-4"
+    >
+      <img
+        src="/assets/icons/colorz.svg"
+        alt="Logo Colorz"
+        class="w-16 h-16 object-contain invert brightness-0"
+        loading="lazy"
+      />
+      <div class="text-accent/90 font-semibold max-w-xl">
+        Actuellement en poste salarié chez <a
+          href="http://www.colorz.fr"
+          target="_blank"
+          rel="nofollow"
+          class="underline hover:text-accent/70">Colorz</a
+        > en tant que Solution Architect Shopify et Lead Developer.
+      </div>
+    </section>
+
+    <!-- Résumé TL;DR -->
+    <section class="bg-accent/20 border-l border-accent p-6 mb-12 rounded-lg">
       <h2 class="font-bold text-2xl mb-4 text-accent">tldr;</h2>
       <ul class="list-disc list-inside space-y-2 text-sm leading-relaxed">
         <li>
@@ -115,6 +161,7 @@ const timelineItems = [
       </ul>
     </section>
 
+    <!-- Timeline -->
     <div
       class="relative border-l-2 border-zinc-300 dark:border-zinc-600 pl-8 rounded-lg"
     >
@@ -126,13 +173,26 @@ const timelineItems = [
             </h2>
             <div class="space-y-8">
               {events.map(
-                ({ date, title, company, url, description, isLink }) => (
+                ({
+                  date,
+                  title,
+                  company,
+                  url,
+                  description,
+                  icon,
+                  svgIcon,
+                  isLink,
+                }) => (
                   <div class="relative">
                     <span class="absolute -left-5 top-1.5 w-2 h-2 bg-accent rounded-full" />
-                    <time class="block text-sm text-zinc-500 dark:text-zinc-400 mb-1">
-                      {date}
-                    </time>
-                    <h3 class="font-semibold text-zinc-900 dark:text-zinc-100">
+                    <time class="block text-sm text-zinc-400 mb-1">{date}</time>
+                    <h3 class="font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                      {icon && (
+                        <i
+                          class={`${icon} text-accent text-sm`}
+                          aria-hidden="true"
+                        />
+                      )}
                       {isLink ? (
                         <a href={url} class="text-accent hover:underline">
                           {title}
@@ -141,8 +201,8 @@ const timelineItems = [
                         title
                       )}
                     </h3>
-                    {company && (
-                      <p class="text-sm text-zinc-600 dark:text-zinc-400">
+                    {company && !svgIcon && (
+                      <p class="text-xs text-accent mt-1 font-semibold">
                         <a
                           href={url}
                           target="_blank"
@@ -150,6 +210,23 @@ const timelineItems = [
                           class="hover:underline"
                         >
                           {company}
+                        </a>
+                      </p>
+                    )}
+                    {company && svgIcon && (
+                      <p class="text-xs text-accent mt-1 font-semibold">
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="nofollow"
+                          class="hover:underline"
+                        >
+                          <img
+                            src={svgIcon}
+                            alt=""
+                            class="w-10 h-6 inline-block align-middle invert brightness-06"
+                            loading="lazy"
+                          />
                         </a>
                       </p>
                     )}
