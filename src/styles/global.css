@@ -11,11 +11,8 @@
     color-scheme: dark;
     --theme-bg: #1a1c1e;
     --theme-text: oklch(92.9% 0.013 255.508);
-    --theme-link: #6fb7c5;
+    --theme-link: #0B0014;
     --theme-accent: oklch(64.5% 0.246 16.439);
-    --theme-accent-2: #bdbdbd;
-    --theme-quote: #ffa07a;
-    --theme-menu-bg: rgba(26, 28, 30, 0.9);
   }
 
   @theme {
@@ -24,11 +21,8 @@
     --font-geist: 'Geist Mono', monospace;
     --color-shopify: #5E8E3E;
     --color-magento: #EB6006;
-    --color-bgColor: var(--theme-bg);
-    --color-textColor: var(--theme-text);
     --color-link: var(--theme-link);
     --color-accent: var(--theme-accent);
-    --color-accent2: var(--theme-accent-2);
     --color-darkBgLight: #242627;
   }
 

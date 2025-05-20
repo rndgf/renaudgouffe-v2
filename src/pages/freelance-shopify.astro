@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import Contact from "@/components/Contact.astro";
 
 const meta = {
   title: "Consultant freelance Shopify – Développeur expert e-commerce",
@@ -56,7 +57,7 @@ const meta = {
         },
       ].map(({ category, title, text, icon }) => (
         <div
-          class="group relative flex flex-col gap-4 p-6 rounded border bg-darkBgLight/50 border-zinc-700 hover:border-accent hover:shadow-lg transition duration-200"
+          class="group relative flex flex-col gap-4 p-6 rounded border bg-darkBgLight/30 border-zinc-700"
           tabindex="0"
           role="group"
           aria-label={title}
@@ -75,21 +76,5 @@ const meta = {
     }
   </section>
 
-  {/* Call to Action */}
-  <section class="mt-24 text-center max-w-xl mx-auto px-4 font-sans">
-    <h2 class="text-3xl font-extrabold mb-6">
-      Discutons de votre projet Shopify
-    </h2>
-    <p class="text-textColor text-lg mb-10">
-      Vous souhaitez un accompagnement technique expert pour votre boutique ?
-      Contactez-moi pour parler de vos besoins.
-    </p>
-    <a
-      href="mailto:renaud.gouffe@gmail.com"
-      class="inline-block bg-accent/90 text-white font-semibold px-16 py-5 rounded text-xl transition hover:bg-rose-700/90 hover:scale-105"
-      aria-label="Contacter Renaud Gouffé par email"
-    >
-      Me contacter
-    </a>
-  </section>
+  <Contact />
 </PageLayout>

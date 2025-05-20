@@ -1,14 +1,15 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 
+const year = new Date().getFullYear();
+
 const meta = {
   title: "Références",
   description:
-    "Liste des projets réalisés en équipe au sein de l'agence Colorz entre 2010 et 2024.",
-  robots: "noindex",
+    "Liste des projets réalisés en freelance et équipe au sein de l'agence Colorz entre 2010 et " +
+    year,
+  robots: "noindex, nofollow",
 };
-
-const year = new Date().getFullYear();
 
 const agences = [
   { name: "Memoritz", tech: "Shopify / Mirakl", year: "2025" },

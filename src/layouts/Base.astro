@@ -10,7 +10,7 @@ interface Props {
 }
 
 const {
-  meta: { title, description = siteConfig.description },
+  meta: { title, robots, description = siteConfig.description },
 } = Astro.props;
 ---
 
@@ -19,7 +19,7 @@ const {
   class="dark font-merriweather bg-radial-[at_25%_25%] from-zinc-900 from-40% to-rose-900"
 >
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} robots={robots} />
   </head>
   <body>
     <Header />

@@ -4,6 +4,7 @@ import PageLayout from "@/layouts/Base.astro";
 const meta = {
   title: "Curriculum Vitae",
   description: "Retrouvez ici mon CV en ligne.",
+  robots: "noindex, nofollow",
 };
 
 const timelineItems = [
@@ -11,15 +12,9 @@ const timelineItems = [
     category: "Expériences professionnelles",
     events: [
       {
-        date: "Depuis 2022",
-        title: "Solution Architect Shopify",
-        company: "Colorz",
-        url: "http://www.colorz.fr/",
-        svgIcon: "/assets/icons/colorz.svg",
-      },
-      {
-        date: "2020 -> 2022",
-        title: "Senior technical consultant",
+        date: "Depuis 2020",
+        title: `Solution Architect Shopify
+Senior Lead Developer`,
         company: "Colorz",
         url: "http://www.colorz.fr/",
         svgIcon: "/assets/icons/colorz.svg",
@@ -102,9 +97,9 @@ const timelineItems = [
       class="flex flex-col sm:flex-row items-center sm:items-center gap-6 mb-10"
     >
       <img
-        src="/me.jpg"
+        src="/me.png"
         alt="Photo de profil"
-        class="w-32 h-32 rounded-full object-cover shadow-md border border-zinc-200 shrink-0"
+        class="w-32 h-32 rounded-full object-cover border border-zinc-200 shrink-0 bg-radial-[at_25%_25%] from-zinc-600 to-zinc-900 to-75%"
       />
       <div class="text-center sm:text-left">
         <h1 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
@@ -137,28 +132,31 @@ const timelineItems = [
 
     <!-- Résumé TL;DR -->
     <section class="bg-accent/20 border-l border-accent p-6 mb-12 rounded-lg">
-      <h2 class="font-bold text-2xl mb-4 text-accent">tldr;</h2>
-      <ul class="list-disc list-inside space-y-2 text-sm leading-relaxed">
-        <li>
-          Développeur PHP passionné depuis 2003, avec un intérêt constant pour
-          le web et l’e-commerce depuis 1999.
-        </li>
-        <li>
-          Lead Developer Magento chez <a
-            href="http://www.colorz.fr"
-            target="_blank"
-            rel="nofollow"
-            class="text-accent underline">Colorz</a
-          > depuis 2010, expert confirmé de cette plateforme.
-        </li>
-        <li>
-          Depuis 2019, chef de projet technique e-commerce, accompagnant des
-          clients sur leurs enjeux fonctionnels et techniques.
-        </li>
-        <li>
-          Depuis 2022, Solution Architect et Lead Developer Shopify chez Colorz.
-        </li>
-      </ul>
+      <div class="space-y-4 text-base leading-relaxed">
+        <p>
+          Passionné par le web depuis 1999, j’ai fait du développement PHP et de
+          l’e-commerce mon métier depuis 2003.
+        </p>
+        <p>
+          Chez <span class="font-semibold underline">Colorz</span> depuis 2010, j’ai
+          d’abord occupé le rôle de
+          <span class="font-medium">Lead Developer Magento</span>, en pilotant
+          des projets e-commerce complexes pendant près de 10 ans.
+        </p>
+        <p>
+          Depuis 2019, j’interviens également en tant que <span
+            class="font-medium">consultant technique e-commerce</span
+          >. J’accompagne les clients de l'agence sur des sujets comme le
+          replatforming, l’architecture technique, le développement middleware
+          ou encore l’intégration d’ERP.
+        </p>
+        <p>
+          Depuis 2022, je suis <span class="font-medium"
+            >Solution Architect et Lead Developer Shopify</span
+          >, spécialisé dans les problématiques avancées liées au développement
+          sur Shopify.
+        </p>
+      </div>
     </section>
 
     <!-- Timeline -->
@@ -186,19 +184,31 @@ const timelineItems = [
                   <div class="relative">
                     <span class="absolute -left-5 top-1.5 w-2 h-2 bg-accent rounded-full" />
                     <time class="block text-sm text-zinc-400 mb-1">{date}</time>
-                    <h3 class="font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <h3 class=" text-zinc-900 dark:text-zinc-100">
                       {icon && (
                         <i
-                          class={`${icon} text-accent text-sm`}
+                          class={`${icon} text-accent text-sm mr-2`}
                           aria-hidden="true"
                         />
                       )}
                       {isLink ? (
-                        <a href={url} class="text-accent hover:underline">
-                          {title}
-                        </a>
+                        <a
+                          href={url}
+                          class="text-accent hover:underline"
+                          set:html={title}
+                        />
                       ) : (
-                        title
+                        <>
+                          {title.includes("\n") ? (
+                            <ul class="my-2">
+                              {title.split("\n").map((line) => (
+                                <li>{line.trim()}</li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <span set:html={title} />
+                          )}
+                        </>
                       )}
                     </h3>
                     {company && !svgIcon && (

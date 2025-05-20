@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import Contact from "@/components/Contact.astro";
 ---
 
 <PageLayout
@@ -9,8 +10,6 @@ import PageLayout from "@/layouts/Base.astro";
   <section
     class="mt-8 px-4 text-center font-sans flex flex-col gap-6 max-w-screen-md mx-auto"
   >
-    <i class="fab fa-shopify text-7xl text-shopify mb-2"></i>
-
     <h1 class="text-4xl sm:text-5xl font-extrabold text-accent">
       Consultant Shopify<br />Architecte e-commerce<br />Développeur senior
     </h1>
@@ -101,22 +100,5 @@ import PageLayout from "@/layouts/Base.astro";
     </p>
   </section>
 
-  <!-- Call to Action -->
-  <section class="mt-24 text-center max-w-screen-sm mx-auto px-4 font-sans">
-    <h2 class="text-3xl font-extrabold mb-6">
-      <i class="fab fa-shopify text-3xl mb-2 mr-2"></i>
-      Discutons de votre projet Shopify
-    </h2>
-    <p class="text-textColor text-lg mb-10">
-      Vous êtes un e-commerçant, une agence ou un porteur de projet Shopify ?
-      Parlons de vos besoins et de vos enjeux techniques.
-    </p>
-    <a
-      href="mailto:renaud.gouffe@gmail.com"
-      class="inline-block bg-accent/90 text-white font-semibold px-16 py-5 rounded text-xl transition hover:bg-rose-700/90 hover:scale-105"
-      aria-label="Contacter Renaud Gouffé par email"
-    >
-      Me contacter
-    </a>
-  </section>
+  <Contact />
 </PageLayout>

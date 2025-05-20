@@ -1,11 +1,8 @@
 ---
 import { siteConfig } from "@/site.config";
-import type { SiteMeta } from "@/types";
 import "@/styles/global.css";
 
-type Props = SiteMeta;
-
-const { title, description } = Astro.props;
+const { title, description, robots } = Astro.props;
 const titleSeparator = "•";
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
 ---
@@ -17,8 +14,10 @@ const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
 />
 
 <title>{siteTitle}</title>
+
 <meta name="title" content={siteTitle} />
 <meta name="description" content={description} />
+{robots && <meta name="robots" content={robots} />}
 
 <link rel="icon" href="/favicon-32x32.png" type="image/png" />
 <link href="/icons/apple-touch-icon.png" rel="apple-touch-icon" />
