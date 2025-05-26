@@ -1,6 +1,10 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import Contact from "@/components/Contact.astro";
+
+const currentYear = new Date().getFullYear();
+const yearOfStartingFreelancing = 2005;
+const yearsOfExperience = currentYear - yearOfStartingFreelancing;
 ---
 
 <PageLayout
@@ -78,10 +82,10 @@ import Contact from "@/components/Contact.astro";
 
   <!-- Citation / Confiance -->
   <section
-    class="mt-16 p-8 px-4 max-w-screen-md mx-auto rounded-lg font-serif italic text-lg text-center bg-darkBgLight/30"
+    class="mt-16 max-w-screen-md mx-auto rounded-lg font-serif italic text-xl text-center"
   >
     <p class="mb-4">
-      Mon expertise, forgée au sein de l’agence
+      Mon expertise, forgée en freelance et au sein de l’agence
       <a
         href="https://www.colorz.fr"
         target="_blank"
@@ -92,13 +96,11 @@ import Contact from "@/components/Contact.astro";
       </a>, repose sur une compréhension approfondie des enjeux techniques et
       métiers pour garantir la réussite de vos projets e-commerce.
     </p>
-    <p class="mb-4">
-      Fort de plus de 15 ans d’expérience, j’accompagne encore aujourd’hui de
-      nombreux clients chez Colorz en tant que <strong
-        >Solution Architect</strong
-      > et <strong>Lead Developer</strong>.
+    <p>
+      Fort de plus de {yearsOfExperience} ans d’expérience, j’accompagne aujourd’hui
+      de nombreux clients en tant que <strong>Solution Architect Shopify</strong
+      > et <strong>Senior Lead Developer</strong>.
     </p>
   </section>
-
   <Contact />
 </PageLayout>

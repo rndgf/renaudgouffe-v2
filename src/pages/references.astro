@@ -49,17 +49,16 @@ const freelance = [
   { name: "Ville de Gravigny", tech: "Sur-mesure", year: "2004" },
 ];
 
-// Mapping techno -> styles CSS
 const techColors = {
-  Shopify: "background-color: #5E8E3E; color: white;",
-  Mirakl: "background-color: #10243A; color: white;",
-  Magento: "background-color: #ff7200; color: white;",
-  Magento2: "background-color: #EB1000; color: white;",
-  Symfony: "background-color: black; color: white;",
-  WordPress: "background-color: #3858E9; color: white;",
-  "Sur-mesure": "background-color: gray; color: white;",
-  Marketplace: "background-color: purple; color: white;",
-  Cegid: "background-color: #0046FE; color: white;",
+  Shopify: "bg-[#5E8E3E] text-white",
+  Mirakl: "bg-[#10243A] text-white",
+  Magento: "bg-[#ff7200] text-white",
+  Magento2: "bg-[#EB1000] text-white",
+  Symfony: "bg-black text-white",
+  WordPress: "bg-[#3858E9] text-white",
+  "Sur-mesure": "bg-gray-600 text-white", // Ou bg-[#808080] si tu veux du custom
+  Marketplace: "bg-purple-700 text-white", // Ou bg-[#800080] pour du pur violet
+  Cegid: "bg-[#0046FE] text-white",
 };
 
 function getTechColor(tech) {
@@ -121,12 +120,12 @@ const allYears = Array.from(allYearsSet)
 
 <PageLayout meta={meta}>
   <section
-    class="flex flex-col sm:flex-row items-center bg-accent/10 border border-accent/30 rounded-lg p-8 m-12 max-w-4xl mx-auto gap-4"
+    class="flex flex-col sm:flex-row items-center bg-accent/10 border border-accent/30 rounded-lg p-8 m-12 max-w-4xl mx-auto gap-6"
   >
     <img
       src="/assets/icons/colorz.svg"
       alt="Logo Colorz"
-      class="w-16 h-16 object-contain invert brightness-0"
+      class="w-24 h-24 object-contain invert brightness-0"
       loading="lazy"
     />
     <div class="text-accent/90 text-base max-w-xl">
@@ -155,7 +154,7 @@ const allYears = Array.from(allYearsSet)
 
         return (
           <section key={annee}>
-            <h2 class="text-3xl text-zinc-300/40 font-mono font-bold mb-6 border-b border-zinc-300/40 pb-2">
+            <h2 class="text-3xl text-zinc-300/30 font-bold mb-6 border-b border-zinc-300/40 pb-2">
               {annee}
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -179,8 +178,7 @@ const allYears = Array.from(allYearsSet)
                             {techBadges.map((t) => (
                               <span
                                 key={t}
-                                class="px-2 py-0.5 text-[0.6em] font-mono uppercase rounded"
-                                style={`${getTechColor(t)}`}
+                                class={`${getTechColor(t)} px-2 py-0.5 text-[0.6em] font-mono uppercase rounded`}
                               >
                                 {t}
                               </span>
@@ -215,8 +213,7 @@ const allYears = Array.from(allYearsSet)
                             {techBadges.map((t) => (
                               <span
                                 key={t}
-                                class="px-2 py-0.5 text-[0.6em] font-mono uppercase rounded"
-                                style={`${getTechColor(t)}`}
+                                class={`${getTechColor(t)} px-2 py-0.5 text-[0.6em] font-mono uppercase rounded`}
                               >
                                 {t}
                               </span>
