@@ -7,7 +7,7 @@ const meta = {
   robots: "noindex, nofollow",
 };
 
-const timelineItems = [
+const timelineItems: Array<{ category: string; events: any[] }> = [
   {
     category: "Expériences professionnelles",
     events: [
@@ -111,7 +111,11 @@ Senior Lead Developer`,
         <h1 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
           Curriculum Vitae
         </h1>
-        <p class="text-zinc-400 mt-1">Développeur web / Architecte technique</p>
+        <p class="text-zinc-400 mt-1">
+          Développeur web / Architecte technique<br />
+          <i class="inline-block align-middle text-accent text-xs mr-2"
+          ></i>Rouen / Normandie
+        </p>
       </div>
     </div>
 
@@ -164,7 +168,7 @@ Senior Lead Developer`,
         </p>
         <p>
           Depuis 2022, je suis <span class="font-medium"
-            >Solution Architect et Lead Developer Shopify</span
+            >Solution Architect</span
           >, spécialisé dans les problématiques avancées liées au développement
           sur Shopify.
         </p>
@@ -238,7 +242,7 @@ Senior Lead Developer`,
                         <>
                           {title.includes("\n") ? (
                             <ul class="my-2">
-                              {title.split("\n").map((line) => (
+                              {title.split("\n").map((line: string) => (
                                 <li>{line.trim()}</li>
                               ))}
                             </ul>
@@ -276,7 +280,7 @@ Senior Lead Developer`,
                       </p>
                     )}
                   </div>
-                )
+                ),
               )}
             </div>
           </>
