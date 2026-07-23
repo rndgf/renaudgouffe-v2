@@ -92,7 +92,7 @@ export const cvSections: CvSection[] = [
       {
         date: "1998",
         title: "Baccalauréat Littéraire",
-        company: "Lycée du Canada",
+        company: "Lycée du Canada (Évreux)",
       },
     ],
   },
