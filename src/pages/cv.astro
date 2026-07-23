@@ -14,14 +14,17 @@ const meta = {
     <!-- Entête -->
     <div class="relative flex flex-col items-center gap-6 text-center">
       <div class="glow -top-10 left-1/2 h-48 w-80 -translate-x-1/2 bg-accent-2"></div>
-      <img
-        src="/me.png"
-        alt="Photo de profil de Renaud Gouffé"
-        width="128"
-        height="128"
-        class="h-32 w-32 rounded-full border-2 border-line object-cover"
-        style="background: radial-gradient(circle at 25% 25%, #3a3a4a, #12121a 75%)"
-      />
+      <span
+        class="rounded-full bg-gradient-to-br from-accent via-accent-3 to-accent-2 p-[3px]"
+      >
+        <img
+          src="/me-avatar.webp"
+          alt="Portrait de Renaud Gouffé"
+          width="160"
+          height="160"
+          class="h-40 w-40 rounded-full border-4 border-bg object-cover"
+        />
+      </span>
       <div>
         <h1 class="font-display text-4xl font-bold">
           <span class="gradient-text">Curriculum Vitae</span>
