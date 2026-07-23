@@ -24,40 +24,40 @@ export interface Reference {
  * Ajouter une référence = ajouter une entrée ici, la timeline se met à jour.
  */
 export const references: Reference[] = [
-  // TODO(taglines) : rédigées d'après le métier public de la marque + les
-  // badges — à valider/corriger, surtout celles marquées « à vérifier ».
-  { name: "Memoritz", year: 2025, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Marketplace Mirakl sur Shopify" }, // à vérifier
-  { name: "Vtwonen", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Déco & maison — marketplace Mirakl" },
-  { name: "Mathon", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Ustensiles de cuisine — marketplace Mirakl" },
-  { name: "Fleux", year: 2023, type: "Agence", techs: ["Shopify", "Cegid"], tagline: "Concept store déco — intégration Cegid" },
-  { name: "Sabon", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "Cosmétiques — boutique Shopify" },
-  { name: "Le Club Leader Price", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "Courses discount en ligne" },
-  { name: "Chaumet", year: 2021, type: "Agence", techs: ["Magento 2"], tagline: "Haute joaillerie place Vendôme" },
-  { name: "Luzaka", year: 2021, type: "Freelance", techs: ["Magento 2"], tagline: "Bijouterie en ligne — refonte Magento 2" }, // à vérifier
-  { name: "émoi-émoi", year: 2020, type: "Agence", techs: ["Shopify"], tagline: "Mode famille — migration vers Shopify" },
-  { name: "Redline", year: 2019, type: "Agence", techs: ["Magento 2"], tagline: "Bijoux fins — Magento 2" },
-  { name: "Natalys", year: 2017, type: "Agence", techs: ["Magento", "Mirakl"], tagline: "Puériculture — marketplace Mirakl" },
-  { name: "Luzaka", year: 2017, type: "Freelance", techs: ["Magento"], tagline: "Bijouterie en ligne — Magento" }, // à vérifier
-  { name: "Merci Paris", year: 2016, type: "Agence", techs: ["Magento"], tagline: "Concept store parisien" },
-  { name: "Make My Lemonade", year: 2016, type: "Agence", techs: ["Magento"], tagline: "Mode & DIY" },
-  { name: "Patricia Blanchet", year: 2016, type: "Agence", techs: ["Magento"], tagline: "Chaussures de créatrice" },
-  { name: "Rudy's", year: 2015, type: "Agence", techs: ["Magento"], tagline: "Boutique Magento" }, // à vérifier
-  { name: "The Beautyst", year: 2015, type: "Agence", techs: ["Magento", "Mirakl"], tagline: "Beauté — marketplace Mirakl" },
-  { name: "Hartford", year: 2014, type: "Agence", techs: ["Magento"], tagline: "Prêt-à-porter" },
-  { name: "Harmony Paris", year: 2014, type: "Freelance", techs: ["Magento"], tagline: "Mode féminine" },
-  { name: "Christofle", year: 2014, type: "Freelance", techs: ["Magento"], tagline: "Orfèvrerie & arts de la table" },
+  // Taglines = la marque ou le site en quelques mots (pas la mission).
+  // Celles marquées « à vérifier » n'ont pas pu être confirmées.
+  { name: "Memoritz", year: 2025, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Photographie scolaire en ligne" },
+  { name: "Vtwonen", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Déco & maison, marque néerlandaise" },
+  { name: "Mathon", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Ustensiles et matériel de cuisine" },
+  { name: "Fleux", year: 2023, type: "Agence", techs: ["Shopify", "Cegid"], tagline: "Concept store déco du Marais" },
+  { name: "Sabon", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "Savons et cosmétiques" },
+  { name: "Le Club Leader Price", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "L'enseigne discount en ligne" },
+  { name: "Chaumet", year: 2021, type: "Agence", techs: ["Magento 2"], tagline: "Haute joaillerie, place Vendôme" },
+  { name: "Luzaka", year: 2021, type: "Freelance", techs: ["Magento 2"], tagline: "Bijoux fantaisie et montres" },
+  { name: "émoi-émoi", year: 2020, type: "Agence", techs: ["Shopify"], tagline: "Mode pour mamans et enfants" },
+  { name: "Redline", year: 2019, type: "Agence", techs: ["Magento 2"], tagline: "Bijoux diamants sur fil" },
+  { name: "Natalys", year: 2017, type: "Agence", techs: ["Magento", "Mirakl"], tagline: "Puériculture et mode enfant" },
+  { name: "Luzaka", year: 2017, type: "Freelance", techs: ["Magento"], tagline: "Bijoux fantaisie et montres" },
+  { name: "Merci Paris", year: 2016, type: "Agence", techs: ["Magento"], tagline: "Concept store parisien solidaire" },
+  { name: "Make My Lemonade", year: 2016, type: "Agence", techs: ["Magento"], tagline: "Mode et patrons DIY" },
+  { name: "Patricia Blanchet", year: 2016, type: "Agence", techs: ["Magento"], tagline: "Chaussures de créatrice parisienne" },
+  { name: "Rudy's", year: 2015, type: "Agence", techs: ["Magento"] }, // tagline à compléter (marque non identifiée)
+  { name: "The Beautyst", year: 2015, type: "Agence", techs: ["Magento", "Mirakl"], tagline: "Marketplace beauté" },
+  { name: "Hartford", year: 2014, type: "Agence", techs: ["Magento"], tagline: "Prêt-à-porter homme et femme" },
+  { name: "Harmony Paris", year: 2014, type: "Freelance", techs: ["Magento"], tagline: "Mode féminine parisienne" },
+  { name: "Christofle", year: 2014, type: "Freelance", techs: ["Magento"], tagline: "Orfèvrerie et arts de la table" },
   { name: "Colette", year: 2012, type: "Agence", techs: ["Magento"], tagline: "Concept store légendaire, rue Saint-Honoré" },
-  { name: "Gemmyo", year: 2012, type: "Agence", techs: ["Magento"], tagline: "Joaillerie digitale" },
-  { name: "Poladdict", year: 2012, type: "Freelance", techs: ["Magento"], tagline: "Boutique Magento" }, // à vérifier
-  { name: "Willemy Charpente", year: 2012, type: "Freelance", techs: ["WordPress"], tagline: "Site vitrine d'artisan charpentier" },
-  { name: "émoi-émoi", year: 2011, type: "Agence", techs: ["Magento"], tagline: "Mode famille — première boutique Magento" },
-  { name: "Jimmy Fairly", year: 2011, type: "Agence", techs: ["Magento"], tagline: "Lunetterie — lancement e-commerce" },
-  { name: "Green Republic", year: 2010, type: "Agence", techs: ["Magento", "Marketplace"], tagline: "Marketplace éco-responsable" }, // à vérifier
-  { name: "Pierre Sancinéna", year: 2009, type: "Freelance", techs: ["WordPress"], tagline: "Site vitrine WordPress" }, // à vérifier
-  { name: "Inédit Joaillier", year: 2008, type: "Freelance", techs: ["Sur-mesure"], tagline: "Joaillier — développement sur-mesure" },
-  { name: "La conspiration", year: 2008, type: "Freelance", techs: ["Sur-mesure"], tagline: "Développement sur-mesure" }, // à vérifier
-  { name: "Skinizi", year: 2007, type: "Freelance", techs: ["Magento"], tagline: "Skins & personnalisation d'appareils" }, // à vérifier
-  { name: "Ville de Gravigny", year: 2004, type: "Freelance", techs: ["Sur-mesure"], tagline: "Plateforme web d'une commune de l'Eure" },
+  { name: "Gemmyo", year: 2012, type: "Agence", techs: ["Magento"], tagline: "Joaillerie française nouvelle génération" },
+  { name: "Poladdict", year: 2012, type: "Freelance", techs: ["Magento"], tagline: "Tirages photo façon polaroid" },
+  { name: "Willemy Charpente", year: 2012, type: "Freelance", techs: ["WordPress"], tagline: "Artisan charpentier" },
+  { name: "émoi-émoi", year: 2011, type: "Agence", techs: ["Magento"], tagline: "Mode pour mamans et enfants" },
+  { name: "Jimmy Fairly", year: 2011, type: "Agence", techs: ["Magento"], tagline: "Lunetterie parisienne" },
+  { name: "Green Republic", year: 2010, type: "Agence", techs: ["Magento", "Marketplace"], tagline: "Marketplace de produits bio et équitables" },
+  { name: "Pierre Sancinéna", year: 2009, type: "Freelance", techs: ["WordPress"], tagline: "Pilote automobile normand" }, // à vérifier
+  { name: "Inédit Joaillier", year: 2008, type: "Freelance", techs: ["Sur-mesure"], tagline: "Joaillier indépendant" }, // à vérifier
+  { name: "La conspiration", year: 2008, type: "Freelance", techs: ["Sur-mesure"] }, // tagline à compléter (marque non identifiée)
+  { name: "Skinizi", year: 2007, type: "Freelance", techs: ["Magento"], tagline: "Skins et stickers pour ordinateurs et mobiles" },
+  { name: "Ville de Gravigny", year: 2004, type: "Freelance", techs: ["Sur-mesure"], tagline: "Commune de l'Eure" },
 ];
 
 /** Couleur CSS (token du thème) associée à chaque plateforme. */
