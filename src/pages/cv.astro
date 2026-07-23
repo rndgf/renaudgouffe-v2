@@ -118,36 +118,54 @@ const meta = {
                     class="absolute top-2 -left-[37.5px] block h-2 w-2 rounded-full bg-accent"
                     aria-hidden="true"
                   />
-                  <div class="flex items-center gap-3">
-                    <time class="font-mono text-xs tracking-wide text-accent-2">
-                      {date}
-                    </time>
-                    {logo && (
-                      <img
-                        src={logo}
-                        alt={company ? `Logo ${company}` : ""}
-                        class:list={["w-auto opacity-80", logoClass]}
-                        loading="lazy"
-                      />
-                    )}
-                  </div>
-                  <h3 class="mt-1 font-display text-lg font-semibold text-text">
-                    {url ? (
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="nofollow noopener"
-                        class="transition-colors hover:text-accent-2"
-                      >
-                        {title}
-                      </a>
+                  <time class="font-mono text-xs tracking-wide text-accent-2">
+                    {date}
+                  </time>
+                  {/* Logo OU texte, jamais les deux (pas de doublon) */}
+                  <h3 class="mt-2 font-display text-lg font-semibold text-text">
+                    {logo ? (
+                      url ? (
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="nofollow noopener"
+                          class="inline-block transition-opacity hover:opacity-80"
+                        >
+                          <img
+                            src={logo}
+                            alt={title}
+                            class:list={["w-auto opacity-90", logoClass]}
+                            loading="lazy"
+                          />
+                        </a>
+                      ) : (
+                        <img
+                          src={logo}
+                          alt={title}
+                          class:list={["w-auto opacity-90", logoClass]}
+                          loading="lazy"
+                        />
+                      )
                     ) : (
-                      title
-                    )}
-                    {company && company !== title && (
-                      <span class="ml-2 text-sm font-normal text-muted">
-                        — {company}
-                      </span>
+                      <>
+                        {url ? (
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="nofollow noopener"
+                            class="transition-colors hover:text-accent-2"
+                          >
+                            {title}
+                          </a>
+                        ) : (
+                          title
+                        )}
+                        {company && company !== title && (
+                          <span class="ml-2 text-sm font-normal text-muted">
+                            — {company}
+                          </span>
+                        )}
+                      </>
                     )}
                   </h3>
                   {roles && (

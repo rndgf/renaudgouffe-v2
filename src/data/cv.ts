@@ -28,7 +28,7 @@ export const cvSections: CvSection[] = [
         company: "Colorz",
         url: "https://www.colorz.fr/",
         logo: "/assets/icons/colorz.svg",
-        logoClass: "h-5 brightness-0 invert",
+        logoClass: "h-6 brightness-0 invert",
       },
       {
         date: "2015 → 2020",
@@ -37,7 +37,7 @@ export const cvSections: CvSection[] = [
         company: "Colorz",
         url: "https://www.colorz.fr/",
         logo: "/assets/icons/colorz.svg",
-        logoClass: "h-5 brightness-0 invert",
+        logoClass: "h-6 brightness-0 invert",
       },
       {
         date: "2010 → 2014",
@@ -46,7 +46,7 @@ export const cvSections: CvSection[] = [
         company: "Colorz",
         url: "https://www.colorz.fr/",
         logo: "/assets/icons/colorz.svg",
-        logoClass: "h-5 brightness-0 invert",
+        logoClass: "h-6 brightness-0 invert",
       },
       {
         date: "2005 → 2010",
@@ -55,7 +55,7 @@ export const cvSections: CvSection[] = [
         company: "FTEL",
         url: "https://www.ftel.fr/",
         logo: "/assets/icons/ftel.svg",
-        logoClass: "h-6",
+        logoClass: "h-7",
       },
       {
         date: "2003 → 2005",
@@ -64,7 +64,7 @@ export const cvSections: CvSection[] = [
         company: "FTEL",
         url: "https://www.ftel.fr/",
         logo: "/assets/icons/ftel.svg",
-        logoClass: "h-6",
+        logoClass: "h-7",
       },
     ],
   },
@@ -75,7 +75,7 @@ export const cvSections: CvSection[] = [
         date: "Depuis 2021",
         title: "Freelance Shopify",
         logo: "/assets/icons/shopify.svg",
-        logoClass: "h-6",
+        logoClass: "h-7",
       },
       { date: "Depuis 2009", title: "Freelance Magento" },
       { date: "Depuis 2005", title: "Freelance en développement web" },
