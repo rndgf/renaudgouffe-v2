@@ -66,11 +66,6 @@ const chapters = [
   };
 });
 
-const typeStyles: Record<string, string> = {
-  Agence: "border-accent-2/50 text-accent-2",
-  Freelance: "border-accent-3/50 text-accent-3",
-};
-
 // Rôles tenus sur le projet, affichés en toutes lettres en pied de carte.
 const roleLabels: Record<string, { label: string; color: string }> = {
   architecte: { label: "Architecture", color: "var(--color-accent)" },
@@ -104,7 +99,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
 
     <!-- Chapitres -->
     {
-      chapters.map(({ title, accent, intro, projects, count, from, to, iconPath, iconViewBox }) => (
+      chapters.map(({ key, title, accent, intro, projects, count, from, to, iconPath, iconViewBox }) => (
         <section class="mt-20 first-of-type:mt-16">
           <div class="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
             <!-- Intro de chapitre (sticky sur desktop) -->
@@ -145,68 +140,62 @@ const roleLabels: Record<string, { label: string; color: string }> = {
 
             <!-- Projets du chapitre -->
             <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {projects.map(({ name, year: y, type, techs, tagline, roles }) => (
-                <li
-                  class="reveal group relative flex flex-col justify-between gap-4 overflow-hidden rounded-xl border border-line bg-surface p-5"
-                  style={`--ref-color: ${platformColor[techs[0] as Platform]}`}
-                >
-                  <div
-                    class="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    style="background: linear-gradient(90deg, transparent, var(--ref-color), transparent)"
-                    aria-hidden="true"
-                  />
-                  <div>
-                    <div class="flex items-start justify-between gap-3">
-                      <h3 class="font-display text-xl font-semibold leading-tight text-text">
-                        {name}
-                      </h3>
-                      <span class="font-mono text-xs text-muted">{y}</span>
-                    </div>
-                    {tagline && (
-                      <p class="mt-1.5 text-xs leading-snug text-muted">
-                        {tagline}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <div class="flex flex-wrap items-center gap-1.5">
-                      <span
-                        class:list={[
-                          "rounded-full border px-2 py-px font-mono text-[0.6rem] uppercase tracking-widest",
-                          typeStyles[type],
-                        ]}
-                      >
-                        {type}
-                      </span>
-                      {techs.map((t) => (
-                        <span
-                          class="rounded border px-2 py-px font-mono text-[0.65rem] uppercase tracking-wide"
-                          style={`color: ${platformColor[t as Platform]}; border-color: color-mix(in oklab, ${platformColor[t as Platform]} 40%, transparent); background: color-mix(in oklab, ${platformColor[t as Platform]} 10%, transparent)`}
-                        >
-                          {t}
+              {projects.map(({ name, year: y, type, techs, tagline, roles }) => {
+                // La plateforme du chapitre est implicite : on n'affiche que
+                // les technologies différenciantes (Mirakl, Cegid, Magento 2…).
+                const extraTechs = techs.filter(
+                  (t) =>
+                    !(key === "shopify" && t === "Shopify") &&
+                    !(key === "magento" && t === "Magento"),
+                );
+                return (
+                  <li
+                    class="reveal group relative flex flex-col justify-between gap-4 overflow-hidden rounded-xl border border-line bg-surface p-5"
+                    style={`--ref-color: ${platformColor[techs[0] as Platform]}`}
+                  >
+                    <div
+                      class="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                      style="background: linear-gradient(90deg, transparent, var(--ref-color), transparent)"
+                      aria-hidden="true"
+                    />
+                    <div>
+                      <div class="flex items-start justify-between gap-3">
+                        <h3 class="font-display text-xl font-semibold leading-tight text-text">
+                          {name}
+                        </h3>
+                        <span class="shrink-0 font-mono text-xs text-muted">
+                          {[...extraTechs, y].join(" · ")}
                         </span>
-                      ))}
+                      </div>
+                      {tagline && (
+                        <p class="mt-1.5 text-xs leading-snug text-muted">
+                          {tagline}
+                        </p>
+                      )}
                     </div>
-                    {roles?.length && (
-                      <p class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-line/60 pt-2.5 font-mono text-[0.65rem] text-muted">
-                        {roles.map((role) => {
-                          const { label, color } = roleLabels[role];
-                          return (
-                            <span class="flex items-center gap-1.5">
-                              <span
-                                class="h-1.5 w-1.5 rounded-full"
-                                style={`background: ${color}`}
-                                aria-hidden="true"
-                              />
-                              {label}
-                            </span>
-                          );
-                        })}
-                      </p>
-                    )}
-                  </div>
-                </li>
-              ))}
+                    <p class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t border-line/60 pt-2.5 font-mono text-[0.65rem] text-muted">
+                      <span class="uppercase tracking-widest">{type}</span>
+                      {roles?.length && (
+                        <span class="flex flex-wrap items-center gap-x-4 gap-y-1">
+                          {roles.map((role) => {
+                            const { label, color } = roleLabels[role];
+                            return (
+                              <span class="flex items-center gap-1.5">
+                                <span
+                                  class="h-1.5 w-1.5 rounded-full"
+                                  style={`background: ${color}`}
+                                  aria-hidden="true"
+                                />
+                                {label}
+                              </span>
+                            );
+                          })}
+                        </span>
+                      )}
+                    </p>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </section>
