@@ -28,6 +28,9 @@ const chapters = [
     accent: "var(--color-shopify)",
     intro:
       "Migrations, intégrations Mirakl / ERP et checkout sur-mesure — le cœur de mon activité de Solution Architect depuis 2019.",
+    // Picto Shopify (Simple Icons, viewBox 0 0 24 24)
+    iconPath:
+      "M15.337 23.979l7.216-1.561s-2.604-17.613-2.625-17.73c-.018-.116-.114-.192-.211-.192s-1.929-.136-1.929-.136-1.275-1.274-1.439-1.411c-.045-.037-.075-.057-.121-.074l-.914 21.104h.023zM11.71 11.305s-.81-.424-1.774-.424c-1.447 0-1.504.906-1.504 1.141 0 1.232 3.24 1.715 3.24 4.629 0 2.295-1.44 3.76-3.406 3.76-2.354 0-3.54-1.465-3.54-1.465l.646-2.086s1.245 1.066 2.28 1.066c.675 0 .975-.545.975-.932 0-1.619-2.654-1.694-2.654-4.359-.034-2.237 1.571-4.416 4.827-4.416 1.257 0 1.875.36 1.875.36l-.945 2.715-.02.011zM11.17.83c.136 0 .271.038.405.135-.984.465-2.064 1.639-2.508 4.005-.656.213-1.293.405-1.889.585C7.697 3.75 8.951.84 11.17.84V.83zm1.235 2.949v.135c-.754.232-1.583.484-2.394.736.466-1.784 1.336-2.643 2.095-2.968.192.485.299 1.144.299 2.097zm.54-2.235c.7.075 1.155.885 1.455 1.786-.36.113-.765.24-1.2.375v-.262c0-.779-.09-1.395-.255-1.906v.007zm2.813 1.598c-.03 0-.09.03-.114.03s-.435.12-1.14.345c-.705-2.055-1.965-3.045-3.375-3.045h-.12c-.405-.54-.915-.765-1.35-.765-3.415 0-5.055 4.275-5.564 6.44 0 .015-1.35.42-2.34.72-.435.135-.45.15-.51.555C1.29 7.68.075 17.94 0 18.51l10.784 2.024.9-20.78c-.045.008-.083.008-.126.008z",
   },
   {
     key: "magento",
@@ -35,6 +38,9 @@ const chapters = [
     accent: "var(--color-magento)",
     intro:
       "Près de 10 ans de plateformes Magento complexes, en agence comme en freelance. Le socle technique qui a forgé l'architecte.",
+    // Picto Magento (Simple Icons, viewBox 0 0 24 24)
+    iconPath:
+      "M12 24l-4.455-2.572v-12l2.97-1.715v12.001l1.485.902 1.485-.902V7.713l2.971 1.715v12L12 24zM22.391 6v12l-2.969 1.714V7.713L12 3.43 4.574 7.713v12.001L1.609 18V6L12 0l10.391 6z",
   },
   {
     key: "web",
@@ -42,6 +48,7 @@ const chapters = [
     accent: "var(--color-custom)",
     intro:
       "WordPress et développements sur-mesure : les projets freelance qui ont lancé le parcours.",
+    iconPath: undefined,
   },
 ].map((c) => {
   const projects = references
@@ -95,7 +102,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
 
     <!-- Chapitres -->
     {
-      chapters.map(({ title, accent, intro, projects, count, from, to }) => (
+      chapters.map(({ title, accent, intro, projects, count, from, to, iconPath }) => (
         <section class="mt-20 first-of-type:mt-16">
           <div class="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
             <!-- Intro de chapitre (sticky sur desktop) -->
@@ -106,7 +113,21 @@ const roleLabels: Record<string, { label: string; color: string }> = {
               >
                 {from} → {to}
               </p>
-              <h2 class="mt-3 font-display text-3xl font-bold text-text sm:text-4xl">
+              <h2
+                class="mt-3 flex items-center gap-3 font-display text-3xl font-bold text-text sm:text-4xl"
+              >
+                {iconPath && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    class="h-8 w-8 shrink-0 sm:h-9 sm:w-9"
+                    style={`color: ${accent}`}
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d={iconPath} />
+                  </svg>
+                )}
                 {title}
               </h2>
               <p class="mt-4 max-w-md text-sm leading-relaxed text-muted sm:text-base">
