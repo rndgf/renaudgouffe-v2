@@ -66,11 +66,10 @@ const chapters = [
   };
 });
 
-// Type de mission : initiale dans un rond, mot complet en tooltip + sr-only.
-const typeBadge: Record<string, { letter: string; color: string }> = {
-  Agence: { letter: "A", color: "var(--color-accent-2)" },
-  Freelance: { letter: "F", color: "var(--color-accent-3)" },
-};
+// Type de mission porté par la bordure de carte :
+// Agence = bordure neutre, Freelance = liseré dégradé magenta → violet.
+const freelanceBorder =
+  "border-transparent [background:linear-gradient(var(--color-surface),var(--color-surface))_padding-box,linear-gradient(135deg,var(--color-accent-3),var(--color-accent))_border-box]";
 
 // Rôles tenus sur le projet, affichés en toutes lettres en pied de carte.
 const roleLabels: Record<string, { label: string; color: string }> = {
@@ -99,7 +98,11 @@ const roleLabels: Record<string, { label: string; color: string }> = {
           rel="nofollow noopener"
           class="text-accent-2 underline decoration-accent-2/40 underline-offset-4 hover:decoration-accent-2"
         >Colorz</a>
-        entre 2010 et {year}.
+        entre 2010 et {year}. Les cartes au
+        <span
+          class="rounded-md px-1.5 py-0.5 text-text [background:linear-gradient(var(--color-bg),var(--color-bg))_padding-box,linear-gradient(135deg,var(--color-accent-3),var(--color-accent))_border-box] border border-transparent"
+        >liseré dégradé</span>
+        sont des missions freelance menées en direct.
       </p>
     </div>
 
@@ -148,7 +151,12 @@ const roleLabels: Record<string, { label: string; color: string }> = {
             <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {projects.map(({ name, year: y, type, techs, tagline, roles }) => (
                 <li
-                  class="reveal group relative flex flex-col justify-between gap-4 overflow-hidden rounded-xl border border-line bg-surface p-5"
+                  class:list={[
+                    "reveal group relative flex flex-col justify-between gap-4 overflow-hidden rounded-xl border p-5",
+                    type === "Freelance"
+                      ? freelanceBorder
+                      : "border-line bg-surface",
+                  ]}
                   style={`--ref-color: ${platformColor[techs[0] as Platform]}`}
                 >
                   <div
@@ -161,16 +169,9 @@ const roleLabels: Record<string, { label: string; color: string }> = {
                       <h3 class="font-display text-xl font-semibold leading-tight text-text">
                         {name}
                       </h3>
-                      <span class="flex shrink-0 items-center gap-2">
-                        <span class="font-mono text-xs text-muted">{y}</span>
-                        <span
-                          class="flex h-5 w-5 items-center justify-center rounded-full border font-mono text-[0.6rem] font-semibold"
-                          style={`color: ${typeBadge[type].color}; border-color: color-mix(in oklab, ${typeBadge[type].color} 55%, transparent); background: color-mix(in oklab, ${typeBadge[type].color} 12%, transparent)`}
-                          title={type}
-                        >
-                          {typeBadge[type].letter}
-                          <span class="sr-only">{type}</span>
-                        </span>
+                      <span class="shrink-0 font-mono text-xs text-muted">
+                        {y}
+                        <span class="sr-only">— {type}</span>
                       </span>
                     </div>
                     {tagline && (
