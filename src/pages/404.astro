@@ -2,31 +2,30 @@
 import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
-  title: "Page introuvable | Consultant Shopify freelance",
+  title: "Page introuvable",
   description:
     "La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil pour continuer votre navigation.",
+  robots: "noindex, nofollow",
 };
 ---
 
 <PageLayout meta={meta}>
   <section
-    class="mt-20 max-w-2xl mx-auto px-4 flex flex-col items-center gap-6 text-center font-sans"
+    class="relative mx-auto mt-16 flex max-w-2xl flex-col items-center gap-6 px-5 text-center"
   >
-    <i class="fas fa-search-minus text-7xl theme-accent mb-6"></i>
+    <div class="glow top-0 left-1/2 h-56 w-96 -translate-x-1/2 bg-accent"></div>
 
-    <h1 class="text-5xl font-extrabold theme-accent">404 – page introuvable</h1>
-
-    <p class="text-lg text-textColor leading-relaxed max-w-md">
+    <p class="gradient-text font-display text-8xl font-bold">404</p>
+    <h1 class="font-display text-3xl font-bold">Page introuvable</h1>
+    <p class="max-w-md text-muted">
       La page que vous cherchez semble inexistante.<br />
-      Revenez à l’accueil pour reprendre votre navigation.
+      Revenez à l'accueil pour reprendre votre navigation.
     </p>
-
     <a
       href="/"
-      aria-label="Retour à la page d'accueil"
-      class="inline-block bg-accent/90 text-white font-semibold px-16 py-5 rounded text-xl transition hover:bg-rose-700/90 hover:scale-105"
+      class="mt-4 rounded-lg bg-gradient-to-r from-accent via-accent-3 to-accent-2 px-8 py-4 font-display font-semibold text-bg transition-transform hover:scale-[1.03]"
     >
-      Retour à l’accueil
+      Retour à l'accueil
     </a>
   </section>
 </PageLayout>

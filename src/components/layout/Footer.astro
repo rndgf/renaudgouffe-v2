@@ -2,19 +2,25 @@
 const year = new Date().getFullYear();
 ---
 
-<footer
-  class="fmt-auto w-full pt-20 pb-6 text-center text-sm text-textColor/60"
->
+<footer class="mt-24 border-t border-line/70">
   <div
-    class="text-zinc-300/40 max-w-4xl mx-auto flex flex-col items-center justify-between gap-4 px-4 sm:flex-row"
+    class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-5 py-8 text-sm text-muted sm:flex-row"
   >
-    <div class="text-xs sm:text-sm">
-      &copy; {year} -
-      <span class="font-montserrat font-semibold tracking-wide">RNDGF</span>
+    <div>
+      &copy; {year} —
+      <span class="font-display font-semibold tracking-wide text-text">RNDGF</span>
     </div>
-    <div class="flex flex-wrap gap-4 text-sm">
-      <a href="/references" class="hover:underline">Références</a>
-      <a href="/cv" class="hover:underline">CV</a>
-    </div>
+    <nav class="flex flex-wrap gap-5" aria-label="Navigation pied de page">
+      <a href="/references" class="transition-colors hover:text-text">Références</a>
+      <a href="/cv" class="transition-colors hover:text-text">CV</a>
+      <a
+        href="https://www.colorz.fr"
+        target="_blank"
+        rel="nofollow noopener"
+        class="transition-colors hover:text-text"
+      >
+        Colorz ↗
+      </a>
+    </nav>
   </div>
 </footer>

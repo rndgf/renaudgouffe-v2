@@ -1,0 +1,87 @@
+export interface CvEvent {
+  date: string;
+  title: string;
+  roles?: string[];
+  company?: string;
+  url?: string;
+}
+
+export interface CvSection {
+  category: string;
+  events: CvEvent[];
+}
+
+export const cvSections: CvSection[] = [
+  {
+    category: "Expériences professionnelles",
+    events: [
+      {
+        date: "Depuis 2020",
+        title: "Colorz",
+        roles: [
+          "Solution Architect Shopify",
+          "Senior Technical Consultant",
+          "Senior Lead Developer",
+        ],
+        company: "Colorz",
+        url: "https://www.colorz.fr/",
+      },
+      {
+        date: "2015 → 2020",
+        title: "Colorz",
+        roles: ["Senior Technical Consultant", "Senior Lead Developer"],
+        company: "Colorz",
+        url: "https://www.colorz.fr/",
+      },
+      {
+        date: "2010 → 2014",
+        title: "Colorz",
+        roles: ["Lead Developer"],
+        company: "Colorz",
+        url: "https://www.colorz.fr/",
+      },
+      {
+        date: "2005 → 2010",
+        title: "FTEL",
+        roles: ["Développeur web"],
+        company: "FTEL",
+        url: "https://www.ftel.fr/",
+      },
+      {
+        date: "2003 → 2005",
+        title: "FTEL",
+        roles: ["Contrat de professionnalisation (BTS)"],
+        company: "FTEL",
+        url: "https://www.ftel.fr/",
+      },
+    ],
+  },
+  {
+    category: "Expériences freelance",
+    events: [
+      { date: "Depuis 2021", title: "Freelance Shopify" },
+      { date: "Depuis 2009", title: "Freelance Magento" },
+      { date: "Depuis 2005", title: "Freelance en développement web" },
+    ],
+  },
+  {
+    category: "Formation",
+    events: [
+      {
+        date: "2003 → 2005",
+        title: "BTS « Conception et développement multimédia » (alternance)",
+        company: "CESI Rouen",
+      },
+      {
+        date: "1998 → 2003",
+        title: "Licence en Géographie",
+        company: "Université de Rouen",
+      },
+      {
+        date: "1998",
+        title: "Baccalauréat Littéraire",
+        company: "Lycée du Canada",
+      },
+    ],
+  },
+];

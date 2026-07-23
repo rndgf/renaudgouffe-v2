@@ -1,289 +1,156 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import { cvSections } from "@/data/cv";
 
 const meta = {
   title: "Curriculum Vitae",
   description: "Retrouvez ici mon CV en ligne.",
   robots: "noindex, nofollow",
 };
-
-const timelineItems: Array<{ category: string; events: any[] }> = [
-  {
-    category: "Expériences professionnelles",
-    events: [
-      {
-        date: "Depuis 2020",
-        title: `Solution Architect Shopify
-Senior Technical Consultant
-Senior Lead Developer`,
-        company: "Colorz",
-        url: "http://www.colorz.fr/",
-        svgIcon: "/assets/icons/colorz.svg",
-      },
-      {
-        date: "2015 → 2020",
-        title: `Senior Technical Consultant
-Senior Lead Developer`,
-        company: "Colorz",
-        url: "http://www.colorz.fr/",
-        svgIcon: "/assets/icons/colorz.svg",
-      },
-      {
-        date: "2010 → 2014",
-        title: "Lead Developer",
-        company: "Colorz",
-        url: "http://www.colorz.fr/",
-        svgIcon: "/assets/icons/colorz.svg",
-      },
-      {
-        date: "2005 → 2010",
-        title: "Développeur web",
-        company: "FTEL",
-        url: "http://www.ftel.fr/",
-        svgIcon: "/assets/icons/ftel.svg",
-        svgClass: "w-8 inline-block align-middle brightness-06",
-      },
-      {
-        date: "2003 → 2005",
-        title: "Contrat de professionnalisation (BTS)",
-        company: "FTEL",
-        url: "http://www.ftel.fr/",
-        svgIcon: "/assets/icons/ftel.svg",
-        svgClass: "w-8 inline-block align-middle brightness-06",
-      },
-    ],
-  },
-  {
-    category: "Expériences freelance",
-    events: [
-      {
-        date: "Depuis 2021",
-        title: "Freelance Shopify",
-        icon: "fab fa-shopify",
-      },
-      {
-        date: "Depuis 2009",
-        title: "Freelance Magento",
-        icon: "fab fa-magento",
-      },
-      {
-        date: "Depuis 2005",
-        title: "Freelance en développement web",
-        icon: "fas fa-code",
-      },
-    ],
-  },
-  {
-    category: "Formation",
-    events: [
-      {
-        company: "CESI Rouen",
-        date: "2003 → 2005",
-        title: `BTS "Conception et développement multimédia" (alternance)`,
-        icon: "fas fa-graduation-cap",
-      },
-      {
-        company: "Université de Rouen",
-        date: "1998 → 2003",
-        title: "Licence en Géographie",
-        icon: "fas fa-university",
-      },
-      {
-        company: "Lycée du canada",
-        date: "1998",
-        title: "Baccalauréat Littéraire",
-        icon: "fas fa-book",
-      },
-    ],
-  },
-];
 ---
 
 <PageLayout meta={meta}>
-  <section class="max-w-4xl mx-auto mt-10 px-4">
-    <div class="flex flex-col items-center gap-6 mb-10">
+  <section class="mx-auto max-w-3xl px-5">
+    <!-- Entête -->
+    <div class="relative flex flex-col items-center gap-6 text-center">
+      <div class="glow -top-10 left-1/2 h-48 w-80 -translate-x-1/2 bg-accent-2"></div>
       <img
         src="/me.png"
-        alt="Photo de profil"
-        class="w-32 h-32 rounded-full object-cover shrink-0 bg-radial-[at_25%_25%] from-zinc-600 to-zinc-900 to-75%"
+        alt="Photo de profil de Renaud Gouffé"
+        width="128"
+        height="128"
+        class="h-32 w-32 rounded-full border-2 border-line object-cover"
+        style="background: radial-gradient(circle at 25% 25%, #3a3a4a, #12121a 75%)"
       />
-      <div class="text-center">
-        <h1 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
-          Curriculum Vitae
+      <div>
+        <h1 class="font-display text-4xl font-bold">
+          <span class="gradient-text">Curriculum Vitae</span>
         </h1>
-        <p class="text-zinc-400 mt-1">
+        <p class="mt-2 text-muted">
           Développeur web / Architecte technique<br />
-          <i class="inline-block align-middle text-accent text-xs mr-2"
-          ></i>Rouen / Normandie
+          Rouen / Normandie
         </p>
       </div>
     </div>
 
-    <section
-      class="flex flex-col sm:flex-row items-center bg-accent/10 border border-accent/30 rounded-lg p-4 mb-12 max-w-4xl mx-auto gap-4"
+    <!-- Poste actuel -->
+    <div
+      class="reveal mt-12 flex flex-col items-center gap-4 rounded-2xl border border-accent/40 bg-accent/10 p-6 sm:flex-row"
     >
       <a
-        href="http://www.colorz.fr"
+        href="https://www.colorz.fr"
         target="_blank"
-        rel="nofollow"
-        class="underline hover:text-accent/70"
-        ><img
+        rel="nofollow noopener"
+        class="shrink-0 transition-opacity hover:opacity-80"
+      >
+        <img
           src="/assets/icons/colorz.svg"
           alt="Logo Colorz"
-          class="w-16 h-16 object-contain invert brightness-0"
+          width="64"
+          height="64"
+          class="h-16 w-16 object-contain brightness-0 invert"
           loading="lazy"
-        /></a
-      >
-      <div class="text-accent/90 font-semibold max-w-xl">
-        Actuellement en poste dans l'agence <a
-          href="http://www.colorz.fr"
+        />
+      </a>
+      <p class="text-sm leading-relaxed text-text sm:text-base">
+        Actuellement en poste dans l'agence
+        <a
+          href="https://www.colorz.fr"
           target="_blank"
-          rel="nofollow"
-          class="underline hover:text-accent/70">Colorz</a
-        > en tant que Solution Architect Shopify / Senior Lead Developer.
-      </div>
-    </section>
+          rel="nofollow noopener"
+          class="text-accent-2 underline decoration-accent-2/40 underline-offset-4 hover:decoration-accent-2"
+        >Colorz</a>
+        en tant que Solution Architect Shopify / Senior Lead Developer.
+      </p>
+    </div>
 
-    <!-- Résumé TL;DR -->
-    <section class="bg-accent/20 border-l border-accent p-6 mb-12 rounded-lg">
-      <div class="space-y-4 text-base leading-relaxed">
-        <p>
-          Passionné par le web depuis 1999, j’ai fait du développement PHP et de
-          l’e-commerce mon métier depuis 2003.
-        </p>
-        <p>
-          Salarié dans l'agence <span class="font-semibold underline"
-            >Colorz</span
-          > depuis 2010, j’ai d’abord occupé le rôle de
-          <span class="font-medium">Lead Developer Magento</span>, en pilotant
-          des projets e-commerce complexes pendant près de 10 ans sur cette
-          solution.
-        </p>
-        <p>
-          Depuis 2019, j’interviens également en tant que <span
-            class="font-medium">consultant technique e-commerce</span
-          >. J’accompagne les clients de l'agence sur des sujets comme le
-          replatforming, l’architecture technique, le développement middleware
-          ou encore l’intégration d’ERP.
-        </p>
-        <p>
-          Depuis 2022, je suis <span class="font-medium"
-            >Solution Architect</span
-          >, spécialisé dans les problématiques avancées liées au développement
-          sur Shopify.
-        </p>
-      </div>
-    </section>
-
-    <!-- Timeline -->
+    <!-- Résumé -->
     <div
-      class="relative border-l-2 border-zinc-300 dark:border-zinc-600 pl-8 rounded-lg"
+      class="reveal mt-8 space-y-4 rounded-2xl border border-line bg-surface p-7 text-sm leading-relaxed text-muted sm:text-base"
     >
+      <p>
+        Passionné par le web depuis 1999, j'ai fait du développement PHP et de
+        l'e-commerce mon métier depuis 2003.
+      </p>
+      <p>
+        Salarié dans l'agence <strong class="text-text">Colorz</strong> depuis 2010,
+        j'ai d'abord occupé le rôle de
+        <strong class="text-text">Lead Developer Magento</strong>, en pilotant des
+        projets e-commerce complexes pendant près de 10 ans sur cette solution.
+      </p>
+      <p>
+        Depuis 2019, j'interviens également en tant que
+        <strong class="text-text">consultant technique e-commerce</strong>.
+        J'accompagne les clients de l'agence sur des sujets comme le
+        replatforming, l'architecture technique, le développement middleware ou
+        encore l'intégration d'ERP.
+      </p>
+      <p>
+        Depuis 2022, je suis <strong class="text-text">Solution Architect</strong>,
+        spécialisé dans les problématiques avancées liées au développement sur
+        Shopify.
+      </p>
+    </div>
+
+    <!-- Timeline CV -->
+    <div class="relative mt-14">
+      <div
+        class="absolute top-0 bottom-0 left-[5px] w-px"
+        style="background: linear-gradient(180deg, var(--color-accent-2), var(--color-accent) 55%, var(--color-accent-3))"
+        aria-hidden="true"
+      >
+      </div>
+
       {
-        timelineItems.map(({ category, events }) => (
-          <>
-            <h2 class="text-2xl font-bold text-accent mb-6 mt-12">
-              {category}
+        cvSections.map(({ category, events }) => (
+          <section class="pb-4 pl-10">
+            <h2 class="relative mt-8 font-display text-2xl font-bold">
+              <span
+                class="absolute top-2 -left-10 block h-[11px] w-[11px] rounded-full border-2 border-accent-2 bg-bg"
+                aria-hidden="true"
+              />
+              <span class="gradient-text">{category}</span>
             </h2>
-            <div class="space-y-8">
-              {events.map(
-                ({
-                  date,
-                  title,
-                  company,
-                  url,
-                  description,
-                  icon,
-                  svgIcon,
-                  svgClass = "w-12 inline-block align-middle invert brightness-06",
-                  isLink,
-                }) => (
-                  <div class="relative">
-                    <span class="absolute -left-5 top-1.5 w-2 h-2 bg-accent rounded-full" />
-                    {category === "Expériences professionnelles" ? (
-                      <div class="flex items-center gap-2 text-sm text-zinc-400 mb-1">
-                        {svgIcon && url && (
-                          <a
-                            href={url}
-                            target="_blank"
-                            rel="nofollow"
-                            class="hover:opacity-80 transition-opacity"
-                          >
-                            <img
-                              src={svgIcon}
-                              alt={company ?? ""}
-                              class={svgClass}
-                              loading="lazy"
-                            />
-                          </a>
-                        )}
-                        <time>{date}</time>
-                      </div>
+            <div class="mt-6 space-y-6">
+              {events.map(({ date, title, roles, company, url }) => (
+                <article class="reveal relative">
+                  <span
+                    class="absolute top-2 -left-[37.5px] block h-2 w-2 rounded-full bg-accent"
+                    aria-hidden="true"
+                  />
+                  <time class="font-mono text-xs tracking-wide text-accent-2">
+                    {date}
+                  </time>
+                  <h3 class="mt-1 font-display text-lg font-semibold text-text">
+                    {url ? (
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="nofollow noopener"
+                        class="transition-colors hover:text-accent-2"
+                      >
+                        {title}
+                      </a>
                     ) : (
-                      <time class="block text-sm text-zinc-400 mb-1">
-                        {date}
-                      </time>
+                      title
                     )}
-
-                    <h3 class="text-zinc-900 dark:text-zinc-100">
-                      {icon && (
-                        <i
-                          class={`${icon} text-accent text-sm mr-2`}
-                          aria-hidden="true"
-                        />
-                      )}
-                      {isLink ? (
-                        <a
-                          href={url}
-                          class="text-accent hover:underline"
-                          set:html={title}
-                        />
-                      ) : (
-                        <>
-                          {title.includes("\n") ? (
-                            <ul class="my-2">
-                              {title.split("\n").map((line: string) => (
-                                <li>{line.trim()}</li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <span set:html={title} />
-                          )}
-                        </>
-                      )}
-                    </h3>
-
-                    {/* Logo en dessous si ce n’est PAS une expérience pro */}
-                    {company &&
-                      svgIcon &&
-                      category !== "Expériences professionnelles" && (
-                        <p class="text-xs text-accent mt-1 font-semibold">
-                          <a
-                            href={url}
-                            target="_blank"
-                            rel="nofollow"
-                            class="hover:underline"
-                          >
-                            <img
-                              src={svgIcon}
-                              alt={company ?? ""}
-                              class={svgClass}
-                              loading="lazy"
-                            />
-                          </a>
-                        </p>
-                      )}
-
-                    {description && (
-                      <p class="mt-1 text-zinc-700 dark:text-zinc-300">
-                        {description}
-                      </p>
+                    {company && company !== title && (
+                      <span class="ml-2 text-sm font-normal text-muted">
+                        — {company}
+                      </span>
                     )}
-                  </div>
-                ),
-              )}
+                  </h3>
+                  {roles && (
+                    <ul class="mt-1 space-y-0.5 text-sm text-muted">
+                      {roles.map((role) => (
+                        <li>{role}</li>
+                      ))}
+                    </ul>
+                  )}
+                </article>
+              ))}
             </div>
-          </>
+          </section>
         ))
       }
     </div>
