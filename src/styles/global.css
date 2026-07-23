@@ -23,6 +23,7 @@
   /* ------ Platform colors ------ */
   --color-shopify: #6ee56e;
   --color-magento: #ff8a3d;
+  --color-magento2: #ff4633; /* rouge Adobe Commerce (#EB1000) éclairci pour fond sombre */
   --color-wordpress: #6ba6ff;
   --color-custom: #c084fc;
   --color-mirakl: #4dd7e8;

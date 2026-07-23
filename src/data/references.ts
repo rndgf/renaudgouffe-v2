@@ -70,7 +70,7 @@ export const references: Reference[] = [
 export const platformColor: Record<Platform, string> = {
   Shopify: "var(--color-shopify)",
   Magento: "var(--color-magento)",
-  "Magento 2": "var(--color-magento)",
+  "Magento 2": "var(--color-magento2)",
   WordPress: "var(--color-wordpress)",
   Mirakl: "var(--color-mirakl)",
   Cegid: "var(--color-cegid)",
