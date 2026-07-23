@@ -81,18 +81,18 @@ export const cvSections: CvSection[] = [
     events: [
       {
         date: "2003 → 2005",
-        title: "BTS « Conception et développement multimédia » (alternance)",
-        company: "CESI Rouen",
+        title: "CESI Rouen",
+        roles: ["BTS « Conception et développement multimédia » (alternance)"],
       },
       {
         date: "1998 → 2003",
-        title: "Licence en Géographie",
-        company: "Université de Rouen",
+        title: "Université de Rouen",
+        roles: ["Licence en Géographie"],
       },
       {
         date: "1998",
-        title: "Baccalauréat Littéraire",
-        company: "Lycée du Canada (Évreux)",
+        title: "Lycée du Canada (Évreux)",
+        roles: ["Baccalauréat Littéraire"],
       },
     ],
   },
