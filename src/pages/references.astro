@@ -162,6 +162,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
                         {name}
                       </h3>
                       <span class="flex shrink-0 items-center gap-2">
+                        <span class="font-mono text-xs text-muted">{y}</span>
                         <span
                           class="flex h-5 w-5 items-center justify-center rounded-full border font-mono text-[0.6rem] font-semibold"
                           style={`color: ${typeBadge[type].color}; border-color: color-mix(in oklab, ${typeBadge[type].color} 55%, transparent); background: color-mix(in oklab, ${typeBadge[type].color} 12%, transparent)`}
@@ -170,7 +171,6 @@ const roleLabels: Record<string, { label: string; color: string }> = {
                           {typeBadge[type].letter}
                           <span class="sr-only">{type}</span>
                         </span>
-                        <span class="font-mono text-xs text-muted">{y}</span>
                       </span>
                     </div>
                     {tagline && (
