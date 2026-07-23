@@ -81,8 +81,8 @@ export const cvSections: CvSection[] = [
     events: [
       {
         date: "2003 → 2005",
-        title: "BTS « Conception et développement multimédia » (alternance)",
-        roles: ["CESI Rouen"],
+        title: "BTS « Conception et développement multimédia »",
+        roles: ["CESI Rouen — réalisé en alternance chez FTEL"],
       },
       {
         date: "1998 → 2003",
