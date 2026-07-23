@@ -66,10 +66,12 @@ const chapters = [
   };
 });
 
-// Type de mission porté par la bordure de carte :
-// Agence = bordure neutre, Freelance = liseré dégradé magenta → violet.
-const freelanceBorder =
-  "border-transparent [background:linear-gradient(var(--color-surface),var(--color-surface))_padding-box,linear-gradient(135deg,var(--color-accent-3),var(--color-accent))_border-box]";
+// Type de mission porté par la bordure de carte, en très discret :
+// Agence = bordure teintée cyan, Freelance = bordure teintée magenta.
+const borderByType: Record<string, string> = {
+  Agence: "color-mix(in oklab, var(--color-accent-2) 22%, var(--color-line))",
+  Freelance: "color-mix(in oklab, var(--color-accent-3) 32%, var(--color-line))",
+};
 
 // Rôles tenus sur le projet, affichés en toutes lettres en pied de carte.
 const roleLabels: Record<string, { label: string; color: string }> = {
@@ -98,11 +100,25 @@ const roleLabels: Record<string, { label: string; color: string }> = {
           rel="nofollow noopener"
           class="text-accent-2 underline decoration-accent-2/40 underline-offset-4 hover:decoration-accent-2"
         >Colorz</a>
-        entre 2010 et {year}. Les cartes au
-        <span
-          class="rounded-md px-1.5 py-0.5 text-text [background:linear-gradient(var(--color-bg),var(--color-bg))_padding-box,linear-gradient(135deg,var(--color-accent-3),var(--color-accent))_border-box] border border-transparent"
-        >liseré dégradé</span>
-        sont des missions freelance menées en direct.
+        entre 2010 et {year}.
+      </p>
+      <p class="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 font-mono text-xs text-muted">
+        <span class="flex items-center gap-2">
+          <span
+            class="h-3 w-4 rounded-sm border"
+            style={`border-color: ${borderByType.Agence}`}
+            aria-hidden="true"
+          />
+          Agence
+        </span>
+        <span class="flex items-center gap-2">
+          <span
+            class="h-3 w-4 rounded-sm border"
+            style={`border-color: ${borderByType.Freelance}`}
+            aria-hidden="true"
+          />
+          Freelance
+        </span>
       </p>
     </div>
 
@@ -151,13 +167,8 @@ const roleLabels: Record<string, { label: string; color: string }> = {
             <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {projects.map(({ name, year: y, type, techs, tagline, roles }) => (
                 <li
-                  class:list={[
-                    "reveal group relative flex flex-col justify-between gap-4 overflow-hidden rounded-xl border p-5",
-                    type === "Freelance"
-                      ? freelanceBorder
-                      : "border-line bg-surface",
-                  ]}
-                  style={`--ref-color: ${platformColor[techs[0] as Platform]}`}
+                  class="reveal group relative flex flex-col justify-between gap-4 overflow-hidden rounded-xl border bg-surface p-5"
+                  style={`--ref-color: ${platformColor[techs[0] as Platform]}; border-color: ${borderByType[type]}`}
                 >
                   <div
                     class="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
