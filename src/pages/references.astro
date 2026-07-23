@@ -28,9 +28,10 @@ const chapters = [
     accent: "var(--color-shopify)",
     intro:
       "Migrations, intégrations Mirakl / ERP et checkout sur-mesure — le cœur de mon activité de Solution Architect depuis 2019.",
-    // Picto Shopify (Simple Icons, viewBox 0 0 24 24)
+    // Sac shopping outline (Heroicons), plus lisible en petit que le glyph officiel
     iconPath:
-      "M15.337 23.979l7.216-1.561s-2.604-17.613-2.625-17.73c-.018-.116-.114-.192-.211-.192s-1.929-.136-1.929-.136-1.275-1.274-1.439-1.411c-.045-.037-.075-.057-.121-.074l-.914 21.104h.023zM11.71 11.305s-.81-.424-1.774-.424c-1.447 0-1.504.906-1.504 1.141 0 1.232 3.24 1.715 3.24 4.629 0 2.295-1.44 3.76-3.406 3.76-2.354 0-3.54-1.465-3.54-1.465l.646-2.086s1.245 1.066 2.28 1.066c.675 0 .975-.545.975-.932 0-1.619-2.654-1.694-2.654-4.359-.034-2.237 1.571-4.416 4.827-4.416 1.257 0 1.875.36 1.875.36l-.945 2.715-.02.011zM11.17.83c.136 0 .271.038.405.135-.984.465-2.064 1.639-2.508 4.005-.656.213-1.293.405-1.889.585C7.697 3.75 8.951.84 11.17.84V.83zm1.235 2.949v.135c-.754.232-1.583.484-2.394.736.466-1.784 1.336-2.643 2.095-2.968.192.485.299 1.144.299 2.097zm.54-2.235c.7.075 1.155.885 1.455 1.786-.36.113-.765.24-1.2.375v-.262c0-.779-.09-1.395-.255-1.906v.007zm2.813 1.598c-.03 0-.09.03-.114.03s-.435.12-1.14.345c-.705-2.055-1.965-3.045-3.375-3.045h-.12c-.405-.54-.915-.765-1.35-.765-3.415 0-5.055 4.275-5.564 6.44 0 .015-1.35.42-2.34.72-.435.135-.45.15-.51.555C1.29 7.68.075 17.94 0 18.51l10.784 2.024.9-20.78c-.045.008-.083.008-.126.008z",
+      "M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z",
+    iconStroke: true,
   },
   {
     key: "magento",
@@ -102,7 +103,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
 
     <!-- Chapitres -->
     {
-      chapters.map(({ title, accent, intro, projects, count, from, to, iconPath }) => (
+      chapters.map(({ title, accent, intro, projects, count, from, to, iconPath, iconStroke }) => (
         <section class="mt-20 first-of-type:mt-16">
           <div class="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
             <!-- Intro de chapitre (sticky sur desktop) -->
@@ -122,10 +123,16 @@ const roleLabels: Record<string, { label: string; color: string }> = {
                     viewBox="0 0 24 24"
                     class="h-8 w-8 shrink-0 sm:h-9 sm:w-9"
                     style={`color: ${accent}`}
-                    fill="currentColor"
+                    fill={iconStroke ? "none" : "currentColor"}
+                    stroke={iconStroke ? "currentColor" : "none"}
+                    stroke-width={iconStroke ? "1.5" : undefined}
                     aria-hidden="true"
                   >
-                    <path d={iconPath} />
+                    <path
+                      d={iconPath}
+                      stroke-linecap={iconStroke ? "round" : undefined}
+                      stroke-linejoin={iconStroke ? "round" : undefined}
+                    />
                   </svg>
                 )}
                 {title}
