@@ -82,7 +82,9 @@ export const cvSections: CvSection[] = [
       {
         date: "2003 → 2005",
         title: "BTS « Conception et développement multimédia »",
-        roles: ["CESI Rouen — réalisé en alternance chez FTEL"],
+        roles: [
+          'CESI Rouen — réalisé en alternance chez <a href="https://www.ftel.fr/" target="_blank" rel="nofollow noopener" class="text-accent-2 underline decoration-accent-2/40 underline-offset-2 hover:decoration-accent-2">FTEL</a>',
+        ],
       },
       {
         date: "1998 → 2003",

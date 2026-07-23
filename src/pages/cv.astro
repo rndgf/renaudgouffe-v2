@@ -174,7 +174,7 @@ const meta = {
                   {roles && (
                     <ul class="mt-1 space-y-0.5 text-sm text-muted">
                       {roles.map((role) => (
-                        <li>{role}</li>
+                        <li set:html={role} />
                       ))}
                     </ul>
                   )}
