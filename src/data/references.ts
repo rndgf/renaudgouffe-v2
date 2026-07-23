@@ -10,13 +10,18 @@ export type Platform =
   | "Marketplace"
   | "Sur-mesure";
 
+/** Rôles tenus sur le projet (pastilles A / D sur les cartes). */
+export type Role = "architecte" | "dev";
+
 export interface Reference {
   name: string;
   year: number;
   type: ReferenceType;
   techs: Platform[];
-  /** Très courte description (métier de la marque + nature du projet). */
+  /** Très courte description de la marque ou du site. */
   tagline?: string;
+  /** Renseigné à partir de 2022 (Sabon) — avant, non distingué. */
+  roles?: Role[];
 }
 
 /**
@@ -26,12 +31,13 @@ export interface Reference {
 export const references: Reference[] = [
   // Taglines = la marque ou le site en quelques mots (pas la mission).
   // Celles marquées « à vérifier » n'ont pas pu être confirmées.
-  { name: "Memoritz", year: 2025, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Photographie scolaire en ligne" },
-  { name: "Vtwonen", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Déco & maison, marque néerlandaise" },
-  { name: "Mathon", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Ustensiles et matériel de cuisine" },
-  { name: "Fleux", year: 2023, type: "Agence", techs: ["Shopify", "Cegid"], tagline: "Concept store déco du Marais" },
-  { name: "Sabon", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "Savons et cosmétiques" },
-  { name: "Le Club Leader Price", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "L'enseigne discount en ligne" },
+  { name: "Showroomprivé", year: 2026, type: "Agence", techs: ["Shopify"], tagline: "Ventes privées en ligne", roles: ["architecte"] },
+  { name: "Memoritz", year: 2025, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Photographie scolaire en ligne", roles: ["architecte", "dev"] },
+  { name: "Vtwonen", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Déco & maison, marque néerlandaise", roles: ["architecte", "dev"] },
+  { name: "Mathon", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Ustensiles et matériel de cuisine", roles: ["architecte", "dev"] },
+  { name: "Fleux", year: 2023, type: "Agence", techs: ["Shopify", "Cegid"], tagline: "Concept store déco du Marais", roles: ["architecte", "dev"] },
+  { name: "Sabon", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "Savons et cosmétiques", roles: ["architecte", "dev"] },
+  { name: "Le Club Leader Price", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "L'enseigne discount en ligne", roles: ["architecte", "dev"] },
   { name: "Chaumet", year: 2021, type: "Agence", techs: ["Magento 2"], tagline: "Haute joaillerie, place Vendôme" },
   { name: "Luzaka", year: 2021, type: "Freelance", techs: ["Magento 2"], tagline: "Bijoux fantaisie et montres" },
   { name: "émoi-émoi", year: 2020, type: "Agence", techs: ["Shopify"], tagline: "Mode pour mamans et enfants" },
@@ -41,7 +47,7 @@ export const references: Reference[] = [
   { name: "Merci Paris", year: 2016, type: "Agence", techs: ["Magento"], tagline: "Concept store parisien solidaire" },
   { name: "Make My Lemonade", year: 2016, type: "Agence", techs: ["Magento"], tagline: "Mode et patrons DIY" },
   { name: "Patricia Blanchet", year: 2016, type: "Agence", techs: ["Magento"], tagline: "Chaussures de créatrice parisienne" },
-  { name: "Rudy's", year: 2015, type: "Agence", techs: ["Magento"] }, // tagline à compléter (marque non identifiée)
+  { name: "Rudy's", year: 2015, type: "Agence", techs: ["Magento"], tagline: "Chaussures en cuir pour homme" },
   { name: "The Beautyst", year: 2015, type: "Agence", techs: ["Magento", "Mirakl"], tagline: "Marketplace beauté" },
   { name: "Hartford", year: 2014, type: "Agence", techs: ["Magento"], tagline: "Prêt-à-porter homme et femme" },
   { name: "Harmony Paris", year: 2014, type: "Freelance", techs: ["Magento"], tagline: "Mode féminine parisienne" },

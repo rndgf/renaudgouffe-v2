@@ -61,6 +61,14 @@ const typeStyles: Record<string, string> = {
   Agence: "border-accent-2/50 text-accent-2",
   Freelance: "border-accent-3/50 text-accent-3",
 };
+
+// Pastilles de rôle : lettre, libellé complet, couleur.
+const roleBadges: Record<string, { letter: string; label: string; color: string }> = {
+  architecte: { letter: "A", label: "Architecture", color: "var(--color-accent)" },
+  dev: { letter: "D", label: "Développement", color: "var(--color-accent-2)" },
+};
+
+const hasRoles = references.some((r) => r.roles?.length);
 ---
 
 <PageLayout meta={meta}>
@@ -85,6 +93,24 @@ const typeStyles: Record<string, string> = {
         >Colorz</a>
         entre 2010 et {year}.
       </p>
+      {
+        hasRoles && (
+          <p class="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-xs text-muted">
+            <span class="uppercase tracking-widest">Rôles</span>
+            {Object.values(roleBadges).map(({ letter, label, color }) => (
+              <span class="flex items-center gap-1.5">
+                <span
+                  class="flex h-5 w-5 items-center justify-center rounded-full border text-[0.6rem] font-semibold"
+                  style={`color: ${color}; border-color: color-mix(in oklab, ${color} 55%, transparent); background: color-mix(in oklab, ${color} 12%, transparent)`}
+                >
+                  {letter}
+                </span>
+                {label}
+              </span>
+            ))}
+          </p>
+        )
+      }
     </div>
 
     <!-- Chapitres -->
@@ -116,7 +142,7 @@ const typeStyles: Record<string, string> = {
 
             <!-- Projets du chapitre -->
             <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {projects.map(({ name, year: y, type, techs, tagline }) => (
+              {projects.map(({ name, year: y, type, techs, tagline, roles }) => (
                 <li
                   class="reveal group relative flex flex-col justify-between gap-4 rounded-xl border border-line bg-surface p-5 transition-all duration-300 hover:-translate-y-0.5"
                   style={`--ref-color: ${platformColor[techs[0] as Platform]}`}
@@ -131,7 +157,22 @@ const typeStyles: Record<string, string> = {
                       <h3 class="font-display text-xl font-semibold leading-tight text-text">
                         {name}
                       </h3>
-                      <span class="font-mono text-xs text-muted">{y}</span>
+                      <span class="flex shrink-0 items-center gap-1.5">
+                        {roles?.map((role) => {
+                          const badge = roleBadges[role];
+                          return (
+                            <span
+                              class="flex h-5 w-5 items-center justify-center rounded-full border font-mono text-[0.6rem] font-semibold"
+                              style={`color: ${badge.color}; border-color: color-mix(in oklab, ${badge.color} 55%, transparent); background: color-mix(in oklab, ${badge.color} 12%, transparent)`}
+                              title={badge.label}
+                              aria-label={badge.label}
+                            >
+                              {badge.letter}
+                            </span>
+                          );
+                        })}
+                        <span class="font-mono text-xs text-muted">{y}</span>
+                      </span>
                     </div>
                     {tagline && (
                       <p class="mt-1.5 text-xs leading-snug text-muted">
