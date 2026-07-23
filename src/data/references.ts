@@ -53,9 +53,9 @@ export const references: Reference[] = [
   { name: "émoi-émoi", year: 2011, type: "Agence", techs: ["Magento"], tagline: "Mode pour mamans et enfants" },
   { name: "Jimmy Fairly", year: 2011, type: "Agence", techs: ["Magento"], tagline: "Lunetterie parisienne" },
   { name: "Green Republic", year: 2010, type: "Agence", techs: ["Magento", "Marketplace"], tagline: "Marketplace de produits bio et équitables" },
-  { name: "Pierre Sancinéna", year: 2009, type: "Freelance", techs: ["WordPress"], tagline: "Pilote automobile normand" }, // à vérifier
+  { name: "Pierre Sancinéna", year: 2009, type: "Freelance", techs: ["WordPress"], tagline: "Pilote de Formule 4" },
   { name: "Inédit Joaillier", year: 2008, type: "Freelance", techs: ["Sur-mesure"], tagline: "Joaillier indépendant" }, // à vérifier
-  { name: "La conspiration", year: 2008, type: "Freelance", techs: ["Sur-mesure"] }, // tagline à compléter (marque non identifiée)
+  { name: "La conspiration", year: 2008, type: "Freelance", techs: ["Sur-mesure"], tagline: "Groupe de musique local" },
   { name: "Skinizi", year: 2007, type: "Freelance", techs: ["Magento"], tagline: "Skins et stickers pour ordinateurs et mobiles" },
   { name: "Ville de Gravigny", year: 2004, type: "Freelance", techs: ["Sur-mesure"], tagline: "Commune de l'Eure" },
 ];
