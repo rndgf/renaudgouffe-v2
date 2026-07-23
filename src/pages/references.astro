@@ -68,7 +68,7 @@ const typeStyles: Record<string, string> = {
               type="button"
               data-filter-type={t}
               aria-pressed={t === "Tous" ? "true" : "false"}
-              class="rounded-full border border-line px-3 py-1 text-xs text-muted transition-colors hover:text-text aria-pressed:border-accent aria-pressed:bg-accent/15 aria-pressed:text-text"
+              class="rounded-full border border-line px-3 py-1.5 text-xs text-muted transition-colors hover:text-text aria-pressed:border-accent aria-pressed:bg-accent/15 aria-pressed:text-text"
             >
               {t}
             </button>
@@ -82,7 +82,7 @@ const typeStyles: Record<string, string> = {
           type="button"
           data-filter-tech="Toutes"
           aria-pressed="true"
-          class="rounded-full border border-line px-3 py-1 text-xs text-muted transition-colors hover:text-text aria-pressed:border-accent aria-pressed:bg-accent/15 aria-pressed:text-text"
+          class="rounded-full border border-line px-3 py-1.5 text-xs text-muted transition-colors hover:text-text aria-pressed:border-accent aria-pressed:bg-accent/15 aria-pressed:text-text"
         >
           Toutes
         </button>
@@ -93,7 +93,7 @@ const typeStyles: Record<string, string> = {
               data-filter-tech={p}
               aria-pressed="false"
               style={`--chip-color: ${platformColor[p as Platform]}`}
-              class="rounded-full border border-line px-3 py-1 text-xs text-muted transition-colors hover:text-text aria-pressed:border-(--chip-color) aria-pressed:text-text"
+              class="rounded-full border border-line px-3 py-1.5 text-xs text-muted transition-colors hover:text-text aria-pressed:border-(--chip-color) aria-pressed:text-text"
             >
               <span
                 class="mr-1 inline-block h-1.5 w-1.5 rounded-full align-middle"
