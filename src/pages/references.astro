@@ -62,13 +62,11 @@ const typeStyles: Record<string, string> = {
   Freelance: "border-accent-3/50 text-accent-3",
 };
 
-// Pastilles de rôle : lettre, libellé complet, couleur.
-const roleBadges: Record<string, { letter: string; label: string; color: string }> = {
-  architecte: { letter: "A", label: "Architecture", color: "var(--color-accent)" },
-  dev: { letter: "D", label: "Développement", color: "var(--color-accent-2)" },
+// Rôles tenus sur le projet, affichés en toutes lettres en pied de carte.
+const roleLabels: Record<string, { label: string; color: string }> = {
+  architecte: { label: "Architecture", color: "var(--color-accent)" },
+  dev: { label: "Développement", color: "var(--color-accent-2)" },
 };
-
-const hasRoles = references.some((r) => r.roles?.length);
 ---
 
 <PageLayout meta={meta}>
@@ -93,24 +91,6 @@ const hasRoles = references.some((r) => r.roles?.length);
         >Colorz</a>
         entre 2010 et {year}.
       </p>
-      {
-        hasRoles && (
-          <p class="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-xs text-muted">
-            <span class="uppercase tracking-widest">Rôles</span>
-            {Object.values(roleBadges).map(({ letter, label, color }) => (
-              <span class="flex items-center gap-1.5">
-                <span
-                  class="flex h-5 w-5 items-center justify-center rounded-full border text-[0.6rem] font-semibold"
-                  style={`color: ${color}; border-color: color-mix(in oklab, ${color} 55%, transparent); background: color-mix(in oklab, ${color} 12%, transparent)`}
-                >
-                  {letter}
-                </span>
-                {label}
-              </span>
-            ))}
-          </p>
-        )
-      }
     </div>
 
     <!-- Chapitres -->
@@ -157,22 +137,7 @@ const hasRoles = references.some((r) => r.roles?.length);
                       <h3 class="font-display text-xl font-semibold leading-tight text-text">
                         {name}
                       </h3>
-                      <span class="flex shrink-0 items-center gap-1.5">
-                        {roles?.map((role) => {
-                          const badge = roleBadges[role];
-                          return (
-                            <span
-                              class="flex h-5 w-5 items-center justify-center rounded-full border font-mono text-[0.6rem] font-semibold"
-                              style={`color: ${badge.color}; border-color: color-mix(in oklab, ${badge.color} 55%, transparent); background: color-mix(in oklab, ${badge.color} 12%, transparent)`}
-                              title={badge.label}
-                              aria-label={badge.label}
-                            >
-                              {badge.letter}
-                            </span>
-                          );
-                        })}
-                        <span class="font-mono text-xs text-muted">{y}</span>
-                      </span>
+                      <span class="font-mono text-xs text-muted">{y}</span>
                     </div>
                     {tagline && (
                       <p class="mt-1.5 text-xs leading-snug text-muted">
@@ -180,23 +145,42 @@ const hasRoles = references.some((r) => r.roles?.length);
                       </p>
                     )}
                   </div>
-                  <div class="flex flex-wrap items-center gap-1.5">
-                    <span
-                      class:list={[
-                        "rounded-full border px-2 py-px font-mono text-[0.6rem] uppercase tracking-widest",
-                        typeStyles[type],
-                      ]}
-                    >
-                      {type}
-                    </span>
-                    {techs.map((t) => (
+                  <div>
+                    <div class="flex flex-wrap items-center gap-1.5">
                       <span
-                        class="rounded border px-2 py-px font-mono text-[0.65rem] uppercase tracking-wide"
-                        style={`color: ${platformColor[t as Platform]}; border-color: color-mix(in oklab, ${platformColor[t as Platform]} 40%, transparent); background: color-mix(in oklab, ${platformColor[t as Platform]} 10%, transparent)`}
+                        class:list={[
+                          "rounded-full border px-2 py-px font-mono text-[0.6rem] uppercase tracking-widest",
+                          typeStyles[type],
+                        ]}
                       >
-                        {t}
+                        {type}
                       </span>
-                    ))}
+                      {techs.map((t) => (
+                        <span
+                          class="rounded border px-2 py-px font-mono text-[0.65rem] uppercase tracking-wide"
+                          style={`color: ${platformColor[t as Platform]}; border-color: color-mix(in oklab, ${platformColor[t as Platform]} 40%, transparent); background: color-mix(in oklab, ${platformColor[t as Platform]} 10%, transparent)`}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                    {roles?.length && (
+                      <p class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-line/60 pt-2.5 font-mono text-[0.65rem] text-muted">
+                        {roles.map((role) => {
+                          const { label, color } = roleLabels[role];
+                          return (
+                            <span class="flex items-center gap-1.5">
+                              <span
+                                class="h-1.5 w-1.5 rounded-full"
+                                style={`background: ${color}`}
+                                aria-hidden="true"
+                              />
+                              {label}
+                            </span>
+                          );
+                        })}
+                      </p>
+                    )}
                   </div>
                 </li>
               ))}
