@@ -1,0 +1,74 @@
+---
+// Barre de navigation mobile fixée en bas (zone du pouce).
+// Masquée dès sm: — le header classique prend le relais.
+const pathname = new URL(Astro.request.url).pathname.replace(/\/$/, "") || "/";
+
+const items = [
+  {
+    href: "/",
+    label: "Accueil",
+    icon: "M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75",
+  },
+  {
+    href: "/references",
+    label: "Références",
+    icon: "M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25",
+  },
+  {
+    href: "/cv",
+    label: "CV",
+    icon: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z",
+  },
+  {
+    href: "/contact",
+    label: "Contact",
+    icon: "M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75",
+  },
+];
+---
+
+<nav
+  class="fixed inset-x-0 bottom-0 z-40 border-t border-line/70 bg-bg/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md sm:hidden"
+  aria-label="Navigation mobile"
+>
+  <ul class="grid grid-cols-4">
+    {
+      items.map(({ href, label, icon }) => {
+        const active = pathname === href;
+        return (
+          <li>
+            <a
+              href={href}
+              aria-current={active ? "page" : undefined}
+              class:list={[
+                "flex flex-col items-center gap-1 py-2.5 text-[0.65rem] font-medium transition-colors",
+                active ? "text-accent-2" : "text-muted",
+              ]}
+            >
+              <span class="relative">
+                {active && (
+                  <span
+                    class="absolute -inset-2 -z-10 rounded-full bg-accent/15"
+                    aria-hidden="true"
+                  />
+                )}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d={icon} />
+                </svg>
+              </span>
+              {label}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>

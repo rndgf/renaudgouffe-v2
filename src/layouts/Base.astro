@@ -3,6 +3,7 @@ import type { SiteMeta } from "@/types";
 import BaseHead from "@/components/BaseHead.astro";
 import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
+import BottomNav from "@/components/layout/BottomNav.astro";
 import { siteConfig } from "@/site.config";
 
 interface Props {
@@ -30,6 +31,7 @@ const {
       <slot />
     </main>
     <Footer />
+    <BottomNav />
 
     <script>
       // Révélation au scroll — respecte prefers-reduced-motion (géré en CSS).
