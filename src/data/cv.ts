@@ -4,6 +4,8 @@ export interface CvEvent {
   roles?: string[];
   company?: string;
   url?: string;
+  logo?: string;
+  logoClass?: string;
 }
 
 export interface CvSection {
@@ -25,6 +27,8 @@ export const cvSections: CvSection[] = [
         ],
         company: "Colorz",
         url: "https://www.colorz.fr/",
+        logo: "/assets/icons/colorz.svg",
+        logoClass: "h-5 brightness-0 invert",
       },
       {
         date: "2015 → 2020",
@@ -32,6 +36,8 @@ export const cvSections: CvSection[] = [
         roles: ["Senior Technical Consultant", "Senior Lead Developer"],
         company: "Colorz",
         url: "https://www.colorz.fr/",
+        logo: "/assets/icons/colorz.svg",
+        logoClass: "h-5 brightness-0 invert",
       },
       {
         date: "2010 → 2014",
@@ -39,6 +45,8 @@ export const cvSections: CvSection[] = [
         roles: ["Lead Developer"],
         company: "Colorz",
         url: "https://www.colorz.fr/",
+        logo: "/assets/icons/colorz.svg",
+        logoClass: "h-5 brightness-0 invert",
       },
       {
         date: "2005 → 2010",
@@ -46,6 +54,8 @@ export const cvSections: CvSection[] = [
         roles: ["Développeur web"],
         company: "FTEL",
         url: "https://www.ftel.fr/",
+        logo: "/assets/icons/ftel.svg",
+        logoClass: "h-6",
       },
       {
         date: "2003 → 2005",
@@ -53,13 +63,20 @@ export const cvSections: CvSection[] = [
         roles: ["Contrat de professionnalisation (BTS)"],
         company: "FTEL",
         url: "https://www.ftel.fr/",
+        logo: "/assets/icons/ftel.svg",
+        logoClass: "h-6",
       },
     ],
   },
   {
     category: "Expériences freelance",
     events: [
-      { date: "Depuis 2021", title: "Freelance Shopify" },
+      {
+        date: "Depuis 2021",
+        title: "Freelance Shopify",
+        logo: "/assets/icons/shopify.svg",
+        logoClass: "h-6",
+      },
       { date: "Depuis 2009", title: "Freelance Magento" },
       { date: "Depuis 2005", title: "Freelance en développement web" },
     ],

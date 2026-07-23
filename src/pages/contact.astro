@@ -1,0 +1,124 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+
+const meta = {
+  title: "Contact",
+  description:
+    "Contactez Renaud Gouffé, consultant Shopify et architecte e-commerce, pour discuter de votre projet.",
+};
+
+// Adresse email volontairement absente du HTML généré (anti-scraping) :
+// chaque partie est stockée inversée dans des data-attributes,
+// puis assemblée côté client par le script ci-dessous.
+const reversedUser = "effuog.duaner"; // renaud.gouffe → inversé
+const reversedDomain = "moc.liamg"; // gmail.com → inversé
+---
+
+<PageLayout meta={meta}>
+  <section class="relative mx-auto max-w-2xl px-5 pt-8 text-center sm:pt-14">
+    <div class="glow -top-14 left-1/2 h-64 w-96 -translate-x-1/2 bg-accent"></div>
+
+    <p class="font-mono text-xs uppercase tracking-[0.3em] text-accent-2">
+      Rouen · Paris · Remote
+    </p>
+    <h1 class="mt-6 font-display text-4xl font-bold sm:text-5xl">
+      <span class="gradient-text">Contact</span>
+    </h1>
+    <p class="mx-auto mt-6 max-w-md text-lg text-muted">
+      Vous êtes un e-commerçant, une agence ou un porteur de projet Shopify ?
+      Parlons de vos besoins et de vos enjeux techniques.
+    </p>
+
+    <div
+      class="mt-12 rounded-2xl border border-line bg-surface/70 px-8 py-10 backdrop-blur-sm"
+      id="contact-card"
+      data-u={reversedUser}
+      data-d={reversedDomain}
+    >
+      <p class="font-mono text-xs uppercase tracking-widest text-muted">
+        Email
+      </p>
+
+      <p class="mt-4">
+        <a
+          id="contact-email"
+          href="#"
+          class="gradient-text font-display text-xl font-semibold underline decoration-accent/40 underline-offset-8 transition-opacity hover:opacity-80 sm:text-2xl"
+        >
+          Cliquez pour révéler l'adresse
+        </a>
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          id="contact-mailto"
+          href="#"
+          class="rounded-lg bg-gradient-to-r from-accent via-accent-3 to-accent-2 px-6 py-3 font-display font-semibold text-bg transition-transform hover:scale-[1.03]"
+        >
+          M'écrire
+        </a>
+        <button
+          id="contact-copy"
+          type="button"
+          class="rounded-lg border border-line px-6 py-3 font-display font-medium text-text transition-colors hover:border-accent-2 hover:text-accent-2"
+        >
+          Copier l'adresse
+        </button>
+      </div>
+      <p
+        id="copy-feedback"
+        class="mt-4 h-5 font-mono text-xs text-shopify opacity-0 transition-opacity"
+        aria-live="polite"
+      >
+        Adresse copiée !
+      </p>
+
+      <noscript>
+        <p class="mt-6 text-sm text-muted">
+          Activez JavaScript pour afficher l'adresse email (protection
+          anti-spam), ou retrouvez-moi via
+          <a
+            href="https://www.colorz.fr"
+            class="text-accent-2 underline underline-offset-4">Colorz</a
+          >.
+        </p>
+      </noscript>
+    </div>
+
+    <p class="mt-8 text-sm text-muted">
+      Réponse sous 48 h ouvrées. Missions : migration Shopify, intégrations
+      (ERP, PIM, OMS, Mirakl), Shopify Functions & checkout, audit technique.
+    </p>
+  </section>
+
+  <script>
+    // Assemble l'adresse côté client uniquement — jamais présente dans le HTML.
+    const card = document.getElementById("contact-card");
+    const emailLink = document.getElementById("contact-email");
+    const mailtoBtn = document.getElementById("contact-mailto");
+    const copyBtn = document.getElementById("contact-copy");
+    const feedback = document.getElementById("copy-feedback");
+
+    const rev = (s: string) => [...s].reverse().join("");
+    const user = rev(card?.dataset.u ?? "");
+    const domain = rev(card?.dataset.d ?? "");
+    const address = `${user}${String.fromCharCode(64)}${domain}`;
+    const mailto = `mailto:${address}`;
+
+    if (emailLink) {
+      emailLink.textContent = address;
+      emailLink.setAttribute("href", mailto);
+    }
+    mailtoBtn?.setAttribute("href", mailto);
+
+    copyBtn?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(address);
+        feedback?.classList.remove("opacity-0");
+        setTimeout(() => feedback?.classList.add("opacity-0"), 2000);
+      } catch {
+        // Clipboard indisponible : l'adresse reste visible et sélectionnable.
+      }
+    });
+  </script>
+</PageLayout>
