@@ -116,7 +116,7 @@ const typeStyles: Record<string, string> = {
 
             <!-- Projets du chapitre -->
             <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {projects.map(({ name, year: y, type, techs }) => (
+              {projects.map(({ name, year: y, type, techs, tagline }) => (
                 <li
                   class="reveal group relative flex flex-col justify-between gap-4 rounded-xl border border-line bg-surface p-5 transition-all duration-300 hover:-translate-y-0.5"
                   style={`--ref-color: ${platformColor[techs[0] as Platform]}`}
@@ -126,11 +126,18 @@ const typeStyles: Record<string, string> = {
                     style="background: linear-gradient(90deg, transparent, var(--ref-color), transparent)"
                     aria-hidden="true"
                   />
-                  <div class="flex items-start justify-between gap-3">
-                    <h3 class="font-display text-xl font-semibold leading-tight text-text">
-                      {name}
-                    </h3>
-                    <span class="font-mono text-xs text-muted">{y}</span>
+                  <div>
+                    <div class="flex items-start justify-between gap-3">
+                      <h3 class="font-display text-xl font-semibold leading-tight text-text">
+                        {name}
+                      </h3>
+                      <span class="font-mono text-xs text-muted">{y}</span>
+                    </div>
+                    {tagline && (
+                      <p class="mt-1.5 text-xs leading-snug text-muted">
+                        {tagline}
+                      </p>
+                    )}
                   </div>
                   <div class="flex flex-wrap items-center gap-1.5">
                     <span
