@@ -15,21 +15,6 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
 ---
 
 <PageLayout meta={meta}>
-  <!-- Carte de Rouen en fond, discrète (image statique locale, © OpenStreetMap) -->
-  <div
-    class="pointer-events-none fixed inset-0 -z-10 flex items-center justify-center"
-    aria-hidden="true"
-  >
-    <img
-      src="/rouen-map.webp"
-      alt=""
-      class="h-full w-full object-cover opacity-[0.18]"
-      style="mask-image: radial-gradient(ellipse 75% 65% at 50% 42%, black 30%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 42%, black 30%, transparent 75%)"
-      loading="eager"
-      decoding="async"
-    />
-  </div>
-
   <section class="relative mx-auto max-w-2xl px-5 pt-8 text-center sm:pt-14">
     <div class="glow -top-14 left-1/2 h-64 w-96 -translate-x-1/2 bg-accent"></div>
 
@@ -100,22 +85,6 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
       </noscript>
     </div>
 
-    <p class="mt-10 font-mono text-[0.6rem] text-muted/60">
-      Fond de carte ©
-      <a
-        href="https://www.openstreetmap.org/copyright"
-        target="_blank"
-        rel="nofollow noopener"
-        class="underline underline-offset-2 hover:text-muted"
-      >contributeurs OpenStreetMap</a>
-       ©
-      <a
-        href="https://carto.com/attributions"
-        target="_blank"
-        rel="nofollow noopener"
-        class="underline underline-offset-2 hover:text-muted"
-      >CARTO</a>
-    </p>
   </section>
 
   <script>
