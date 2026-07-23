@@ -1,65 +1,112 @@
-@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Geist+Mono:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/preflight.css" layer(base);
-@import "tailwindcss/utilities.css" layer(utilities);
 
+@theme {
+  /* ------ Fonts ------ */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
 
-@layer theme, base, components, utilities;
-@layer base {
-  :root.dark {
-    color-scheme: dark;
-    --theme-bg: #1a1c1e;
-    --theme-text: oklch(92.9% 0.013 255.508);
-    --theme-link: #0B0014;
-    --theme-accent: oklch(64.5% 0.246 16.439);
-  }
+  /* ------ Dark theme surfaces ------ */
+  --color-bg: #0a0a0f;
+  --color-surface: #12121a;
+  --color-surface-2: #181824;
+  --color-line: #26263a;
+  --color-text: #e8e8f2;
+  --color-muted: #9a9ab5;
 
-  @theme {
-    --font-volkhov: 'Volkhov', sans-serif;
-    --font-montserrat: 'Montserrat', serif;
-    --font-geist: 'Geist Mono', monospace;
-    --color-shopify: #5E8E3E;
-    --color-magento: #EB6006;
-    --color-link: var(--theme-link);
-    --color-accent: var(--theme-accent);
-    --color-darkBgLight: #242627;
-  }
+  /* ------ Accents ------ */
+  --color-accent: #8b5cf6; /* violet */
+  --color-accent-2: #22d3ee; /* cyan */
+  --color-accent-3: #e879f9; /* magenta */
 
-
-@theme inline {
-  --font-sans: var(--font-montserrat);
-  --font-serif: var(--font-volkhov);
-  --font-mono: var(--font-geist);
+  /* ------ Platform colors ------ */
+  --color-shopify: #6ee56e;
+  --color-magento: #ff8a3d;
+  --color-magento2: #ff4633; /* rouge Adobe Commerce (#EB1000) éclairci pour fond sombre */
+  --color-wordpress: #6ba6ff;
+  --color-custom: #c084fc;
+  --color-mirakl: #4dd7e8;
+  --color-cegid: #7c9bff;
 }
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
 
   html {
-    @apply scroll-smooth;
+    scroll-behavior: smooth;
+    background-color: var(--color-bg);
   }
 
-  section p {
-    margin-bottom: 1rem;
-    line-height: 1.6;
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    /* Pas de background sur body : il masquerait les éléments en z-index
+       négatif (ex. carte de fond de /contact). html porte déjà la couleur. */
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-accent) 45%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-html {
-  transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: var(--theme-bg);
-}
-body {
-  @apply mx-auto flex h-full max-w-3xl flex-col px-8 pt-16 font-sans text-sm font-normal antialiased;
-  color: var(--theme-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+@layer components {
+  /* Titre avec dégradé violet → cyan */
+  .gradient-text {
+    background: linear-gradient(
+      92deg,
+      var(--color-accent) 0%,
+      var(--color-accent-3) 48%,
+      var(--color-accent-2) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
 
-a, button, input, select {
-  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-}
+  /* Halo lumineux décoratif derrière les blocs héros */
+  .glow {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+    opacity: 0.28;
+    pointer-events: none;
+    z-index: -1;
+  }
 
-.bg-quoteBg {
-  background-color: var(--quote-bg);
-}
-.text-quoteText {
-  color: var(--quote-text);
+  /* Révélation au scroll (IntersectionObserver ajoute .is-visible) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.55s ease,
+      transform 0.55s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }

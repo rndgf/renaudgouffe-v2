@@ -1,234 +1,228 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import { references, platformColor } from "@/data/references";
+import type { Platform, Reference } from "@/data/references";
 
 const year = new Date().getFullYear();
 
 const meta = {
   title: "Références",
   description:
-    "Liste des projets réalisés en freelance et équipe au sein de l'agence Colorz entre 2010 et " +
-    year,
+    "Projets e-commerce réalisés en agence (Colorz) et en freelance entre 2004 et " +
+    year +
+    " : Shopify, Magento, développement web.",
   robots: "noindex, nofollow",
 };
 
-const agences = [
-  { name: "Memoritz", tech: "Shopify / Mirakl", year: "2025" },
-  { name: "Vtwonen", tech: "Shopify / Mirakl", year: "2024" },
-  { name: "Mathon", tech: "Shopify / Mirakl", year: "2024" },
-  { name: "Fleux", tech: "Shopify / Cegid", year: "2023" },
-  { name: "Sabon", tech: "Shopify", year: "2022" },
-  { name: "Le Club Leader Price", tech: "Shopify", year: "2022" },
-  { name: "Chaumet", tech: "Magento 2", year: "2021" },
-  { name: "Redline", tech: "Magento 2", year: "2019" },
-  { name: "Natalys", tech: "Magento / Mirakl", year: "2017" },
-  { name: "Merci Paris", tech: "Magento", year: "2016" },
-  { name: "Make My Lemonade", tech: "Magento", year: "2016" },
-  { name: "Patricia Blanchet", tech: "Magento", year: "2016" },
-  { name: "Rudy's", tech: "Magento", year: "2015" },
-  { name: "The Beautyst", tech: "Magento / Mirakl", year: "2015" },
-  { name: "Hartford", tech: "Magento", year: "2014" },
-  { name: "Colette", tech: "Magento", year: "2012" },
-  { name: "Gemmyo", tech: "Magento", year: "2012" },
-  { name: "émoi-émoi", tech: "Magento", year: "2011" },
-  { name: "émoi-émoi", tech: "Shopify", year: "2020" },
-  { name: "Jimmy Fairly", tech: "Magento", year: "2011" },
-  { name: "Green Republic", tech: "Magento / Marketplace", year: "2010" },
-];
+// Trois ères d'expertise, la plus récente d'abord — même donnée, autre récit.
+function era(r: Reference): "shopify" | "magento" | "web" {
+  if (r.techs.includes("Shopify")) return "shopify";
+  if (r.techs.some((t) => t.startsWith("Magento"))) return "magento";
+  return "web";
+}
 
-const freelance = [
-  { name: "Luzaka", tech: "Magento", year: "2017" },
-  { name: "Luzaka", tech: "Magento 2", year: "2021" },
-  { name: "Harmony Paris", tech: "Magento", year: "2014" },
-  { name: "Christofle", tech: "Magento", year: "2014" },
-  { name: "Skinizi", tech: "Magento", year: "2007" },
-  { name: "Poladdict", tech: "Magento", year: "2012" },
-  { name: "Willemy Charpente", tech: "WordPress", year: "2012" },
-  { name: "Pierre Sancinéna", tech: "WordPress", year: "2009" },
-  { name: "Inédit Joaillier", tech: "Sur-mesure", year: "2008" },
-  { name: "La conspiration", tech: "Sur-mesure", year: "2008" },
-  { name: "Ville de Gravigny", tech: "Sur-mesure", year: "2004" },
-];
+const chapters = [
+  {
+    key: "shopify",
+    title: "Shopify",
+    accent: "var(--color-shopify)",
+    intro:
+      "Migrations, intégrations Mirakl / ERP et checkout sur-mesure — le cœur de mon activité de Solution Architect depuis 2019.",
+    // Logo Shopify — Font Awesome Brands (fa-shopify), CC BY 4.0
+    iconPath:
+      "M388.32,104.1a4.66,4.66,0,0,0-4.4-4c-2,0-37.23-.8-37.23-.8s-21.61-20.82-29.62-28.83V503.2L442.76,472S388.72,106.5,388.32,104.1ZM288.65,70.47a116.67,116.67,0,0,0-7.21-17.61C271,32.85,255.42,22,237,22a15,15,0,0,0-4,.4c-.4-.8-1.2-1.2-1.6-2C223.4,11.63,213,7.63,200.58,8c-24,.8-48,18-67.25,48.83-13.61,21.62-24,48.84-26.82,70.06-27.62,8.4-46.83,14.41-47.23,14.81-14,4.4-14.41,4.8-16,18-1.2,10-38,291.82-38,291.82L307.86,504V65.67a41.66,41.66,0,0,0-4.4.4S297.86,67.67,288.65,70.47ZM233.41,87.69c-16,4.8-33.63,10.4-50.84,15.61,4.8-18.82,14.41-37.63,25.62-50,4.4-4.4,10.41-9.61,17.21-12.81C232.21,54.86,233.81,74.48,233.41,87.69ZM200.58,24.44A27.49,27.49,0,0,1,215,28.04c-6.4,3.2-12.81,8.41-18.81,14.41-15.21,16.42-26.82,42-31.62,66.45-14.42,4.41-28.83,8.81-42,12.81C131.32,83.28,163.35,25.24,200.58,24.44ZM154.15,244.61c1.6,25.61,69.25,31.22,73.25,91.66,2.8,47.64-25.22,80.06-65.65,82.47-48.83,3.2-75.65-25.62-75.65-25.62l10.4-44s26.82,20.42,48.44,18.82c14-.8,19.22-12.41,18.81-20.42-2-33.62-57.24-31.62-60.84-86.86-3.2-46.44,27.22-93.27,94.47-97.68,26-1.6,39.23,4.81,39.23,4.81L221.4,225.79s-17.21-8-37.63-6.4C154.15,221.39,153.75,240.21,154.15,244.61ZM249.42,82.88c0-12-1.6-29.22-7.21-43.63,18.42,3.6,27.22,24,31.23,36.43Q262.63,78.68,249.42,82.88Z",
+    iconViewBox: "0 0 448 512",
+  },
+  {
+    key: "magento",
+    title: "Magento",
+    accent: "var(--color-magento)",
+    intro:
+      "Près de 10 ans de plateformes Magento complexes, en agence comme en freelance. Le socle technique qui a forgé l'architecte.",
+    // Logo Magento — Font Awesome Brands (fa-magento), CC BY 4.0
+    iconPath:
+      "M445.7 127.9V384l-63.4 36.5V164.7L223.8 73.1 65.2 164.7l.4 255.9L2.3 384V128.1L224.2 0l221.5 127.9zM255.6 420.5L224 438.9l-31.8-18.2v-256l-63.3 36.6.1 255.9 94.9 54.9 95.1-54.9v-256l-63.4-36.6v255.9z",
+    iconViewBox: "0 0 448 512",
+  },
+  {
+    key: "web",
+    title: "Premiers projets web",
+    accent: "var(--color-custom)",
+    intro:
+      "WordPress et développements sur-mesure : les projets freelance qui ont lancé le parcours.",
+    iconPath: undefined,
+  },
+].map((c) => {
+  const projects = references
+    .filter((r) => era(r) === c.key)
+    .sort((a, b) => b.year - a.year);
+  const years = projects.map((p) => p.year);
+  return {
+    ...c,
+    projects,
+    count: projects.length,
+    from: Math.min(...years),
+    to: Math.max(...years),
+  };
+});
 
-const techColors = {
-  Shopify: "bg-[#5E8E3E] text-white",
-  Mirakl: "bg-[#10243A] text-white",
-  Magento: "bg-[#ff7200] text-white",
-  Magento2: "bg-[#EB1000] text-white",
-  Symfony: "bg-black text-white",
-  WordPress: "bg-[#3858E9] text-white",
-  "Sur-mesure": "bg-gray-600 text-white", // Ou bg-[#808080] si tu veux du custom
-  Marketplace: "bg-purple-700 text-white", // Ou bg-[#800080] pour du pur violet
-  Cegid: "bg-[#0046FE] text-white",
+// Type de mission porté par la bordure de carte, en très discret :
+// Agence = bordure teintée cyan, Freelance = bordure teintée magenta.
+const borderByType: Record<string, string> = {
+  Agence: "color-mix(in oklab, var(--color-accent-2) 22%, var(--color-line))",
+  Freelance: "color-mix(in oklab, var(--color-accent-3) 32%, var(--color-line))",
 };
 
-function getTechColor(tech) {
-  if (tech.toLowerCase() == "magento") return techColors["Magento"];
-  if (tech.toLowerCase() == "magento 2") return techColors["Magento2"];
-  return techColors[tech] || "background-color: #374151; color: white;";
-}
-
-// Fonction utilitaire pour extraire les années des projets, y compris les plages "2011 → 2013"
-function extractYears(yearStr) {
-  if (!yearStr) return [];
-  if (yearStr.includes("→")) {
-    const [start, end] = yearStr.split("→").map((y) => y.trim());
-    if (start.toLowerCase().startsWith("depuis")) return [];
-    const startYear = parseInt(start, 10);
-    const endYear = parseInt(end, 10);
-    if (isNaN(startYear) || isNaN(endYear)) return [];
-    const years = [];
-    for (let y = startYear; y <= endYear; y++) years.push(y.toString());
-    return years;
-  }
-  if (yearStr.toLowerCase().startsWith("depuis")) {
-    // Prends l'année de départ uniquement
-    const y = yearStr.match(/\d{4}/);
-    return y ? [y[0]] : [];
-  }
-  return [yearStr];
-}
-
-// Regroupement par année pour agences et freelance
-const agencesByYear = {};
-for (const projet of agences) {
-  const years = extractYears(projet.year);
-  years.forEach((y) => {
-    if (!agencesByYear[y]) agencesByYear[y] = [];
-    agencesByYear[y].push(projet);
-  });
-}
-
-const freelanceByYear = {};
-for (const projet of freelance) {
-  const years = extractYears(projet.year);
-  years.forEach((y) => {
-    if (!freelanceByYear[y]) freelanceByYear[y] = [];
-    freelanceByYear[y].push(projet);
-  });
-}
-
-// Années à afficher (toutes années où il y a au moins un projet)
-const allYearsSet = new Set([
-  ...Object.keys(agencesByYear),
-  ...Object.keys(freelanceByYear),
-]);
-const allYears = Array.from(allYearsSet)
-  .map((y) => parseInt(y, 10))
-  .filter((y) => !isNaN(y))
-  .sort((a, b) => b - a);
+// Rôles tenus sur le projet, affichés en toutes lettres en pied de carte.
+const roleLabels: Record<string, { label: string; color: string }> = {
+  architecte: { label: "Architecture", color: "var(--color-accent)" },
+  dev: { label: "Développement", color: "var(--color-accent-2)" },
+};
 ---
 
 <PageLayout meta={meta}>
-  <section
-    class="flex flex-col sm:flex-row items-center bg-accent/10 border border-accent/30 rounded-lg p-8 m-12 max-w-4xl mx-auto gap-6"
-  >
-    <img
-      src="/assets/icons/colorz.svg"
-      alt="Logo Colorz"
-      class="w-24 h-24 object-contain invert brightness-0"
-      loading="lazy"
-    />
-    <div class="text-accent/90 text-base max-w-xl">
-      Les références citées dans la section <strong>Agence</strong> sont des projets
-      réalisés en équipe au sein de l'agence
-      <a
-        href="https://www.colorz.fr"
-        target="_blank"
-        rel="nofollow"
-        class="theme-accent underline hover:no-underline">Colorz</a
-      >
-      entre 2010 et {year}.
+  <section class="mx-auto max-w-5xl px-5">
+    <!-- Entête -->
+    <div class="relative text-center">
+      <div class="glow -top-16 left-1/2 h-56 w-96 -translate-x-1/2 bg-accent"></div>
+      <h1 class="mt-4 font-display text-4xl font-bold sm:text-5xl">
+        <span class="gradient-text">Références</span>
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-muted">
+        Les projets marqués <strong class="text-text">Agence</strong> ont été
+        réalisés en équipe au sein de l'agence
+        <a
+          href="https://www.colorz.fr"
+          target="_blank"
+          rel="nofollow noopener"
+          class="text-accent-2 underline decoration-accent-2/40 underline-offset-4 hover:decoration-accent-2"
+        >Colorz</a>
+        entre 2010 et {year}.
+      </p>
+      <p class="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 font-mono text-xs text-muted">
+        <span class="flex items-center gap-2">
+          <span
+            class="h-3 w-4 rounded-sm border"
+            style={`border-color: ${borderByType.Agence}`}
+            aria-hidden="true"
+          />
+          Agence
+        </span>
+        <span class="flex items-center gap-2">
+          <span
+            class="h-3 w-4 rounded-sm border"
+            style={`border-color: ${borderByType.Freelance}`}
+            aria-hidden="true"
+          />
+          Freelance
+        </span>
+      </p>
     </div>
-  </section>
 
-  <section class="max-w-6xl mx-auto px-4 py-8 space-y-12">
+    <!-- Chapitres -->
     {
-      allYears.map((annee) => {
-        const agenceProjects = agencesByYear[annee] || [];
-        const freelanceProjects = freelanceByYear[annee] || [];
+      chapters.map(({ title, accent, intro, projects, count, from, to, iconPath, iconViewBox }) => (
+        <section class="mt-20 first-of-type:mt-16">
+          <div class="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
+            <!-- Intro de chapitre (sticky sur desktop) -->
+            <header class="md:sticky md:top-24 md:self-start">
+              <p
+                class="font-mono text-xs uppercase tracking-[0.25em]"
+                style={`color: ${accent}`}
+              >
+                {from} → {to}
+              </p>
+              <h2
+                class="mt-3 flex items-center gap-3 font-display text-3xl font-bold text-text sm:text-4xl"
+              >
+                {iconPath && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox={iconViewBox ?? "0 0 24 24"}
+                    class="h-8 w-8 shrink-0 sm:h-9 sm:w-9"
+                    style={`color: ${accent}`}
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d={iconPath} />
+                  </svg>
+                )}
+                {title}
+              </h2>
+              <p class="mt-4 max-w-md text-sm leading-relaxed text-muted sm:text-base">
+                {intro}
+              </p>
+              <p class="mt-6 font-display text-5xl font-bold" style={`color: ${accent}`}>
+                {count}
+                <span class="ml-1 align-middle font-mono text-xs font-normal uppercase tracking-widest text-muted">
+                  projets
+                </span>
+              </p>
+            </header>
 
-        // N'affiche pas l'année si aucun projet
-        if (agenceProjects.length === 0 && freelanceProjects.length === 0) {
-          return null;
-        }
-
-        return (
-          <section key={annee}>
-            <h2 class="text-3xl text-zinc-300/30 font-bold mb-6 border-b border-zinc-300/40 pb-2">
-              {annee}
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Bloc Agence uniquement si projets */}
-              {agenceProjects.length > 0 && (
-                <div>
-                  <h3 class="text-xl font-semibold mb-4 text-accent">Agence</h3>
-                  <ul class="space-y-3">
-                    {agenceProjects.map(({ name, tech, year }) => {
-                      const techBadges = tech
-                        .split(/[\/,]/)
-                        .map((t) => t.trim())
-                        .filter(Boolean);
-                      return (
-                        <li
-                          key={name}
-                          class="flex flex-wrap items-center gap-4"
+            <!-- Projets du chapitre -->
+            <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {projects.map(({ name, year: y, type, techs, tagline, roles }) => (
+                <li
+                  class="reveal group relative flex flex-col justify-between gap-4 overflow-hidden rounded-xl border bg-surface p-5"
+                  style={`--ref-color: ${platformColor[techs[0] as Platform]}; border-color: ${borderByType[type]}`}
+                >
+                  <div
+                    class="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    style="background: linear-gradient(90deg, transparent, var(--ref-color), transparent)"
+                    aria-hidden="true"
+                  />
+                  <div>
+                    <div class="flex items-start justify-between gap-3">
+                      <h3 class="font-display text-xl font-semibold leading-tight text-text">
+                        {name}
+                      </h3>
+                      <span class="shrink-0 font-mono text-xs text-muted">
+                        {y}
+                        <span class="sr-only">— {type}</span>
+                      </span>
+                    </div>
+                    {tagline && (
+                      <p class="mt-1.5 text-xs leading-snug text-muted">
+                        {tagline}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      {techs.map((t) => (
+                        <span
+                          class="rounded border px-2 py-px font-mono text-[0.65rem] uppercase tracking-wide"
+                          style={`color: ${platformColor[t as Platform]}; border-color: color-mix(in oklab, ${platformColor[t as Platform]} 40%, transparent); background: color-mix(in oklab, ${platformColor[t as Platform]} 10%, transparent)`}
                         >
-                          <span class="font-semibold">{name}</span>
-                          <div class="flex flex-wrap gap-1">
-                            {techBadges.map((t) => (
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                    {roles?.length && (
+                      <p class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-line/60 pt-2.5 font-mono text-[0.65rem] text-muted">
+                        {roles.map((role) => {
+                          const { label, color } = roleLabels[role] ?? { label: role, color: "var(--color-muted)" };
+                          return (
+                            <span class="flex items-center gap-1.5">
                               <span
-                                key={t}
-                                class={`${getTechColor(t)} px-2 py-0.5 text-[0.6em] font-mono uppercase rounded`}
-                              >
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-
-              {/* Bloc Freelance uniquement si projets */}
-              {freelanceProjects.length > 0 && (
-                <div>
-                  <h3 class="text-xl font-semibold mb-4 text-accent">
-                    Freelance
-                  </h3>
-                  <ul class="space-y-3">
-                    {freelanceProjects.map(({ name, tech, year }) => {
-                      const techBadges = tech
-                        .split(/[\/,]/)
-                        .map((t) => t.trim())
-                        .filter(Boolean);
-                      return (
-                        <li
-                          key={name}
-                          class="flex flex-wrap items-center gap-4"
-                        >
-                          <span class="font-semibold">{name}</span>
-                          <div class="flex flex-wrap gap-1">
-                            {techBadges.map((t) => (
-                              <span
-                                key={t}
-                                class={`${getTechColor(t)} px-2 py-0.5 text-[0.6em] font-mono uppercase rounded`}
-                              >
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </section>
-        );
-      })
+                                class="h-1.5 w-1.5 rounded-full"
+                                style={`background: ${color}`}
+                                aria-hidden="true"
+                              />
+                              {label}
+                            </span>
+                          );
+                        })}
+                      </p>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ))
     }
   </section>
 </PageLayout>

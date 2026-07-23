@@ -2,9 +2,15 @@
 import { siteConfig } from "@/site.config";
 import "@/styles/global.css";
 
+interface Props {
+  title: string;
+  description?: string | undefined;
+  robots?: string | undefined;
+}
+
 const { title, description, robots } = Astro.props;
-const titleSeparator = "•";
-const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
+const siteTitle = `${title} • ${siteConfig.title}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? siteConfig.url);
 ---
 
 <meta charset="utf-8" />
@@ -18,16 +24,17 @@ const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
 <meta name="title" content={siteTitle} />
 <meta name="description" content={description} />
 {robots && <meta name="robots" content={robots} />}
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={siteTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content={siteConfig.ogLocale} />
+<meta property="og:site_name" content={siteConfig.title} />
 
 <link rel="icon" href="/favicon-32x32.png" type="image/png" />
-<link href="/icons/apple-touch-icon.png" rel="apple-touch-icon" />
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
 <link href="/manifest.webmanifest" rel="manifest" />
 <link rel="sitemap" href="/sitemap-index.xml" />
-
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  integrity="sha512-..."
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>

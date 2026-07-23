@@ -2,31 +2,60 @@
 import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
-  title: "Page introuvable | Consultant Shopify freelance",
+  title: "Page introuvable",
   description:
     "La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil pour continuer votre navigation.",
+  robots: "noindex, nofollow",
 };
+
+const links = [
+  { href: "/", label: "Accueil" },
+  { href: "/references", label: "Références" },
+  { href: "/cv", label: "CV" },
+  { href: "/contact", label: "Contact" },
+];
 ---
 
 <PageLayout meta={meta}>
   <section
-    class="mt-20 max-w-2xl mx-auto px-4 flex flex-col items-center gap-6 text-center font-sans"
+    class="relative mx-auto flex max-w-2xl flex-col items-center gap-6 px-5 pt-10 text-center sm:pt-20"
   >
-    <i class="fas fa-search-minus text-7xl theme-accent mb-6"></i>
+    <div class="glow top-0 left-1/2 h-64 w-96 -translate-x-1/2 bg-accent"></div>
 
-    <h1 class="text-5xl font-extrabold theme-accent">404 – page introuvable</h1>
-
-    <p class="text-lg text-textColor leading-relaxed max-w-md">
-      La page que vous cherchez semble inexistante.<br />
-      Revenez à l’accueil pour reprendre votre navigation.
+    <p
+      class="gradient-text font-display text-[7rem] leading-none font-bold sm:text-[10rem]"
+    >
+      404
     </p>
 
-    <a
-      href="/"
-      aria-label="Retour à la page d'accueil"
-      class="inline-block bg-accent/90 text-white font-semibold px-16 py-5 rounded text-xl transition hover:bg-rose-700/90 hover:scale-105"
-    >
-      Retour à l’accueil
-    </a>
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">
+      Cette page est en rupture de stock
+    </h1>
+    <p class="max-w-md text-muted">
+      L'adresse demandée n'existe pas ou a été déplacée.
+      Tout le reste du catalogue est disponible :
+    </p>
+
+    <nav class="mt-4 flex flex-wrap items-center justify-center gap-3" aria-label="Pages du site">
+      {
+        links.map(({ href, label }, i) =>
+          i === 0 ? (
+            <a
+              href={href}
+              class="rounded-lg bg-gradient-to-r from-accent via-accent-3 to-accent-2 px-6 py-3 font-display font-semibold text-bg transition-transform hover:scale-[1.03]"
+            >
+              {label}
+            </a>
+          ) : (
+            <a
+              href={href}
+              class="rounded-lg border border-line px-5 py-3 font-display font-medium text-text transition-colors hover:border-accent-2 hover:text-accent-2"
+            >
+              {label}
+            </a>
+          ),
+        )
+      }
+    </nav>
   </section>
 </PageLayout>

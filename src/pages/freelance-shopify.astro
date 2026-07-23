@@ -3,79 +3,136 @@ import PageLayout from "@/layouts/Base.astro";
 import Contact from "@/components/Contact.astro";
 
 const meta = {
-  title: "Consultant freelance Shopify – Développeur expert e-commerce",
+  title: "Freelance Shopify — expertise technique et architecture e-commerce",
   description:
-    "Consultant freelance Shopify pour création, développement personnalisé, optimisation et maintenance de boutiques performantes.",
+    "Freelance Shopify depuis 2021 : création de boutique, Shopify Functions, UI Extensions, checkout personnalisé, intégrations ERP / PIM / logistique, audit et maintenance.",
 };
+
+const services = [
+  {
+    category: "Création",
+    title: "Une boutique Shopify solide dès le départ",
+    text: "Conception et développement de votre boutique : thème sur-mesure, structure de catalogue, parcours d'achat aligné avec votre marque.",
+    color: "var(--color-shopify)",
+    icon: "M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z",
+  },
+  {
+    category: "Fonctionnalités avancées",
+    title: "Au-delà des limites du thème",
+    text: "Apps sur-mesure, Shopify Functions, UI Extensions, checkout personnalisé, promotions complexes : ce que l'admin ne permet pas, le code le permet — dans le cadre supporté par Shopify.",
+    color: "var(--color-accent-3)",
+    icon: "M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.28z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
+  },
+  {
+    category: "Intégrations",
+    title: "Shopify connecté à vos outils",
+    text: "Synchronisation avec votre ERP, PIM, CRM ou votre logistique : flux produits, stocks, commandes et clients fiabilisés et automatisés.",
+    color: "var(--color-accent)",
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+  },
+  {
+    category: "Audit & maintenance",
+    title: "Un site qui reste rapide et sain",
+    text: "Audit de l'existant, correction des points de friction, suivi technique et évolutions continues de votre boutique.",
+    color: "var(--color-accent-2)",
+    icon: "M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085",
+  },
+];
 ---
 
 <PageLayout meta={meta}>
-  {/* Hero */}
-  <section
-    class="text-center mt-8 font-sans max-w-4xl mx-auto px-4 flex flex-col gap-6"
-  >
-    <h1 class="text-4xl font-extrabold text-accent">Consultant freelance</h1>
-    <p class="text-lg text-textColor max-w-2xl mx-auto">
-      Boostez votre boutique en ligne avec un expert Shopify qui crée, optimise
-      et personnalise votre e-commerce pour maximiser vos ventes.
+  <!-- Hero -->
+  <section class="relative mx-auto max-w-3xl px-5 pt-8 text-center sm:pt-14">
+    <div class="glow -top-14 left-1/2 h-64 w-96 -translate-x-1/2 bg-shopify"></div>
+
+    <p class="font-mono text-xs uppercase tracking-[0.3em] text-shopify">
+      Depuis 2021 · 20 ans de code
     </p>
-    <img
-      src="/assets/icons/shopify.svg"
-      alt="Logo Colorz"
-      class="h-22 object-contain"
-      loading="lazy"
-    />
+    <h1 class="mt-6 font-display text-4xl font-bold sm:text-5xl">
+      Freelance <span class="gradient-text">Shopify</span>
+    </h1>
+    <p class="mx-auto mt-6 max-w-2xl text-lg text-muted">
+      Un <strong class="text-text">Architecte Solutions Shopify</strong> qui met
+      les mains dans le code : la vision d'architecture pour bien décider,
+      <strong class="text-text">20 ans de développement</strong> pour bien
+      construire — création, fonctionnalités avancées, intégrations,
+      maintenance.
+    </p>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="/contact"
+        class="rounded-lg bg-gradient-to-r from-accent via-accent-3 to-accent-2 px-6 py-3 font-display font-semibold text-bg transition-transform hover:scale-[1.03]"
+      >
+        Parlons de votre boutique
+      </a>
+      <a
+        href="/references"
+        class="rounded-lg border border-line px-6 py-3 font-display font-medium text-text transition-colors hover:border-accent-2 hover:text-accent-2"
+      >
+        Voir mes références →
+      </a>
+    </div>
   </section>
 
-  {/* Services Grid */}
-  <section
-    class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto mt-16 px-4 font-sans"
-  >
-    {
-      [
-        {
-          category: "Création",
-          title: "Boutiques Shopify sur mesure",
-          text: "Développement et configuration de boutiques performantes, ergonomiques et alignées avec votre marque.",
-          icon: "fas fa-store",
-        },
-        {
-          category: "Personnalisation",
-          title: "Fonctionnalités avancées",
-          text: "Shopify Functions, UI Extensions, scripts et checkout personnalisé pour une expérience unique.",
-          icon: "fas fa-cogs",
-        },
-        {
-          category: "Intégrations",
-          title: "Connecteurs sur mesure",
-          text: "Synchronisation avec CRM, ERP, marketing, logistique pour automatiser et fiabiliser vos process.",
-          icon: "fas fa-plug",
-        },
-        {
-          category: "Support",
-          title: "Maintenance & optimisation",
-          text: "Amélioration des performances, suivi technique et évolutions pour garder votre boutique toujours à jour.",
-          icon: "fas fa-tools",
-        },
-      ].map(({ category, title, text, icon }) => (
-        <div
-          class="group relative flex flex-col gap-4 p-6 rounded border bg-darkBgLight/30 border-zinc-700"
-          tabindex="0"
-          role="group"
-          aria-label={title}
-        >
-          <div class="flex items-center justify-between">
-            <span class="font-mono text-xs uppercase tracking-wide text-accent">
-              {category}
-            </span>
-            <i class={`${icon} text-zinc-400/50 text-2xl`} />
-          </div>
+  <!-- Services -->
+  <section class="mx-auto mt-20 max-w-4xl px-5">
+    <h2 class="sr-only">Services freelance Shopify</h2>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {
+        services.map(({ category, title, text, icon, color }) => (
+          <article
+            class="reveal group relative overflow-hidden rounded-2xl border border-line bg-surface p-7 transition-colors duration-300 hover:bg-surface-2"
+            style={`--card-color: ${color}`}
+          >
+            <div
+              class="absolute inset-x-0 top-0 h-px opacity-40 transition-opacity duration-300 group-hover:opacity-100"
+              style="background: linear-gradient(90deg, transparent, var(--card-color), transparent)"
+            />
+            <div class="flex items-center justify-between">
+              <span
+                class="font-mono text-xs uppercase tracking-widest"
+                style="color: var(--card-color)"
+              >
+                {category}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-7 w-7 opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+                style="color: var(--card-color)"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d={icon} />
+              </svg>
+            </div>
+            <h3 class="mt-5 font-display text-xl font-bold text-text">
+              {title}
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">{text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
 
-          <h3 class="text-xl font-bold text-zinc-100">{title}</h3>
-          <p class="text-sm text-zinc-400">{text}</p>
-        </div>
-      ))
-    }
+  <!-- Réassurance -->
+  <section class="reveal relative mx-auto mt-20 max-w-3xl px-5 text-center">
+    <div class="glow left-1/2 top-0 h-40 w-80 -translate-x-1/2 bg-shopify"></div>
+    <p class="text-lg leading-relaxed text-muted sm:text-xl">
+      Freelance Shopify depuis 2021, développeur depuis 20 ans.
+      En parallèle de mon poste de
+      <strong class="text-text">Architecte Solutions Shopify</strong> en agence,
+      j'accompagne en direct des marchands sur des missions ciblées —
+      voir les projets marqués
+      <a
+        href="/references"
+        class="text-accent-3 underline decoration-accent-3/40 underline-offset-4 transition-colors hover:decoration-accent-3"
+      >Freelance</a>
+      dans mes références.
+    </p>
   </section>
 
   <Contact />

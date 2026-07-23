@@ -3,104 +3,172 @@ import PageLayout from "@/layouts/Base.astro";
 import Contact from "@/components/Contact.astro";
 
 const currentYear = new Date().getFullYear();
-const yearOfStartingFreelancing = 2005;
-const yearsOfExperience = currentYear - yearOfStartingFreelancing;
+const yearsOfExperience = currentYear - 2005;
+
+const services = [
+  {
+    category: "Migration",
+    title: "Migrer vers Shopify sans régression",
+    text: "Cadrage, architecture cible, reprise de données et plan de bascule : je sécurise le passage depuis Magento ou toute plateforme legacy, jusqu'au go-live.",
+    color: "var(--color-accent-2)",
+    icon: "M8 7h12m0 0l-4-4m4 4l-4 4M16 17H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    category: "Architecture d'intégration",
+    title: "Shopify au cœur de votre SI",
+    text: "Conception des flux entre Shopify et votre système d'information : ERP, PIM, OMS, marketplace Mirakl. Middleware sur-mesure quand les connecteurs du marché ne suffisent pas.",
+    color: "var(--color-accent)",
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+  },
+  {
+    category: "Expertise plateforme",
+    title: "Exploiter tout le potentiel de Shopify",
+    text: "Apps sur-mesure, Shopify Functions, UI Extensions, checkout, B2B, storefront headless : je connais les limites de la plateforme et comment les repousser en restant dans le cadre supporté.",
+    color: "var(--color-accent-3)",
+    icon: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z",
+  },
+  {
+    category: "Audit & conseil",
+    title: "Un regard d'architecte sur votre stack",
+    text: "Audit technique, revue d'architecture, arbitrages build vs buy. J'interviens aussi en renfort de vos équipes internes ou de votre agence.",
+    color: "var(--color-shopify)",
+    icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
+  },
+];
 ---
 
 <PageLayout
-  meta={{ title: "Consultant technique e-commerce et développeur Shopify" }}
+  meta={{
+    title:
+      "Architecte Solutions Shopify — architecture e-commerce et intégrations",
+  }}
 >
-  <!-- Introduction -->
-  <section
-    class="mt-8 px-4 text-center font-sans flex flex-col gap-6 max-w-screen-md mx-auto"
-  >
-    <h1 class="text-4xl sm:text-5xl font-extrabold text-accent">
-      Consultant Shopify<br />Architecte e-commerce<br />Développeur senior
+  <!-- Hero -->
+  <section class="relative mx-auto max-w-5xl px-5 pt-12 text-center sm:pt-20">
+    <div class="glow -top-20 left-1/4 h-72 w-72 bg-accent"></div>
+    <div class="glow -top-10 right-1/4 h-72 w-72 bg-accent-2"></div>
+
+    <p class="font-mono text-xs uppercase tracking-[0.3em] text-accent-2">
+      Rouen · Paris · Remote
+    </p>
+
+    <h1
+      class="mt-6 font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl"
+    >
+      Architecte Solutions & Développeur<br />
+      <span class="gradient-text">Shopify</span>
     </h1>
 
-    <p class="text-lg text-textColor">
-      J’accompagne les e-commerçants dans leurs projets Shopify :<br />
-      <strong>migration vers Shopify</strong>, <strong
-        >développement spécifique</strong
-      >,
-      <strong>Shopify Functions</strong>, <strong>UI Extensions</strong>, <strong
-        >checkout personnalisé</strong
-      >...
+    <p
+      class="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-xs tracking-wide text-muted uppercase sm:text-sm"
+    >
+      <span class="whitespace-nowrap">Architecture e-commerce</span>
+      <span aria-hidden="true">·</span>
+      <span class="whitespace-nowrap">Intégrations SI</span>
+      <span aria-hidden="true">·</span>
+      <span class="whitespace-nowrap">Développement web</span>
     </p>
+
+    <p class="mx-auto mt-8 max-w-2xl text-lg text-muted">
+      J'aide les e-commerçants à prendre les bonnes décisions techniques sur
+      Shopify : <strong class="text-text">migration</strong>,
+      <strong class="text-text">architecture d'intégration</strong> (ERP, PIM, OMS,
+      Mirakl) et
+      <strong class="text-text">développement sur toute la plateforme</strong> —
+      apps sur-mesure, Functions, extensions, checkout, storefront headless. Des
+      décisions que je sais aussi implémenter :
+      <strong class="text-text">20 ans de code</strong> derrière chaque arbitrage.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="/contact"
+        class="rounded-lg bg-gradient-to-r from-accent via-accent-3 to-accent-2 px-6 py-3 font-display font-semibold text-bg transition-transform hover:scale-[1.03]"
+      >
+        Discutons de votre projet
+      </a>
+      <a
+        href="/references"
+        class="rounded-lg border border-line px-6 py-3 font-display font-medium text-text transition-colors hover:border-accent-2 hover:text-accent-2"
+      >
+        Voir mes références →
+      </a>
+    </div>
   </section>
 
   <!-- Services -->
-  <section
-    class="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-16 px-4 font-sans max-w-screen-md mx-auto"
-  >
-    {
-      [
-        {
-          category: "Migration",
-          title: "Passez à Shopify sans stress",
-          text: "Reprise de données, architecture adaptée et accompagnement jusqu’au go-live.",
-          icon: "fas fa-random",
-        },
-        {
-          category: "Intégrations",
-          title: "Des outils qui communiquent",
-          text: "Connecteurs sur-mesure entre Shopify et votre système d'information (ERP, PIM, OMS, Mirakl).",
-          icon: "fas fa-plug",
-        },
-        {
-          category: "Personnalisation",
-          title: "Un checkout qui vous ressemble",
-          text: "Shopify Functions, promotions avancées, UI Extensions. Offrez une expérience d’achat sur-mesure à vos clients.",
-          icon: "fas fa-shopping-cart",
-        },
-        {
-          category: "Support technique",
-          title: "Un regard expert sur votre site",
-          text: "Audit, refonte, support technique et montée en qualité. J’interviens également en support de vos équipes internes.",
-          icon: "fas fa-tools",
-        },
-      ].map(({ category, title, text, icon }) => (
-        <div
-          class="group relative flex flex-col gap-4 p-6 rounded border bg-darkBgLight/30 border-zinc-700"
-          tabindex="0"
-          role="group"
-          aria-label={title}
+  <section class="mx-auto mt-24 max-w-4xl px-5">
+    <h2 class="sr-only">Services</h2>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {
+        services.map(({ category, title, text, icon, color }) => (
+          <article
+            class="reveal group relative overflow-hidden rounded-2xl border border-line bg-surface p-7 transition-colors duration-300 hover:bg-surface-2"
+            style={`--card-color: ${color}`}
+          >
+            <div
+              class="absolute inset-x-0 top-0 h-px opacity-40 transition-opacity duration-300 group-hover:opacity-100"
+              style="background: linear-gradient(90deg, transparent, var(--card-color), transparent)"
+            />
+            <div class="flex items-center justify-between">
+              <span
+                class="font-mono text-xs uppercase tracking-widest"
+                style="color: var(--card-color)"
+              >
+                {category}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-7 w-7 opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+                style="color: var(--card-color)"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d={icon} />
+              </svg>
+            </div>
+            <h3 class="mt-5 font-display text-xl font-bold text-text">
+              {title}
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">{text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Bio / Confiance -->
+  <section class="reveal relative mx-auto mt-24 max-w-3xl px-5 text-center">
+    <div class="glow left-1/2 top-0 h-40 w-80 -translate-x-1/2 bg-accent-3">
+    </div>
+    <div class="text-lg leading-relaxed text-muted sm:text-xl">
+      <p>
+        <span class="gradient-text font-display text-2xl font-bold"
+          >{yearsOfExperience} ans</span
         >
-          <div class="flex items-center justify-between">
-            <span class="font-mono text-xs uppercase tracking-wide text-accent">
-              {category}
-            </span>
-            <i class={`${icon} text-zinc-400/50 text-2xl`} />
-          </div>
-
-          <h3 class="text-xl font-bold text-zinc-100">{title}</h3>
-          <p class="text-sm text-zinc-400">{text}</p>
-        </div>
-      ))
-    }
+        d'e-commerce : près de 10 ans d'architecture
+        <strong class="text-text">Magento</strong>, puis
+        <strong class="text-text">Shopify</strong> depuis 2019 — au sein de l'agence
+        <a
+          href="https://www.colorz.fr"
+          target="_blank"
+          rel="nofollow noopener"
+          class="text-accent-2 underline decoration-accent-2/40 underline-offset-4 transition-colors hover:decoration-accent-2"
+        >
+          Colorz
+        </a> comme en freelance.
+      </p>
+      <p class="mt-6">
+        Développeur depuis 20 ans,
+        <strong class="text-text">Architecte Solutions Shopify</strong> depuis 2022
+        : je cadre, je conçois, j'arbitre — et je mets encore les mains dans le code
+        quand le projet l'exige.
+      </p>
+    </div>
   </section>
 
-  <!-- Citation / Confiance -->
-  <section
-    class="mt-16 max-w-screen-md mx-auto rounded-lg font-serif italic text-xl text-center"
-  >
-    <p class="mb-4">
-      « Mon expertise, forgée en freelance et au sein de l’agence
-      <a
-        href="https://www.colorz.fr"
-        target="_blank"
-        rel="nofollow"
-        class="underline text-accent hover:text-accent2"
-      >
-        Colorz
-      </a>, repose sur une compréhension approfondie des enjeux techniques et
-      métiers pour garantir la réussite de vos projets e-commerce.
-    </p>
-    <p>
-      Fort de plus de {yearsOfExperience} ans d’expérience, j’accompagne aujourd’hui
-      de nombreux clients en tant que <strong>Solution Architect Shopify</strong
-      > et <strong>Senior Lead Developer</strong>. »
-    </p>
-  </section>
   <Contact />
 </PageLayout>

@@ -1,25 +1,67 @@
 ---
-const url = new URL(Astro.request.url);
+const pathname = new URL(Astro.request.url).pathname.replace(/\/$/, "") || "/";
+
+const links = [
+  { href: "/references", label: "Références" },
+  { href: "/cv", label: "CV" },
+];
 ---
 
-<header
-  id="main-header"
-  class="group relative mb-6 flex w-full flex-col items-center"
->
-  <div class="flex flex-col items-center text-center">
-    <a
-      href="/"
-      class="inline-flex flex-col items-center text-center hover:opacity-100"
-      aria-current={url.pathname === "/" ? "page" : false}
+<header class="fixed inset-x-0 top-0 z-40">
+  <div
+    class="border-b border-line/70 bg-bg/80 backdrop-blur-md"
+  >
+    <nav
+      class="mx-auto flex h-16 max-w-5xl items-center justify-center gap-2 px-4 sm:justify-between sm:px-5"
+      aria-label="Navigation principale"
     >
-      <span
-        class="text-4xl font-bold tracking-tight text-zinc-200 font-montserrat sm:text-5xl"
+      <a
+        href="/"
+        class="group flex flex-col items-center justify-center text-center"
+        aria-current={pathname === "/" ? "page" : undefined}
       >
-        RNDGF
-      </span>
-      <span class="mt-1 text-xs font-mono text-zinc-400 tracking-wide">
-        renaud gouffé
-      </span>
-    </a>
+        <span
+          class="font-display text-2xl leading-tight font-bold tracking-tight text-text transition-colors group-hover:text-accent-2 sm:text-lg"
+        >
+          RNDGF
+        </span>
+        <span
+          class="font-mono text-[0.7rem] leading-none tracking-widest text-muted sm:text-[0.6rem]"
+        >
+          renaud gouffé
+        </span>
+      </a>
+
+      <div class="hidden shrink-0 items-center gap-0.5 sm:flex sm:gap-2">
+        {
+          links.map(({ href, label }) => (
+            <a
+              href={href}
+              aria-current={pathname === href ? "page" : undefined}
+              class:list={[
+                "rounded-md px-3 py-2 text-sm transition-colors",
+                pathname === href
+                  ? "gradient-text font-semibold"
+                  : "text-muted hover:text-text",
+              ]}
+            >
+              {label}
+            </a>
+          ))
+        }
+        <a
+          href="/contact"
+          aria-current={pathname === "/contact" ? "page" : undefined}
+          class:list={[
+            "ml-1 rounded-md border px-3 py-2 text-sm font-medium text-text transition-colors sm:ml-2",
+            pathname === "/contact"
+              ? "border-accent bg-accent/15"
+              : "border-accent/50 hover:border-accent hover:bg-accent/15",
+          ]}
+        >
+          Contact
+        </a>
+      </div>
+    </nav>
   </div>
 </header>
