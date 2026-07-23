@@ -71,12 +71,7 @@ export const cvSections: CvSection[] = [
   {
     category: "Expériences freelance",
     events: [
-      {
-        date: "Depuis 2021",
-        title: "Freelance Shopify",
-        logo: "/assets/icons/shopify.svg",
-        logoClass: "h-7",
-      },
+      { date: "Depuis 2021", title: "Freelance Shopify" },
       { date: "Depuis 2009", title: "Freelance Magento" },
       { date: "Depuis 2005", title: "Freelance en développement web" },
     ],
