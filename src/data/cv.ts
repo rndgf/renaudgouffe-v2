@@ -21,7 +21,7 @@ export const cvSections: CvSection[] = [
         date: "Depuis 2020",
         title: "Colorz",
         roles: [
-          "Solution Architect Shopify",
+          "Architecte Solutions Shopify",
           "Senior Technical Consultant",
           "Senior Lead Developer",
         ],
