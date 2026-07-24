@@ -167,13 +167,12 @@ const roleLabels: Record<string, { label: string; color: string }> = {
             <!-- Projets du chapitre -->
             <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {projects.map(({ name, year: y, type, techs, tagline, roles }) => {
-                // Le tag de la plateforme du chapitre est redondant : on ne
-                // montre que les technologies différenciantes (Mirakl,
-                // Magento 2, Cegid…). Le chapitre « Projets web » garde tout.
+                // Chapitre Shopify : le tag SHOPIFY est redondant, on ne
+                // montre que les technologies différenciantes (Mirakl, Cegid…).
+                // Chapitre Magento : MAGENTO et MAGENTO 2 restent, la version
+                // distingue les projets. Projets web : tout reste.
                 const visibleTechs = techs.filter(
-                  (t) =>
-                    !(key === "shopify" && t === "Shopify") &&
-                    !(key === "magento" && t === "Magento"),
+                  (t) => !(key === "shopify" && t === "Shopify"),
                 );
                 return (
                 <li
