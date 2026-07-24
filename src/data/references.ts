@@ -314,15 +314,6 @@ export const references: Reference[] = [
     roles: ["dev", "design"],
   },
   {
-    name: "Université de Rouen",
-    year: 2001,
-    type: "Freelance",
-    techs: ["Sur-mesure"],
-    tagline:
-      "Intranet du service informatique de la faculté de lettres & sciences humaines",
-    roles: ["dev", "design"],
-  },
-  {
     name: "Principe Actif",
     year: 2002,
     type: "Freelance",
