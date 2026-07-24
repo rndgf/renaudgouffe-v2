@@ -40,7 +40,7 @@ export const references: Reference[] = [
   { name: "Mathon", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Ustensiles et matériel de cuisine", roles: ["architecte", "dev"] },
   { name: "Fleux", year: 2023, type: "Agence", techs: ["Shopify", "Cegid"], tagline: "Concept store déco du Marais", roles: ["architecte", "dev"] },
   { name: "Sabon", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "Savons et cosmétiques", roles: ["architecte", "dev"] },
-  { name: "Le Club Leader Price", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "L'enseigne discount en ligne", roles: ["architecte", "dev"] },
+  { name: "Le Club Leader Price", year: 2022, type: "Agence", techs: ["Shopify"], tagline: "L'enseigne discount en ligne", roles: ["dev"] },
   { name: "Chaumet", year: 2021, type: "Agence", techs: ["Magento 2"], tagline: "Haute joaillerie, place Vendôme", roles: ["dev"] },
   { name: "Luzaka", year: 2021, type: "Freelance", techs: ["Magento 2"], tagline: "Bijoux fantaisie et montres", roles: ["dev"] },
   { name: "émoi-émoi", year: 2020, type: "Agence", techs: ["Shopify"], tagline: "Mode pour mamans et enfants", roles: ["dev"] },
