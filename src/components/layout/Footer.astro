@@ -2,15 +2,16 @@
 const year = new Date().getFullYear();
 ---
 
+<!-- En mobile, la tab bar porte la navigation : le footer se réduit au copyright. -->
 <footer class="mt-24 mb-20 border-t border-line/70 sm:mb-0">
   <div
-    class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-5 py-8 text-sm text-muted sm:flex-row"
+    class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-5 py-5 text-sm text-muted sm:flex-row sm:py-8"
   >
-    <div>
+    <div class="text-xs sm:text-sm">
       &copy; {year} —
       <span class="font-display font-semibold tracking-wide text-text">RNDGF</span>
     </div>
-    <nav class="flex flex-wrap gap-5" aria-label="Navigation pied de page">
+    <nav class="hidden flex-wrap gap-5 sm:flex" aria-label="Navigation pied de page">
       <a href="/references" class="transition-colors hover:text-text">Références</a>
       <a href="/cv" class="transition-colors hover:text-text">CV</a>
       <a href="/contact" class="transition-colors hover:text-text">Contact</a>
