@@ -34,7 +34,7 @@ export const references: Reference[] = [
   // Taglines = la marque ou le site en quelques mots (pas la mission).
   // Celles marquées « à vérifier » n'ont pas pu être confirmées.
   { name: "clm.ink", year: 2026, type: "Freelance", techs: ["Astro", "Tailwind"], tagline: "Salon de tatouage à Chambéry", roles: ["dev", "design"] },
-  { name: "Showroomprivé", year: 2026, type: "Agence", techs: ["Shopify"], tagline: "Ventes privées en ligne", roles: ["architecte"] },
+  { name: "Showroomprivé", year: 2026, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Ventes privées en ligne", roles: ["architecte"] },
   { name: "Memoritz", year: 2025, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Photographie scolaire en ligne", roles: ["architecte", "dev"] },
   { name: "Vtwonen", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Déco & maison, marque néerlandaise", roles: ["architecte", "dev"] },
   { name: "Mathon", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Ustensiles et matériel de cuisine", roles: ["architecte", "dev"] },
