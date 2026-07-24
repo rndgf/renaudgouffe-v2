@@ -13,7 +13,7 @@ export type Platform =
   | "Tailwind";
 
 /** Rôles tenus sur le projet (pastilles A / D sur les cartes). */
-export type Role = "architecte" | "dev";
+export type Role = "architecte" | "dev" | "design";
 
 export interface Reference {
   name: string;
@@ -33,7 +33,7 @@ export interface Reference {
 export const references: Reference[] = [
   // Taglines = la marque ou le site en quelques mots (pas la mission).
   // Celles marquées « à vérifier » n'ont pas pu être confirmées.
-  { name: "clm.ink", year: 2026, type: "Freelance", techs: ["Astro", "Tailwind"], tagline: "Salon de tatouage à Chambéry", roles: ["dev"] },
+  { name: "clm.ink", year: 2026, type: "Freelance", techs: ["Astro", "Tailwind"], tagline: "Salon de tatouage à Chambéry", roles: ["dev", "design"] },
   { name: "Showroomprivé", year: 2026, type: "Agence", techs: ["Shopify"], tagline: "Ventes privées en ligne", roles: ["architecte"] },
   { name: "Memoritz", year: 2025, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Photographie scolaire en ligne", roles: ["architecte", "dev"] },
   { name: "Vtwonen", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Déco & maison, marque néerlandaise", roles: ["architecte", "dev"] },
@@ -57,16 +57,16 @@ export const references: Reference[] = [
   { name: "Christofle", year: 2014, type: "Freelance", techs: ["Magento"], tagline: "Orfèvrerie et arts de la table", roles: ["dev"] },
   { name: "Colette", year: 2012, type: "Agence", techs: ["Magento"], tagline: "Concept store légendaire, rue Saint-Honoré", roles: ["dev"] },
   { name: "Gemmyo", year: 2012, type: "Agence", techs: ["Magento"], tagline: "Joaillerie française nouvelle génération", roles: ["dev"] },
-  { name: "Poladdict", year: 2012, type: "Freelance", techs: ["Magento"], tagline: "Tirages photo façon polaroid", roles: ["dev"] },
-  { name: "Willemy Charpente", year: 2012, type: "Freelance", techs: ["WordPress"], tagline: "Artisan charpentier", roles: ["dev"] },
+  { name: "Poladdict", year: 2012, type: "Freelance", techs: ["Magento"], tagline: "Tirages photo façon polaroid", roles: ["dev", "design"] },
+  { name: "Willemy Charpente", year: 2012, type: "Freelance", techs: ["WordPress"], tagline: "Artisan charpentier", roles: ["dev", "design"] },
   { name: "émoi-émoi", year: 2011, type: "Agence", techs: ["Magento"], tagline: "Mode pour mamans et enfants", roles: ["dev"] },
   { name: "Jimmy Fairly", year: 2011, type: "Agence", techs: ["Magento"], tagline: "Lunetterie parisienne", roles: ["dev"] },
   { name: "Green Republic", year: 2010, type: "Agence", techs: ["Magento", "Marketplace"], tagline: "Marketplace de produits bio et équitables", roles: ["dev"] },
-  { name: "Pierre Sancinéna", year: 2009, type: "Freelance", techs: ["WordPress"], tagline: "Pilote de Formule 4", roles: ["dev"] },
-  { name: "Inédit Joaillier", year: 2008, type: "Freelance", techs: ["Sur-mesure"], tagline: "Joaillier indépendant", roles: ["dev"] }, // à vérifier
-  { name: "La conspiration", year: 2008, type: "Freelance", techs: ["Sur-mesure"], tagline: "Groupe de musique local", roles: ["dev"] },
-  { name: "Skinizi", year: 2007, type: "Freelance", techs: ["Magento"], tagline: "Skins et stickers pour ordinateurs et mobiles", roles: ["dev"] },
-  { name: "Ville de Gravigny", year: 2004, type: "Freelance", techs: ["Sur-mesure"], tagline: "Commune de l'Eure", roles: ["dev"] },
+  { name: "Pierre Sancinéna", year: 2009, type: "Freelance", techs: ["WordPress"], tagline: "Pilote de Formule 4", roles: ["dev", "design"] },
+  { name: "Inédit Joaillier", year: 2008, type: "Freelance", techs: ["Sur-mesure"], tagline: "Joaillier indépendant", roles: ["dev", "design"] }, // à vérifier
+  { name: "La conspiration", year: 2008, type: "Freelance", techs: ["Sur-mesure"], tagline: "Groupe de musique local", roles: ["dev", "design"] },
+  { name: "Skinizi", year: 2007, type: "Freelance", techs: ["Magento"], tagline: "Skins et stickers pour ordinateurs et mobiles", roles: ["dev", "design"] },
+  { name: "Ville de Gravigny", year: 2004, type: "Freelance", techs: ["Sur-mesure"], tagline: "Commune de l'Eure", roles: ["dev", "design"] },
 ];
 
 /** Couleur CSS (token du thème) associée à chaque plateforme. */
