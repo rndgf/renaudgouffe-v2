@@ -165,7 +165,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
             </header>
 
             <!-- Projets du chapitre -->
-            <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <ul class="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               {projects.map(({ name, year: y, type, techs, tagline, roles }) => {
                 // Chapitre Shopify : le tag SHOPIFY est redondant, on ne
                 // montre que les technologies différenciantes (Mirakl, Cegid…).
@@ -176,7 +176,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
                 );
                 return (
                 <li
-                  class="reveal group relative flex flex-col justify-between gap-4 overflow-hidden rounded-xl border bg-surface p-5"
+                  class="reveal group relative flex flex-col justify-between gap-2 overflow-hidden rounded-lg border bg-surface p-3.5"
                   style={`--ref-color: ${platformColor[techs[0] as Platform]}; border-color: ${borderByType[type]}`}
                 >
                   <div
@@ -186,7 +186,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
                   />
                   <div>
                     <div class="flex items-start justify-between gap-3">
-                      <h3 class="font-display text-xl font-semibold leading-tight text-text">
+                      <h3 class="font-display text-base font-semibold leading-tight text-text">
                         {name}
                       </h3>
                       <span class="shrink-0 font-mono text-xs text-muted">
@@ -195,7 +195,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
                       </span>
                     </div>
                     {tagline && (
-                      <p class="mt-1.5 text-xs leading-snug text-muted">
+                      <p class="mt-1 text-xs leading-snug text-muted">
                         {tagline}
                       </p>
                     )}
@@ -205,7 +205,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
                       <div class="flex flex-wrap items-center gap-1.5">
                         {visibleTechs.map((t) => (
                           <span
-                            class="rounded border px-2 py-px font-mono text-[0.65rem] uppercase tracking-wide"
+                            class="rounded border px-1.5 py-px font-mono text-[0.6rem] uppercase tracking-wide"
                             style={`color: ${platformColor[t as Platform]}; border-color: color-mix(in oklab, ${platformColor[t as Platform]} 40%, transparent); background: color-mix(in oklab, ${platformColor[t as Platform]} 10%, transparent)`}
                           >
                             {t}
@@ -214,7 +214,7 @@ const roleLabels: Record<string, { label: string; color: string }> = {
                       </div>
                     )}
                     {roles?.length && (
-                      <p class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-line/60 pt-2.5 font-mono text-[0.65rem] text-muted">
+                      <p class="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line/60 pt-1.5 font-mono text-[0.6rem] text-muted">
                         {roles.map((role) => {
                           const { label, color } = roleLabels[role] ?? { label: role, color: "var(--color-muted)" };
                           return (
