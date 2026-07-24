@@ -8,7 +8,9 @@ export type Platform =
   | "Mirakl"
   | "Cegid"
   | "Marketplace"
-  | "Sur-mesure";
+  | "Sur-mesure"
+  | "Astro"
+  | "Tailwind";
 
 /** Rôles tenus sur le projet (pastilles A / D sur les cartes). */
 export type Role = "architecte" | "dev";
@@ -31,6 +33,7 @@ export interface Reference {
 export const references: Reference[] = [
   // Taglines = la marque ou le site en quelques mots (pas la mission).
   // Celles marquées « à vérifier » n'ont pas pu être confirmées.
+  { name: "clm.ink", year: 2026, type: "Freelance", techs: ["Astro", "Tailwind"], tagline: "Salon de tatouage à Chambéry", roles: ["dev"] },
   { name: "Showroomprivé", year: 2026, type: "Agence", techs: ["Shopify"], tagline: "Ventes privées en ligne", roles: ["architecte"] },
   { name: "Memoritz", year: 2025, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Photographie scolaire en ligne", roles: ["architecte", "dev"] },
   { name: "Vtwonen", year: 2024, type: "Agence", techs: ["Shopify", "Mirakl"], tagline: "Déco & maison, marque néerlandaise", roles: ["architecte", "dev"] },
@@ -76,4 +79,6 @@ export const platformColor: Record<Platform, string> = {
   Cegid: "var(--color-cegid)",
   Marketplace: "var(--color-custom)",
   "Sur-mesure": "var(--color-custom)",
+  Astro: "#ff7d54", /* orange Astro éclairci */
+  Tailwind: "#38bdf8", /* cyan Tailwind */
 };
