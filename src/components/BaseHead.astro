@@ -1,6 +1,10 @@
 ---
 import { siteConfig } from "@/site.config";
 import "@/styles/global.css";
+// Préchargement des deux fontes critiques (titre + corps) : supprime le
+// décalage de mise en page (CLS) au swap des polices.
+import interWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import spaceGroteskWoff2 from "@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url";
 
 interface Props {
   title: string;
@@ -11,6 +15,34 @@ interface Props {
 const { title, description, robots } = Astro.props;
 const siteTitle = `${title} • ${siteConfig.title}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? siteConfig.url);
+
+// Données structurées : profil professionnel (schema.org)
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Renaud Gouffé",
+  url: siteConfig.url,
+  jobTitle: "Architecte Solutions & Développeur Shopify",
+  knowsAbout: [
+    "Shopify",
+    "Magento",
+    "Architecture e-commerce",
+    "Intégration ERP / PIM",
+    "Mirakl",
+  ],
+  worksFor: {
+    "@type": "Organization",
+    name: "Colorz",
+    url: "https://www.colorz.fr",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Rouen",
+    addressRegion: "Normandie",
+    addressCountry: "FR",
+  },
+  sameAs: ["https://www.linkedin.com/in/renaud-gouff%C3%A9-39047287/"],
+});
 ---
 
 <meta charset="utf-8" />
@@ -33,8 +65,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? siteConfig.url);
 <meta property="og:description" content={description} />
 <meta property="og:locale" content={siteConfig.ogLocale} />
 <meta property="og:site_name" content={siteConfig.title} />
+<meta property="og:image" content={new URL("/og.jpg", Astro.site ?? siteConfig.url)} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content={new URL("/og.jpg", Astro.site ?? siteConfig.url)} />
+
+<link rel="preload" href={spaceGroteskWoff2} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
 
 <link rel="icon" href="/favicon-32x32.png" type="image/png" />
 <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
 <link href="/manifest.webmanifest" rel="manifest" />
 <link rel="sitemap" href="/sitemap-index.xml" />
+
+<script type="application/ld+json" set:html={jsonLd} />

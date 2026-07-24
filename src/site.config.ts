@@ -7,7 +7,7 @@ export const siteConfig: SiteConfig = {
   title: "Renaud Gouffé",
   // Meta property used as a default description meta property
   description:
-    "Développeur Senior, magento / shopify freelance - Rouen (Normandie - 76) et Paris",
+    "Architecte Solutions & Développeur Shopify — architecture e-commerce, intégrations SI et développement. Rouen · Paris · Remote.",
   // HTML lang property, found in src/layouts/Base.astro L:18
   lang: "fr-FR",
   // Meta property, found in src/components/BaseHead.astro L:42

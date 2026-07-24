@@ -9,7 +9,10 @@ export default defineConfig({
   site: "https://www.renaudgouffe.fr",
   integrations: [
     sitemap({
-      filter: (page) => page !== "https://www.renaudgouffe.fr/references",
+      // Les pages en noindex ne doivent pas figurer au sitemap
+      // (les URLs générées portent un slash final).
+      filter: (page) =>
+        !page.endsWith("/references/") && !page.endsWith("/cv/"),
     }),
   ],
   vite: {
