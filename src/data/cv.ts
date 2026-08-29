@@ -51,7 +51,7 @@ export const cvSections: CvSection[] = [
       {
         date: "2003 → 2010",
         title: "FTEL",
-        roles: ["Développeur web (dont 2 ans en formation en alternance)"],
+        roles: ["Web Developer (dont 2 ans en formation en alternance)"],
         company: "FTEL",
         url: "https://www.ftel.fr/",
         logo: "/assets/icons/ftel.svg",

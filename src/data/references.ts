@@ -150,7 +150,7 @@ export const references: Reference[] = [
     year: 2016,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Concept store parisien solidaire",
+    tagline: "Concept store parisien",
     roles: ["dev"],
   },
   {
