@@ -2,66 +2,62 @@
 const pathname = new URL(Astro.request.url).pathname.replace(/\/$/, "") || "/";
 
 const links = [
-  { href: "/references", label: "Références" },
-  { href: "/cv", label: "CV" },
+  { href: "/freelance-shopify", label: "freelance" },
+  { href: "/references", label: "références" },
+  { href: "/cv", label: "cv" },
 ];
+const onContact = pathname === "/contact";
 ---
 
-<header class="fixed inset-x-0 top-0 z-40">
-  <div
-    class="border-b border-line/70 bg-bg/80 backdrop-blur-md"
+<header
+  class="sticky top-0 z-20 border-b border-white/7 bg-bg-deep/88 backdrop-blur-md"
+>
+  <nav
+    class="mx-auto flex min-h-15 max-w-[1040px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-2 sm:px-8"
+    aria-label="Navigation principale"
   >
-    <nav
-      class="mx-auto flex h-16 max-w-5xl items-center justify-center gap-2 px-4 sm:justify-between sm:px-5"
-      aria-label="Navigation principale"
+    <a
+      href="/"
+      class="flex items-center font-mono text-[15px] text-text"
+      aria-label="rndgf — accueil"
+      aria-current={pathname === "/" ? "page" : undefined}
     >
-      <a
-        href="/"
-        class="group flex flex-col items-center justify-center text-center"
-        aria-current={pathname === "/" ? "page" : undefined}
-      >
-        <span
-          class="font-display text-2xl leading-tight font-bold tracking-tight text-text transition-colors group-hover:text-accent-2 sm:text-lg"
-        >
-          RNDGF
-        </span>
-        <span
-          class="font-mono text-[0.7rem] leading-none tracking-widest text-muted sm:text-[0.6rem]"
-        >
-          renaud gouffé
-        </span>
-      </a>
+      <span class="text-text/50">~/</span><span class="font-medium">rndgf</span><span
+        class="mr-1.75 ml-1.5 text-coral"
+        aria-hidden="true">❯</span
+      ><span
+        class="inline-block h-4 w-2 animate-[blink_1.1s_steps(1)_infinite] bg-text"
+        aria-hidden="true"></span>
+    </a>
 
-      <div class="hidden shrink-0 items-center gap-0.5 sm:flex sm:gap-2">
-        {
-          links.map(({ href, label }) => (
-            <a
-              href={href}
-              aria-current={pathname === href ? "page" : undefined}
-              class:list={[
-                "rounded-md px-3 py-2 text-sm transition-colors",
-                pathname === href
-                  ? "gradient-text font-semibold"
-                  : "text-muted hover:text-text",
-              ]}
-            >
-              {label}
-            </a>
-          ))
-        }
-        <a
-          href="/contact"
-          aria-current={pathname === "/contact" ? "page" : undefined}
-          class:list={[
-            "ml-1 rounded-md border px-3 py-2 text-sm font-medium text-text transition-colors sm:ml-2",
-            pathname === "/contact"
-              ? "border-accent bg-accent/15"
-              : "border-accent/50 hover:border-accent hover:bg-accent/15",
-          ]}
-        >
-          Contact
-        </a>
-      </div>
-    </nav>
-  </div>
+    <div class="flex items-center gap-3 font-mono text-[13px] whitespace-nowrap sm:gap-6.5">
+      {
+        links.map(({ href, label }) => (
+          <a
+            href={href}
+            aria-current={pathname === href ? "page" : undefined}
+            class:list={[
+              "transition-colors",
+              pathname === href
+                ? "border-b border-coral pb-0.5 text-strong"
+                : "text-text/68 hover:text-strong",
+            ]}
+          >
+            {label}
+          </a>
+        ))
+      }
+      <a
+        href="/contact"
+        aria-current={onContact ? "page" : undefined}
+        class:list={[
+          "flex h-8 items-center gap-2 rounded-[5px] border border-magenta pr-2 pl-3 text-strong transition-colors hover:bg-magenta/26",
+          onContact ? "bg-magenta/26" : "bg-magenta/12",
+        ]}
+      >
+        <span class="text-coral" aria-hidden="true">+</span>me contacter
+        <span class="kbd hidden sm:inline" aria-hidden="true">c</span>
+      </a>
+    </div>
+  </nav>
 </header>

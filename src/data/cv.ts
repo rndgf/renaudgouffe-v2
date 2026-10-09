@@ -1,11 +1,13 @@
 export interface CvEvent {
   date: string;
-  title: string;
-  roles?: string[];
-  company?: string;
-  url?: string;
-  logo?: string;
-  logoClass?: string;
+  /** Intitulé en gros ; absent quand l'employeur est affiché par son logo. */
+  title?: string;
+  /** Lignes secondaires (postes, établissement…). */
+  lines: string[];
+  /** Employeur affiché par son logo (Colorz) ou son wordmark texte (ftel). */
+  org?: "colorz" | "ftel";
+  /** Période en cours : pastille ambrée. */
+  current?: boolean;
 }
 
 export interface CvSection {
@@ -18,53 +20,34 @@ export const cvSections: CvSection[] = [
     category: "Expériences professionnelles",
     events: [
       {
-        date: "Depuis 2020",
-        title: "Colorz",
-        roles: [
-          "Architecte Solutions Shopify",
+        date: "depuis 2020",
+        org: "colorz",
+        current: true,
+        lines: [
+          "Solution Architect Shopify",
           "Senior Technical Consultant",
           "Senior Lead Developer",
         ],
-        company: "Colorz",
-        url: "https://www.colorz.fr/",
-        logo: "/assets/icons/colorz.svg",
-        logoClass: "h-6 brightness-0 invert",
       },
       {
         date: "2015 → 2020",
-        title: "Colorz",
-        roles: ["Senior Technical Consultant", "Senior Lead Developer"],
-        company: "Colorz",
-        url: "https://www.colorz.fr/",
-        logo: "/assets/icons/colorz.svg",
-        logoClass: "h-6 brightness-0 invert",
+        org: "colorz",
+        lines: ["Senior Technical Consultant", "Senior Lead Developer"],
       },
-      {
-        date: "2010 → 2014",
-        title: "Colorz",
-        roles: ["Lead Developer"],
-        company: "Colorz",
-        url: "https://www.colorz.fr/",
-        logo: "/assets/icons/colorz.svg",
-        logoClass: "h-6 brightness-0 invert",
-      },
+      { date: "2010 → 2014", org: "colorz", lines: ["Lead Developer"] },
       {
         date: "2003 → 2010",
-        title: "FTEL",
-        roles: ["Web Developer (dont 2 ans en formation en alternance)"],
-        company: "FTEL",
-        url: "https://www.ftel.fr/",
-        logo: "/assets/icons/ftel.svg",
-        logoClass: "h-7",
+        org: "ftel",
+        lines: ["Développeur web (dont 2 ans en formation en alternance)"],
       },
     ],
   },
   {
     category: "Expériences freelance",
     events: [
-      { date: "Depuis 2021", title: "Freelance Shopify" },
-      { date: "Depuis 2009", title: "Freelance Magento" },
-      { date: "Depuis 2005", title: "Freelance en développement web" },
+      { date: "depuis 2021", title: "Freelance Shopify", current: true, lines: [] },
+      { date: "depuis 2009", title: "Freelance Magento", lines: [] },
+      { date: "depuis 2005", title: "Freelance en développement web", lines: [] },
     ],
   },
   {
@@ -73,19 +56,17 @@ export const cvSections: CvSection[] = [
       {
         date: "2003 → 2005",
         title: "BTS « Conception et développement multimédia »",
-        roles: [
-          'CESI Rouen — réalisé en alternance chez <a href="https://www.ftel.fr/" target="_blank" rel="nofollow noopener" class="text-accent-2 underline decoration-accent-2/40 underline-offset-2 hover:decoration-accent-2">FTEL</a>',
-        ],
+        lines: ["CESI Rouen · en alternance chez FTEL"],
       },
       {
         date: "1998 → 2003",
         title: "Licence en Géographie",
-        roles: ["Université de Rouen"],
+        lines: ["Université de Rouen"],
       },
       {
         date: "1998",
         title: "Baccalauréat Littéraire",
-        roles: ["Lycée du Canada (Évreux)"],
+        lines: ["Lycée du Canada (Évreux)"],
       },
     ],
   },

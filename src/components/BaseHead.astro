@@ -1,10 +1,10 @@
 ---
 import { siteConfig } from "@/site.config";
 import "@/styles/global.css";
-// Préchargement des deux fontes critiques (titre + corps) : supprime le
+// Préchargement des deux fontes critiques (corps + mono de la navigation) : supprime le
 // décalage de mise en page (CLS) au swap des polices.
-import interWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
-import spaceGroteskWoff2 from "@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url";
+import jostWoff2 from "@fontsource-variable/jost/files/jost-latin-wght-normal.woff2?url";
+import plexMonoWoff2 from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url";
 
 interface Props {
   title: string;
@@ -20,7 +20,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? siteConfig.url);
 const jsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Renaud Gouffé",
+  name: siteConfig.author,
   url: siteConfig.url,
   jobTitle: "Architecte Solutions & Développeur Shopify",
   knowsAbout: [
@@ -71,8 +71,9 @@ const jsonLd = JSON.stringify({
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content={new URL("/og.jpg", Astro.site ?? siteConfig.url)} />
 
-<link rel="preload" href={spaceGroteskWoff2} as="font" type="font/woff2" crossorigin />
-<link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={jostWoff2} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={plexMonoWoff2} as="font" type="font/woff2" crossorigin />
+<meta name="theme-color" content="#1a181e" />
 
 <link rel="icon" href="/favicon-32x32.png" type="image/png" />
 <link href="/apple-touch-icon.png" rel="apple-touch-icon" />

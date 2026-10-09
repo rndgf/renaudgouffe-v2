@@ -322,17 +322,3 @@ export const references: Reference[] = [
     roles: ["dev", "design"],
   },
 ];
-
-/** Couleur CSS (token du thème) associée à chaque plateforme. */
-export const platformColor: Record<Platform, string> = {
-  Shopify: "var(--color-shopify)",
-  Magento: "var(--color-magento)",
-  "Magento 2": "var(--color-magento2)",
-  WordPress: "var(--color-wordpress)",
-  Mirakl: "var(--color-mirakl)",
-  Cegid: "var(--color-cegid)",
-  Marketplace: "var(--color-custom)",
-  "Sur-mesure": "var(--color-custom)",
-  Astro: "#ff7d54" /* orange Astro éclairci */,
-  Tailwind: "#38bdf8" /* cyan Tailwind */,
-};
