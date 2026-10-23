@@ -24,7 +24,7 @@ export const cvSections: CvSection[] = [
         org: "colorz",
         current: true,
         lines: [
-          "Solution Architect Shopify",
+          "Solutions Architect Shopify",
           "Senior Technical Consultant",
           "Senior Lead Developer",
         ],
