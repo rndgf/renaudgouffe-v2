@@ -34,7 +34,7 @@ export const cvSections: CvSection[] = [
         org: "colorz",
         lines: ["Senior Technical Consultant", "Senior Lead Developer"],
       },
-      { date: "2010 → 2014", org: "colorz", lines: ["Lead Developer"] },
+      { date: "2010 → 2014", org: "colorz", lines: ["Senior Lead Developer"] },
       {
         date: "2003 → 2010",
         org: "ftel",
