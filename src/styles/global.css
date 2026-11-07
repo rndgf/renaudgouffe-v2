@@ -55,21 +55,8 @@
       opacity: 0;
     }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      /* Les !important sont volontaires : cette surcharge doit primer sur
-         toute animation declaree ailleurs, sinon prefers-reduced-motion
-         n'est pas respecte. */
-      /* biome-ignore-start lint/complexity/noImportantStyles: surcharge d'accessibilite */
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      /* biome-ignore-end lint/complexity/noImportantStyles: surcharge d'accessibilite */
-    }
-  }
+  /* Choix du 2026-11-07 : les animations jouent même sous prefers-reduced-motion
+     (réglage iOS « Réduire les animations », qui figeait curseur et schéma). */
 }
 
 @layer components {

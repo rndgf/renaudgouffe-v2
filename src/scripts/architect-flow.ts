@@ -90,7 +90,6 @@ const at = <T>(a: readonly T[], i: number): T => a[i] as T;
 function initArchitectFlow(flow: HTMLElement): void {
   const steps = Array.from(flow.querySelectorAll<HTMLElement>(".af-step"));
   if (steps.length < 2) return;
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let svg: SVGSVGElement | null = null;
   let model: Model | null = null;
   let burst: Burst | null = null;
@@ -286,7 +285,7 @@ function initArchitectFlow(flow: HTMLElement): void {
 
     model = { us, main, mainLen, lanes, nodes, pulse, splits, fx, p: model?.p ?? 0 };
     flow.classList.add("af-ready");
-    apply(reduce ? 1 : model.p);
+    apply(model.p);
   }
 
   /** p : avancement de 0 à 1 de la ligne allumée. */
@@ -440,7 +439,7 @@ function initArchitectFlow(flow: HTMLElement): void {
     },
     { once: true },
   );
-  if (reduce) return;
+  // Animation jouée même sous prefers-reduced-motion (choix du 2026-11-07, voir global.css).
   requestAnimationFrame(tick);
 }
 
