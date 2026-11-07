@@ -31,7 +31,7 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
     </p>
 
     <div
-      class="card card-lift mt-12 px-5 pt-10 pb-7 hover:border-text/14 sm:px-8"
+      class="card card-lift mt-12 px-5 pt-9 pb-9 hover:border-text/14 sm:px-8"
       id="contact-card"
       data-u={reversedUser}
       data-d={reversedDomain}
@@ -48,44 +48,7 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
         </a>
       </p>
 
-      <div class="mt-7.5 flex flex-wrap items-center justify-center gap-3">
-        <a id="contact-mailto" href="#" class="btn-primary">
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-            <path d="M3 7l9 6 9-6"></path>
-          </svg>m'écrire
-        </a>
-        <button id="contact-copy" type="button" class="btn-ghost cursor-pointer">
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <rect x="9" y="9" width="12" height="12" rx="2"></rect>
-            <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
-          </svg><span id="copy-label">copier l'adresse</span>
-        </button>
-      </div>
-      <p class="sr-only" id="copy-feedback" aria-live="polite"></p>
-
-      <div class="my-6 h-px bg-white/7"></div>
-      <p class="text-[15px] text-text/65">
+      <p class="mt-7 text-[15px] text-text/65">
         Ou retrouvez-moi sur
         <a
           href={siteConfig.linkedin}
@@ -111,39 +74,16 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
     const card = document.getElementById("contact-card");
     if (!card) return;
     const emailLink = document.getElementById("contact-email");
-    const mailtoBtn = document.getElementById("contact-mailto");
-    const copyBtn = document.getElementById("contact-copy");
-    const feedback = document.getElementById("copy-feedback");
-    const label = document.getElementById("copy-label");
 
     const rev = (s: string) => [...s].reverse().join("");
-    const user = rev(card?.dataset.u ?? "");
-    const domain = rev(card?.dataset.d ?? "");
+    const user = rev(card.dataset.u ?? "");
+    const domain = rev(card.dataset.d ?? "");
     const address = `${user}${String.fromCharCode(64)}${domain}`;
-    const mailto = `mailto:${address}`;
 
     if (emailLink) {
       emailLink.textContent = address;
-      emailLink.setAttribute("href", mailto);
+      emailLink.setAttribute("href", `mailto:${address}`);
     }
-    mailtoBtn?.setAttribute("href", mailto);
-
-    copyBtn?.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(address);
-      } catch {
-        // Clipboard indisponible : l'adresse reste visible et sélectionnable.
-        return;
-      }
-      if (label) label.textContent = "adresse copiée";
-      copyBtn.classList.add("text-amber");
-      if (feedback) feedback.textContent = "Adresse copiée";
-      setTimeout(() => {
-        if (label) label.textContent = "copier l'adresse";
-        copyBtn.classList.remove("text-amber");
-        if (feedback) feedback.textContent = "";
-      }, 1600);
-    });
     });
   </script>
 </PageLayout>
