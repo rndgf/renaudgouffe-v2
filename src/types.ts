@@ -6,6 +6,8 @@ export interface SiteConfig {
   ogLocale: string;
   title: string;
   url: string;
+  /** Profil LinkedIn : pied de page, bandeau contact, page contact, JSON-LD. */
+  linkedin: string;
 }
 
 export interface SiteMeta {

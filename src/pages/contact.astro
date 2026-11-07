@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
+import { siteConfig } from "@/site.config";
 
 const meta = {
   title: "Contact",
@@ -87,7 +88,7 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
       <p class="text-[15px] text-text/65">
         Ou retrouvez-moi sur
         <a
-          href="https://www.linkedin.com/in/renaud-gouff%C3%A9-39047287/"
+          href={siteConfig.linkedin}
           target="_blank"
           rel="nofollow noopener"
           class="link">LinkedIn</a

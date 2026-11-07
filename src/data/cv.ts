@@ -30,10 +30,11 @@ export const cvSections: CvSection[] = [
         ],
       },
       {
-        date: "2015 → 2020",
+        date: "2019 → 2020",
         org: "colorz",
         lines: ["Senior Technical Consultant", "Senior Lead Developer"],
       },
+      { date: "2015 → 2019", org: "colorz", lines: ["Senior Lead Developer"] },
       { date: "2010 → 2014", org: "colorz", lines: ["Senior Lead Developer"] },
       {
         date: "2003 → 2010",

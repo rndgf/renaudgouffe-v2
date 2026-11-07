@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from "@/site.config";
+
 const year = new Date().getFullYear();
 
 const links = [
@@ -7,14 +9,14 @@ const links = [
   { href: "/contact", label: "contact" },
 ];
 const external = [
-  { href: "https://www.linkedin.com/in/renaud-gouff%C3%A9-39047287/", label: "linkedin ↗" },
+  { href: siteConfig.linkedin, label: "linkedin ↗" },
   { href: "https://www.colorz.fr", label: "colorz ↗" },
 ];
 ---
 
 <footer class="mt-auto border-t border-white/7 bg-bg-deep">
   <div
-    class="mx-auto flex max-w-[1040px] flex-wrap items-center justify-between gap-4 px-5 py-5.5 font-mono text-xs text-text/42 sm:px-8"
+    class="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-4 px-5 py-5.5 font-mono text-xs text-text/60 sm:px-8"
   >
     <span>v21.0 · © {year} rndgf</span>
     <nav class="flex flex-wrap gap-x-5.5 gap-y-2" aria-label="Navigation pied de page">
