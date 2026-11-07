@@ -149,34 +149,34 @@ function initArchitectFlow(flow: HTMLElement): void {
     svg = root;
     flow.insertBefore(root, flow.firstChild);
 
-    // Panneaux de regroupement : étapes consécutives qui partagent data-panel
-    let i = 0;
-    while (i < steps.length) {
-      const label = at(steps, i).dataset["panel"];
-      let j = i;
-      while (j + 1 < steps.length && at(steps, j + 1).dataset["panel"] === label) j++;
-      if (label) {
-        const a = at(steps, i);
-        const b = at(steps, j);
-        const panel = document.createElement("div");
-        panel.className = "af-panel";
-        if (vertical) {
-          panel.style.left = "0px";
-          panel.style.width = `${width}px`;
-          panel.style.top = `${a.offsetTop - 56}px`;
-          panel.style.height = `${b.offsetTop + b.offsetHeight - a.offsetTop + 56 + 16}px`;
-        } else {
-          panel.style.left = `${a.offsetLeft - 20}px`;
-          panel.style.width = `${b.offsetLeft + b.offsetWidth - a.offsetLeft + 40}px`;
-          panel.style.height = `${flow.offsetHeight}px`;
-        }
-        const cap = document.createElement("span");
-        cap.textContent = label;
-        panel.appendChild(cap);
-        flow.insertBefore(panel, flow.firstChild);
-      }
-      i = j + 1;
+    // Un seul panneau, sans séparation ; un libellé au début de chaque groupe
+    // d'étapes consécutives qui partagent data-panel.
+    const firstStep = at(steps, 0);
+    const lastStep = at(steps, steps.length - 1);
+    const panel = document.createElement("div");
+    panel.className = "af-panel";
+    const panelTop = firstStep.offsetTop - 56;
+    const panelLeft = firstStep.offsetLeft - 20;
+    if (vertical) {
+      panel.style.left = "0px";
+      panel.style.width = `${width}px`;
+      panel.style.top = `${panelTop}px`;
+      panel.style.height = `${lastStep.offsetTop + lastStep.offsetHeight - panelTop + 16}px`;
+    } else {
+      panel.style.left = `${panelLeft}px`;
+      panel.style.width = `${lastStep.offsetLeft + lastStep.offsetWidth - panelLeft + 20}px`;
+      panel.style.height = `${flow.offsetHeight}px`;
     }
+    steps.forEach((s, idx) => {
+      const label = s.dataset["panel"];
+      if (!label || (idx > 0 && at(steps, idx - 1).dataset["panel"] === label)) return;
+      const cap = document.createElement("span");
+      cap.textContent = label;
+      if (vertical) cap.style.top = `${s.offsetTop - 56 - panelTop + 14}px`;
+      else cap.style.left = `${s.offsetLeft - panelLeft}px`;
+      panel.appendChild(cap);
+    });
+    flow.insertBefore(panel, flow.firstChild);
 
     const us = steps.map((s) => (vertical ? s.offsetTop + 12 : s.offsetLeft + 15));
     if (!vertical) us[us.length - 1] = width - 36; // le tracé va jusqu'au bord droit
