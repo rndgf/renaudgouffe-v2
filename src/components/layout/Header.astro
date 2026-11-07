@@ -10,7 +10,7 @@ const onContact = pathname === "/contact";
 ---
 
 <header
-  class="sticky top-0 z-20 bg-bg-deep/88 backdrop-blur-md"
+  class="sticky top-0 z-20 bg-bg-deep/95"
 >
   <nav
     class="mx-auto flex min-h-15 max-w-[1240px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-2 sm:px-8"
@@ -30,7 +30,57 @@ const onContact = pathname === "/contact";
         aria-hidden="true"></span>
     </a>
 
-    <div class="flex items-center gap-3 font-mono text-[13px] whitespace-nowrap sm:gap-6.5">
+    <!-- Mobile : bouton « burger », le menu s'ouvre en volet depuis la droite -->
+    <button
+      type="button"
+      class="-mr-2 flex size-11 items-center justify-center text-text transition-colors hover:text-strong sm:hidden"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      aria-label="Ouvrir le menu"
+      data-nav-toggle
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M4 7h16M4 12h16M4 17h16"></path>
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      id="nav-backdrop"
+      class="cursor-default"
+      aria-label="Fermer le menu"
+      tabindex="-1"
+      data-nav-toggle></button>
+
+    <div id="site-nav" class="font-mono text-[13px] whitespace-nowrap">
+      <button
+        type="button"
+        class="absolute top-2.5 right-3 flex size-11 items-center justify-center text-text transition-colors hover:text-strong sm:hidden"
+        aria-label="Fermer le menu"
+        data-nav-toggle
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
       {
         links.map(({ href, label }) => (
           <a
@@ -63,3 +113,81 @@ const onContact = pathname === "/contact";
     <span class="bg-coral"></span><span class="bg-amber"></span><span class="bg-teal"></span>
   </div>
 </header>
+
+<style>
+  /* Mobile : volet fixé à droite, fermé hors écran ; dès 40rem (point sm de Tailwind),
+     simple rangée de liens dans la barre. L'en-tête ne doit porter ni filter ni
+     backdrop-filter : il deviendrait le bloc conteneur du volet fixé. */
+  #site-nav {
+    position: fixed;
+    inset: 0 0 0 auto;
+    z-index: 40;
+    width: min(78vw, 320px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 76px 28px 28px;
+    font-size: 15px;
+    background: var(--color-bg-deep);
+    border-left: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+    box-shadow: -18px 0 56px rgb(0 0 0 / 0.6);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition:
+      transform 0.25s ease,
+      visibility 0s 0.25s;
+  }
+  #site-nav[data-open] {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.25s ease;
+  }
+  #nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: none;
+    background: rgb(0 0 0 / 0.45);
+  }
+  #nav-backdrop[data-open] {
+    display: block;
+  }
+  @media (min-width: 40rem) {
+    #site-nav {
+      position: static;
+      width: auto;
+      flex-direction: row;
+      align-items: center;
+      gap: 26px;
+      padding: 0;
+      font-size: 13px;
+      background: none;
+      border: 0;
+      box-shadow: none;
+      transform: none;
+      visibility: visible;
+      transition: none;
+    }
+    #nav-backdrop,
+    #nav-backdrop[data-open] {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Relancé à chaque page (ClientRouter) : l'en-tête est recréé à chaque navigation.
+  document.addEventListener("astro:page-load", () => {
+    const nav = document.getElementById("site-nav");
+    const backdrop = document.getElementById("nav-backdrop");
+    const toggles = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-nav-toggle]"));
+    if (!nav || !backdrop) return;
+    const set = (open: boolean) => {
+      nav.toggleAttribute("data-open", open);
+      backdrop.toggleAttribute("data-open", open);
+      for (const b of toggles) b.setAttribute("aria-expanded", String(open));
+    };
+    for (const b of toggles) b.addEventListener("click", () => set(!nav.hasAttribute("data-open")));
+  });
+</script>

@@ -16,10 +16,13 @@ const external = [
 
 <footer class="mt-auto border-t border-white/7 bg-bg-deep">
   <div
-    class="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-4 px-5 py-5.5 font-mono text-xs text-text/60 sm:px-8"
+    class="mx-auto flex max-w-[1240px] flex-col gap-5 px-5 py-6 font-mono text-xs text-text/60 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4 sm:px-8 sm:py-5.5"
   >
     <span>v21.0 · © {year} rndgf</span>
-    <nav class="flex flex-wrap gap-x-5.5 gap-y-2" aria-label="Navigation pied de page">
+    <nav
+      class="grid grid-cols-2 gap-x-6 gap-y-3.5 sm:flex sm:flex-wrap sm:gap-x-5.5 sm:gap-y-2"
+      aria-label="Navigation pied de page"
+    >
       {
         links.map(({ href, label }) => (
           <a href={href} class="text-text/60 transition-colors hover:text-strong">

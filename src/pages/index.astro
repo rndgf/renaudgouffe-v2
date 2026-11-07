@@ -59,9 +59,10 @@ const steps: FlowStep[] = [
 >
   <div class="mx-auto max-w-[1240px] px-5 sm:px-8">
     <section class="pt-12 sm:pt-18">
-      <p class="eyebrow flex-wrap gap-x-2.5 gap-y-1">
+      <p class="eyebrow flex-wrap gap-x-2.5 gap-y-2">
         <span class="text-strong">Renaud Gouffé</span>
-        <span class="text-text/40">·</span>
+        <span class="hidden text-text/40 sm:inline" aria-hidden="true">·</span>
+        <span class="inline-flex items-center gap-1.5 whitespace-nowrap">
         <svg
           width="13"
           height="13"
@@ -78,7 +79,9 @@ const steps: FlowStep[] = [
           <circle cx="12" cy="9.5" r="2.5"></circle>
         </svg>
         Rouen
-        <span class="text-text/40">·</span>
+        </span>
+        <span class="hidden text-text/40 sm:inline" aria-hidden="true">·</span>
+        <span class="inline-flex items-center gap-1.5 whitespace-nowrap">
         <svg
           width="13"
           height="13"
@@ -95,6 +98,7 @@ const steps: FlowStep[] = [
           <path d="M8 20h8M12 16v4"></path>
         </svg>
         remote / hybride
+        </span>
       </p>
       <h1
         class="mt-4.5 text-[38px] leading-[1.04] font-semibold tracking-[-0.03em] text-balance text-strong sm:text-[56px] lg:text-[68px] lg:whitespace-nowrap"

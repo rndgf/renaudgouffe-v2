@@ -447,7 +447,7 @@ function initArchitectFlow(flow: HTMLElement): void {
           io.disconnect();
         }
       },
-      { threshold: 0.35 },
+      { threshold: 0.2 },
     );
     io.observe(flow);
   } else {

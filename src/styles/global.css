@@ -147,6 +147,11 @@
   }
   .cta-band::before {
     content: "";
+    /* Sur mobile le texte passerait sous les rayures : affichées dès 40rem seulement */
+    display: none;
+    @media (min-width: 40rem) {
+      display: block;
+    }
     position: absolute;
     top: 0;
     bottom: 0;
