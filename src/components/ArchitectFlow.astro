@@ -1,0 +1,259 @@
+---
+// Schéma horizontal « Comment je travaille ». Le HTML suffit sans JavaScript ;
+// src/scripts/architect-flow.ts trace la ligne, les embranchements et l'animation.
+export interface FlowStep {
+  tag: string;
+  title: string;
+  text: string;
+  /** node : point plein · fork : embranchements · test : anneau à coche */
+  kind: "node" | "fork" | "test";
+  /** Nombre de chemins après l'étape (2 par défaut pour fork). */
+  lanes?: number;
+  /** Étapes consécutives de même libellé : regroupées dans un panneau. */
+  panel: string;
+}
+
+interface Props {
+  steps: FlowStep[];
+}
+
+const { steps } = Astro.props;
+---
+
+<div class="af-scroll">
+  <ol class="af-flow" id="architect-flow">
+    {
+      steps.map(({ tag, title, text, kind, lanes, panel }, i) => (
+        <li
+          class="af-step"
+          data-kind={kind}
+          data-lanes={lanes}
+          data-panel={panel}
+        >
+          <div class="af-tag"><b>{String(i + 1).padStart(2, "0")}</b> {tag}</div>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<script>
+  import "@/scripts/architect-flow";
+</script>
+
+<style is:global>
+  .af-scroll {
+    margin-top: 16px;
+    overflow-x: auto;
+  }
+  .af-flow {
+    --af-band: 138px;
+    position: relative;
+    min-width: 1000px;
+    margin: 0;
+    padding: var(--af-band) 20px 34px;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0 52px;
+  }
+  .af-flow > svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+  /* Sans script : un filet continu tient lieu de chemin. */
+  .af-flow::before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: 68px;
+    height: 1px;
+    background: var(--af-line);
+  }
+  .af-flow.af-ready::before {
+    display: none;
+  }
+  .af-flow {
+    --af-line: rgb(255 255 255 / 0.14);
+  }
+
+  .af-panel {
+    position: absolute;
+    top: 0;
+    border-radius: 8px;
+    background: rgb(255 255 255 / 0.03);
+    pointer-events: none;
+  }
+  .af-panel span {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    font: 500 11px/1.2 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(236 232 240 / 0.55);
+  }
+
+  .af-step {
+    position: relative;
+    padding-top: 6px;
+  }
+  .af-tag {
+    font: 500 11px/1.2 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(236 232 240 / 0.5);
+    transition: color 0.4s;
+  }
+  .af-step h3 {
+    margin: 5px 0 0;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.25;
+    color: var(--color-text);
+    text-wrap: balance;
+    transition: color 0.4s;
+  }
+  .af-step p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgb(236 232 240 / 0.6);
+    text-wrap: pretty;
+    transition: color 0.4s;
+  }
+  .af-step.af-on .af-tag {
+    color: var(--color-coral);
+  }
+  .af-step.af-on h3 {
+    color: var(--color-strong);
+  }
+  .af-step.af-on p {
+    color: rgb(236 232 240 / 0.78);
+  }
+
+  .af-rail {
+    fill: none;
+    stroke: var(--af-line);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  .af-lit {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .af-node {
+    fill: var(--color-bg);
+    stroke: rgb(236 232 240 / 0.4);
+    stroke-width: 2;
+    transition:
+      fill 0.4s,
+      stroke 0.4s;
+  }
+  .af-node.af-on {
+    fill: var(--color-coral);
+    stroke: var(--color-coral);
+  }
+  .af-endring {
+    fill: var(--color-bg);
+    stroke: rgb(236 232 240 / 0.4);
+    stroke-width: 2;
+    transition:
+      fill 0.4s,
+      stroke 0.4s;
+  }
+  .af-endring.af-on {
+    fill: #2a2226;
+    stroke: var(--color-coral);
+  }
+  .af-flag {
+    fill: none;
+    stroke: rgb(236 232 240 / 0.5);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition:
+      stroke 0.4s,
+      fill 0.4s;
+  }
+  .af-flag.af-on {
+    stroke: var(--color-coral);
+  }
+  .af-flag.af-pennant.af-on {
+    fill: rgb(227 98 97 / 0.4);
+  }
+  .af-lane-dot {
+    fill: var(--color-bg);
+    stroke-width: 2;
+    opacity: 0.6;
+    transition:
+      fill 0.4s,
+      opacity 0.4s;
+  }
+  .af-lane-dot.af-on {
+    opacity: 1;
+  }
+  .af-pulse {
+    fill: #fff;
+  }
+
+  /* Mobile : le chemin devient vertical, les étapes s'empilent à droite de la ligne. */
+  @media (max-width: 759px) {
+    .af-scroll {
+      overflow-x: visible;
+    }
+    .af-flow {
+      min-width: 0;
+      padding: 0;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .af-flow::before {
+      left: 46px;
+      right: auto;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      height: auto;
+    }
+    .af-step {
+      padding: 6px 16px 22px 100px;
+    }
+    .af-step.af-first {
+      margin-top: 56px;
+    }
+    .af-step.af-last {
+      margin-bottom: 28px;
+    }
+    .af-step[data-lanes="2"],
+    .af-step[data-kind="fork"] {
+      min-height: 120px;
+    }
+    .af-step[data-lanes="3"] {
+      min-height: 150px;
+    }
+    .af-panel span {
+      top: 14px;
+      left: 100px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .af-tag,
+    .af-step h3,
+    .af-step p,
+    .af-node,
+    .af-endring,
+    .af-flag,
+    .af-lane-dot {
+      transition: none;
+    }
+  }
+</style>
