@@ -1,0 +1,169 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import Contact from "@/components/Contact.astro";
+import { localeOf, localePath, type Locale } from "@/i18n";
+
+export { getStaticPaths } from "@/i18n";
+
+const locale = localeOf(Astro.currentLocale);
+// Le satisfies type les triplets [libellé, titre, texte] en tuples.
+const copy = ({
+  fr: {
+    title: "Freelance Shopify — expertise technique et architecture e-commerce",
+    description:
+      "Freelance Shopify depuis 2021 : création de boutique, Shopify Functions, UI Extensions, checkout personnalisé, intégrations ERP / PIM / logistique, audit et maintenance.",
+    eyebrow: "Depuis 2021 · code depuis 2003",
+    h1: "Freelance Shopify",
+    heroBefore: "Un ",
+    heroArchitect: "Architecte Solutions Shopify",
+    heroMiddle: " qui met les mains dans le code : la vision d'architecture pour bien décider, ",
+    heroDev: "du développement depuis 2003",
+    heroAfter: " pour bien construire. Création, fonctionnalités avancées, intégrations, maintenance.",
+    ctaPrimary: "parlons de votre boutique",
+    ctaGhost: "voir mes références",
+    missions: "Missions",
+    inShort: "En bref",
+    short:
+      "Freelance Shopify depuis 2021, développeur depuis 2003. En parallèle de mon poste d'Architecte Solutions Shopify en agence, j'accompagne en direct des marchands sur des missions ciblées. Voir les projets marqués ",
+    shortLink: "freelance",
+    shortAfter: " dans mes références.",
+    bandTitle: "Discutons de votre projet Shopify",
+    bandText:
+      "Vous êtes un e-commerçant, une agence ou un porteur de projet Shopify ? Parlons de vos besoins et de vos enjeux techniques.",
+    services: [
+      ["création", "Une boutique Shopify solide dès le départ", "Conception et développement de votre boutique : thème sur-mesure, structure de catalogue, parcours d'achat aligné avec votre marque."],
+      ["fonctionnalités avancées", "Au-delà des limites du thème", "Apps sur-mesure, Shopify Functions, UI Extensions, checkout personnalisé, promotions complexes : ce que l'admin ne permet pas, le code le permet, dans le cadre supporté par Shopify."],
+      ["intégrations", "Shopify connecté à vos outils", "Synchronisation avec votre ERP, PIM, CRM ou votre logistique : flux produits, stocks, commandes et clients fiabilisés et automatisés."],
+      ["audit & maintenance", "Un site qui reste rapide et sain", "Audit de l'existant, correction des points de friction, suivi technique et évolutions continues de votre boutique."],
+    ],
+  },
+  en: {
+    title: "Shopify freelancer — technical expertise and e-commerce architecture",
+    description:
+      "Shopify freelancer since 2021: store build, Shopify Functions, UI Extensions, custom checkout, ERP / PIM / logistics integrations, audit and maintenance.",
+    eyebrow: "Since 2021 · coding since 2003",
+    h1: "Shopify Freelancer",
+    heroBefore: "A ",
+    heroArchitect: "Shopify Solutions Architect",
+    heroMiddle: " who gets hands-on with the code: architecture vision to decide well, ",
+    heroDev: "development since 2003",
+    heroAfter: " to build well. Store build, advanced features, integrations, maintenance.",
+    ctaPrimary: "let's talk about your store",
+    ctaGhost: "see my references",
+    missions: "Services",
+    inShort: "In short",
+    short:
+      "Shopify freelancer since 2021, developer since 2003. Alongside my role as Shopify Solutions Architect in an agency, I work directly with merchants on focused assignments. See the projects marked ",
+    shortLink: "freelance",
+    shortAfter: " in my references.",
+    bandTitle: "Let's discuss your Shopify project",
+    bandText:
+      "Are you a merchant, an agency or planning a Shopify project? Let's talk about your needs and technical challenges.",
+    services: [
+      ["store build", "A solid Shopify store from day one", "Design and development of your store: custom theme, catalogue structure, purchase journey aligned with your brand."],
+      ["advanced features", "Beyond the limits of the theme", "Custom apps, Shopify Functions, UI Extensions, custom checkout, complex promotions: what the admin does not allow, code does, within what Shopify supports."],
+      ["integrations", "Shopify connected to your tools", "Synchronisation with your ERP, PIM, CRM or logistics: reliable, automated product, stock, order and customer flows."],
+      ["audit & maintenance", "A site that stays fast and healthy", "Audit of the existing store, fixing friction points, technical follow-up and continuous improvements."],
+    ],
+  },
+} satisfies Record<Locale, { services: [string, string, string][] } & Record<string, unknown>>)[locale];
+
+const meta = { title: copy.title, description: copy.description };
+
+// Pictos des quatre missions, dans l'ordre de copy.services.
+const icons = [
+  [
+      "M3 9l1.5-5h15L21 9",
+      "M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0V9z",
+      "M5 13v8h14v-8",
+      "M10 21v-5h4v5",
+    ],
+  [
+      "M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
+      "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z",
+    ],
+  ["M13 2L4 14h7l-1 8 9-12h-7l1-8z"],
+  [
+      "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9l-3.8 3.8z",
+    ],
+];
+const services = copy.services.map(([label, title, text], i) => ({ label, title, text, icon: icons[i]! }));
+---
+
+<PageLayout meta={meta}>
+  <div class="mx-auto max-w-[1040px] px-5 sm:px-8">
+    <!-- Hero -->
+    <section class="pt-16 pb-14 text-center sm:pt-24 sm:pb-18">
+      <p class="eyebrow justify-center tracking-[0.12em]">
+        <span class="eyebrow-dot"></span>{copy.eyebrow}
+      </p>
+      <h1
+        class="mt-5.5 text-[44px] leading-[1.06] font-medium tracking-[-0.025em] text-strong sm:text-[56px]"
+      >
+        {copy.h1}
+      </h1>
+      <p class="mx-auto mt-6 max-w-[680px] text-lg leading-[1.65] text-pretty text-text/70">
+        {copy.heroBefore}<strong class="font-medium text-strong">{copy.heroArchitect}</strong>{copy.heroMiddle}<strong
+          class="font-medium text-strong">{copy.heroDev}</strong
+        >{copy.heroAfter}
+      </p>
+      <div class="mt-8.5 flex flex-wrap justify-center gap-3">
+        <a href={localePath(locale, "/contact")} class="btn-primary">{copy.ctaPrimary}</a>
+        <a href={localePath(locale, "/references")} class="btn-ghost"
+          >{copy.ctaGhost} <span class="text-coral">→</span></a
+        >
+      </div>
+    </section>
+
+    <!-- Missions -->
+    <section class="pb-6">
+      <h2 class="eyebrow mb-3.5">{copy.missions}</h2>
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-3.5">
+        {
+          services.map(({ label, title, text, icon }) => (
+            <article class="card px-7 py-6.5">
+              <div class="flex items-center gap-3">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-text/78"
+                  aria-hidden="true"
+                >
+                  {icon.map((d) => (
+                    <path d={d} />
+                  ))}
+                </svg>
+                <span class="font-mono text-xs text-text/62">{label}</span>
+              </div>
+              <h3 class="mt-4.5 text-[21px] leading-tight font-medium text-strong">{title}</h3>
+              <p class="mt-2.5 text-[15.5px] leading-[1.62] text-text/66">{text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- En bref -->
+    <section class="pt-16">
+      <h2 class="eyebrow mb-3.5">{copy.inShort}</h2>
+      <div class="card card-lift px-6 py-8 hover:border-text/14 sm:px-9 sm:py-8.5">
+        <p class="text-[21px] leading-[1.6] text-pretty text-text/90">
+          {copy.short}<a href={localePath(locale, "/references")} class="link">{copy.shortLink}</a
+          >{copy.shortAfter}
+        </p>
+      </div>
+    </section>
+
+    <Contact
+      shopify
+      title={copy.bandTitle}
+      text={copy.bandText}
+    />
+  </div>
+</PageLayout>

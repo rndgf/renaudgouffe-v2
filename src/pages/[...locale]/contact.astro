@@ -1,12 +1,35 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site.config";
+import { localeOf } from "@/i18n";
 
-const meta = {
-  title: "Contact",
-  description:
-    "Contactez Renaud Gouffé, consultant Shopify et architecte e-commerce, pour discuter de votre projet.",
-};
+export { getStaticPaths } from "@/i18n";
+
+const locale = localeOf(Astro.currentLocale);
+const copy = {
+  fr: {
+    title: "Contact",
+    description:
+      "Contactez Renaud Gouffé, consultant Shopify et architecte e-commerce, pour discuter de votre projet.",
+    intro:
+      "Vous êtes un e-commerçant, une agence ou un porteur de projet Shopify ? Parlons de vos besoins et de vos enjeux techniques.",
+    reveal: "Cliquez pour révéler l'adresse",
+    orLinkedin: "Ou retrouvez-moi sur ",
+    noscriptBefore: "Activez JavaScript pour afficher l'adresse email (protection anti-spam), ou retrouvez-moi via ",
+  },
+  en: {
+    title: "Contact",
+    description:
+      "Get in touch with Renaud Gouffé, Shopify consultant and e-commerce architect, to discuss your project.",
+    intro:
+      "Are you a merchant, an agency or planning a Shopify project? Let's talk about your needs and technical challenges.",
+    reveal: "Click to reveal the address",
+    orLinkedin: "Or find me on ",
+    noscriptBefore: "Enable JavaScript to display the email address (anti-spam protection), or find me via ",
+  },
+}[locale];
+
+const meta = { title: copy.title, description: copy.description };
 
 // Adresse email volontairement absente du HTML généré (anti-scraping) :
 // chaque partie est stockée inversée dans des data-attributes,
@@ -23,11 +46,10 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
     <h1
       class="mt-5 text-[44px] leading-[1.05] font-medium tracking-[-0.025em] text-strong sm:text-[56px]"
     >
-      Contact
+      {copy.title}
     </h1>
     <p class="mx-auto mt-5.5 max-w-[500px] text-lg leading-[1.6] text-pretty text-text/70">
-      Vous êtes un e-commerçant, une agence ou un porteur de projet Shopify ? Parlons de vos
-      besoins et de vos enjeux techniques.
+      {copy.intro}
     </p>
 
     <div
@@ -44,13 +66,12 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
           href="#"
           class="inline-block border-b border-magenta pb-0.75 text-xl font-medium tracking-[-0.01em] break-all text-strong transition-colors hover:text-coral sm:text-[28px]"
         >
-          Cliquez pour révéler l'adresse
+          {copy.reveal}
         </a>
       </p>
 
       <p class="mt-7 text-[15px] text-text/65">
-        Ou retrouvez-moi sur
-        <a
+        {copy.orLinkedin}<a
           href={siteConfig.linkedin}
           target="_blank"
           rel="nofollow noopener"
@@ -60,8 +81,7 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
 
       <noscript>
         <p class="mt-6 text-sm text-text/65">
-          Activez JavaScript pour afficher l'adresse email (protection anti-spam), ou retrouvez-moi
-          via <a href="https://www.colorz.fr" class="link">Colorz</a>.
+          {copy.noscriptBefore}<a href="https://www.colorz.fr" class="link">Colorz</a>.
         </p>
       </noscript>
     </div>

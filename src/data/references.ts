@@ -1,3 +1,5 @@
+import type { Localized } from "@/i18n";
+
 export type ReferenceType = "Agence" | "Freelance";
 
 export type Platform =
@@ -21,7 +23,7 @@ export interface Reference {
   type: ReferenceType;
   techs: Platform[];
   /** Très courte description de la marque ou du site. */
-  tagline?: string;
+  tagline?: Localized;
   /** Renseigné à partir de 2022 (Sabon) — avant, non distingué. */
   roles?: Role[];
 }
@@ -38,7 +40,7 @@ export const references: Reference[] = [
     year: 2026,
     type: "Freelance",
     techs: ["Astro", "Tailwind"],
-    tagline: "Salon de tatouage à Chambéry",
+    tagline: { fr: "Salon de tatouage à Chambéry", en: "Tattoo studio in Chambéry" },
     roles: ["dev", "design"],
   },
   {
@@ -46,7 +48,7 @@ export const references: Reference[] = [
     year: 2026,
     type: "Agence",
     techs: ["Shopify", "Mirakl"],
-    tagline: "Ventes privées en ligne",
+    tagline: { fr: "Ventes privées en ligne", en: "Online flash sales" },
     roles: ["architecte"],
   },
   {
@@ -54,7 +56,7 @@ export const references: Reference[] = [
     year: 2025,
     type: "Agence",
     techs: ["Shopify", "Mirakl"],
-    tagline: "Photographie scolaire en ligne",
+    tagline: { fr: "Photographie scolaire en ligne", en: "School photography online" },
     roles: ["architecte", "dev"],
   },
   {
@@ -62,7 +64,7 @@ export const references: Reference[] = [
     year: 2024,
     type: "Agence",
     techs: ["Shopify", "Mirakl"],
-    tagline: "Déco & maison, marque néerlandaise",
+    tagline: { fr: "Déco & maison, marque néerlandaise", en: "Home & decor, Dutch brand" },
     roles: ["architecte", "dev"],
   },
   {
@@ -70,7 +72,7 @@ export const references: Reference[] = [
     year: 2024,
     type: "Agence",
     techs: ["Shopify", "Mirakl"],
-    tagline: "Ustensiles et matériel de cuisine",
+    tagline: { fr: "Ustensiles et matériel de cuisine", en: "Cookware and kitchen equipment" },
     roles: ["architecte", "dev"],
   },
   {
@@ -78,7 +80,7 @@ export const references: Reference[] = [
     year: 2023,
     type: "Agence",
     techs: ["Shopify", "Cegid"],
-    tagline: "Concept store déco du Marais",
+    tagline: { fr: "Concept store déco du Marais", en: "Decor concept store in the Marais" },
     roles: ["architecte", "dev"],
   },
   {
@@ -86,7 +88,7 @@ export const references: Reference[] = [
     year: 2022,
     type: "Agence",
     techs: ["Shopify"],
-    tagline: "Savons et cosmétiques",
+    tagline: { fr: "Savons et cosmétiques", en: "Soaps and cosmetics" },
     roles: ["architecte", "dev"],
   },
   {
@@ -94,7 +96,7 @@ export const references: Reference[] = [
     year: 2022,
     type: "Agence",
     techs: ["Shopify"],
-    tagline: "L'enseigne discount en ligne",
+    tagline: { fr: "L'enseigne discount en ligne", en: "The discount retailer online" },
     roles: ["dev"],
   },
   {
@@ -102,7 +104,7 @@ export const references: Reference[] = [
     year: 2021,
     type: "Agence",
     techs: ["Magento 2"],
-    tagline: "Haute joaillerie, place Vendôme",
+    tagline: { fr: "Haute joaillerie, place Vendôme", en: "High jewellery, place Vendôme" },
     roles: ["dev"],
   },
   {
@@ -110,7 +112,7 @@ export const references: Reference[] = [
     year: 2021,
     type: "Freelance",
     techs: ["Magento 2"],
-    tagline: "Bijoux fantaisie et montres",
+    tagline: { fr: "Bijoux fantaisie et montres", en: "Fashion jewellery and watches" },
     roles: ["dev"],
   },
   {
@@ -118,7 +120,7 @@ export const references: Reference[] = [
     year: 2020,
     type: "Agence",
     techs: ["Shopify"],
-    tagline: "Mode pour mamans et enfants",
+    tagline: { fr: "Mode pour mamans et enfants", en: "Fashion for mums and kids" },
     roles: ["dev"],
   },
   {
@@ -126,7 +128,7 @@ export const references: Reference[] = [
     year: 2019,
     type: "Agence",
     techs: ["Magento 2"],
-    tagline: "Bijoux diamants sur fil",
+    tagline: { fr: "Bijoux diamants sur fil", en: "Diamonds on a thread" },
     roles: ["dev"],
   },
   {
@@ -134,7 +136,7 @@ export const references: Reference[] = [
     year: 2017,
     type: "Agence",
     techs: ["Magento", "Mirakl"],
-    tagline: "Puériculture et mode enfant",
+    tagline: { fr: "Puériculture et mode enfant", en: "Baby care and kids' fashion" },
     roles: ["dev"],
   },
   {
@@ -142,7 +144,7 @@ export const references: Reference[] = [
     year: 2017,
     type: "Freelance",
     techs: ["Magento"],
-    tagline: "Bijoux fantaisie et montres",
+    tagline: { fr: "Bijoux fantaisie et montres", en: "Fashion jewellery and watches" },
     roles: ["dev"],
   },
   {
@@ -150,7 +152,7 @@ export const references: Reference[] = [
     year: 2016,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Concept store parisien",
+    tagline: { fr: "Concept store parisien", en: "Parisian concept store" },
     roles: ["dev"],
   },
   {
@@ -158,7 +160,7 @@ export const references: Reference[] = [
     year: 2016,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Mode et patrons DIY",
+    tagline: { fr: "Mode et patrons DIY", en: "Fashion and DIY sewing patterns" },
     roles: ["dev"],
   },
   {
@@ -166,7 +168,7 @@ export const references: Reference[] = [
     year: 2016,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Chaussures de créatrice parisienne",
+    tagline: { fr: "Chaussures de créatrice parisienne", en: "Parisian designer shoes" },
     roles: ["dev"],
   },
   {
@@ -174,7 +176,7 @@ export const references: Reference[] = [
     year: 2015,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Chaussures en cuir pour homme",
+    tagline: { fr: "Chaussures en cuir pour homme", en: "Leather shoes for men" },
     roles: ["dev"],
   },
   {
@@ -182,7 +184,7 @@ export const references: Reference[] = [
     year: 2015,
     type: "Agence",
     techs: ["Magento", "Mirakl"],
-    tagline: "Marketplace beauté",
+    tagline: { fr: "Marketplace beauté", en: "Beauty marketplace" },
     roles: ["dev"],
   },
   {
@@ -190,7 +192,7 @@ export const references: Reference[] = [
     year: 2014,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Prêt-à-porter homme et femme",
+    tagline: { fr: "Prêt-à-porter homme et femme", en: "Ready-to-wear for men and women" },
     roles: ["dev"],
   },
   {
@@ -198,7 +200,7 @@ export const references: Reference[] = [
     year: 2014,
     type: "Freelance",
     techs: ["Magento"],
-    tagline: "Mode féminine parisienne",
+    tagline: { fr: "Mode féminine parisienne", en: "Parisian womenswear" },
     roles: ["dev"],
   },
   {
@@ -206,7 +208,7 @@ export const references: Reference[] = [
     year: 2014,
     type: "Freelance",
     techs: ["Magento"],
-    tagline: "Orfèvrerie et arts de la table",
+    tagline: { fr: "Orfèvrerie et arts de la table", en: "Silverware and tableware" },
     roles: ["dev"],
   },
   {
@@ -214,7 +216,10 @@ export const references: Reference[] = [
     year: 2012,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Concept store légendaire, rue Saint-Honoré",
+    tagline: {
+      fr: "Concept store légendaire, rue Saint-Honoré",
+      en: "Legendary concept store, rue Saint-Honoré",
+    },
     roles: ["dev"],
   },
   {
@@ -222,7 +227,10 @@ export const references: Reference[] = [
     year: 2012,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Joaillerie française nouvelle génération",
+    tagline: {
+      fr: "Joaillerie française nouvelle génération",
+      en: "New-generation French jewellery",
+    },
     roles: ["dev"],
   },
   {
@@ -230,7 +238,7 @@ export const references: Reference[] = [
     year: 2012,
     type: "Freelance",
     techs: ["Magento"],
-    tagline: "Tirages photo façon polaroid",
+    tagline: { fr: "Tirages photo façon polaroid", en: "Polaroid-style photo prints" },
     roles: ["dev", "design"],
   },
   {
@@ -238,7 +246,7 @@ export const references: Reference[] = [
     year: 2012,
     type: "Freelance",
     techs: ["WordPress"],
-    tagline: "Artisan charpentier",
+    tagline: { fr: "Artisan charpentier", en: "Carpentry craftsman" },
     roles: ["dev", "design"],
   },
   {
@@ -246,7 +254,7 @@ export const references: Reference[] = [
     year: 2011,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Mode pour mamans et enfants",
+    tagline: { fr: "Mode pour mamans et enfants", en: "Fashion for mums and kids" },
     roles: ["dev"],
   },
   {
@@ -254,7 +262,7 @@ export const references: Reference[] = [
     year: 2011,
     type: "Agence",
     techs: ["Magento"],
-    tagline: "Lunetterie parisienne",
+    tagline: { fr: "Lunetterie parisienne", en: "Parisian eyewear" },
     roles: ["dev"],
   },
   {
@@ -262,7 +270,10 @@ export const references: Reference[] = [
     year: 2010,
     type: "Agence",
     techs: ["Magento", "Marketplace"],
-    tagline: "Marketplace de produits bio et équitables",
+    tagline: {
+      fr: "Marketplace de produits bio et équitables",
+      en: "Organic and fair-trade marketplace",
+    },
     roles: ["dev"],
   },
   {
@@ -270,7 +281,7 @@ export const references: Reference[] = [
     year: 2009,
     type: "Freelance",
     techs: ["WordPress"],
-    tagline: "Pilote de Formule 4",
+    tagline: { fr: "Pilote de Formule 4", en: "Formula 4 driver" },
     roles: ["dev", "design"],
   },
   {
@@ -278,7 +289,7 @@ export const references: Reference[] = [
     year: 2008,
     type: "Freelance",
     techs: ["Sur-mesure"],
-    tagline: "Joaillier indépendant",
+    tagline: { fr: "Joaillier indépendant", en: "Independent jeweller" },
     roles: ["dev", "design"],
   }, // à vérifier
   {
@@ -286,7 +297,7 @@ export const references: Reference[] = [
     year: 2008,
     type: "Freelance",
     techs: ["Sur-mesure"],
-    tagline: "Groupe de musique local",
+    tagline: { fr: "Groupe de musique local", en: "Local band" },
     roles: ["dev", "design"],
   },
   {
@@ -294,7 +305,10 @@ export const references: Reference[] = [
     year: 2007,
     type: "Freelance",
     techs: ["Magento"],
-    tagline: "Skins et stickers pour ordinateurs et mobiles",
+    tagline: {
+      fr: "Skins et stickers pour ordinateurs et mobiles",
+      en: "Skins and stickers for laptops and phones",
+    },
     roles: ["dev", "design"],
   },
   {
@@ -302,7 +316,7 @@ export const references: Reference[] = [
     year: 2004,
     type: "Freelance",
     techs: ["Sur-mesure"],
-    tagline: "Commune de l'Eure",
+    tagline: { fr: "Commune de l'Eure", en: "Town in the Eure department" },
     roles: ["dev", "design"],
   },
   {
@@ -310,7 +324,10 @@ export const references: Reference[] = [
     year: 2003,
     type: "Freelance",
     techs: ["Sur-mesure"],
-    tagline: "Site communautaire d'une équipe e-sport",
+    tagline: {
+      fr: "Site communautaire d'une équipe e-sport",
+      en: "Community site of an e-sports team",
+    },
     roles: ["dev", "design"],
   },
   {
@@ -318,7 +335,7 @@ export const references: Reference[] = [
     year: 2002,
     type: "Freelance",
     techs: ["Sur-mesure"],
-    tagline: "Station de radio locale",
+    tagline: { fr: "Station de radio locale", en: "Local radio station" },
     roles: ["dev", "design"],
   },
 ];

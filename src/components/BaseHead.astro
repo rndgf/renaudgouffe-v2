@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import { siteConfig } from "@/site.config";
+import { localeOf, localePath, splitLocale, ui } from "@/i18n";
 import "@/styles/global.css";
 // Préchargement des deux fontes critiques (corps + mono de la navigation) : supprime le
 // décalage de mise en page (CLS) au swap des polices.
@@ -16,6 +17,9 @@ interface Props {
 const { title, description, robots } = Astro.props;
 const siteTitle = `${title} • ${siteConfig.title}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? siteConfig.url);
+const locale = localeOf(Astro.currentLocale);
+const { path } = splitLocale(Astro.url.pathname);
+const alternate = (l: "fr" | "en") => new URL(localePath(l, path), Astro.site ?? siteConfig.url);
 
 // Données structurées : profil professionnel (schema.org)
 const jsonLd = JSON.stringify({
@@ -23,14 +27,8 @@ const jsonLd = JSON.stringify({
   "@type": "Person",
   name: siteConfig.author,
   url: siteConfig.url,
-  jobTitle: "Architecte e-commerce, Solutions Architect",
-  knowsAbout: [
-    "Shopify",
-    "Magento",
-    "Architecture e-commerce",
-    "Intégration ERP / PIM",
-    "Mirakl",
-  ],
+  jobTitle: ui[locale].jobTitle,
+  knowsAbout: ui[locale].knowsAbout,
   worksFor: {
     "@type": "Organization",
     name: "Colorz",
@@ -39,7 +37,7 @@ const jsonLd = JSON.stringify({
   address: {
     "@type": "PostalAddress",
     addressLocality: "Rouen",
-    addressRegion: "Normandie",
+    addressRegion: ui[locale].region,
     addressCountry: "FR",
   },
   sameAs: [siteConfig.linkedin],
@@ -58,13 +56,34 @@ const jsonLd = JSON.stringify({
 <meta name="description" content={description} />
 {robots && <meta name="robots" content={robots} />}
 <link rel="canonical" href={canonicalURL} />
+<link rel="alternate" hreflang="fr" href={alternate("fr")} />
+<link rel="alternate" hreflang="en" href={alternate("en")} />
+<link rel="alternate" hreflang="x-default" href={alternate("fr")} />
+
+<!-- Langue : choix du pied de page (localStorage), sinon langue du navigateur.
+     Exécuté avant le rendu, une seule fois par chargement complet (ClientRouter
+     ne rejoue pas un script inline identique d'une page à l'autre). -->
+<script is:inline>
+  (function () {
+    var p = location.pathname;
+    var current = /^\/en(\/|$)/.test(p) ? "en" : "fr";
+    var wanted;
+    try {
+      wanted = localStorage.getItem("lang");
+    } catch (e) {}
+    if (wanted !== "fr" && wanted !== "en") wanted = /^fr\b/i.test(navigator.language) ? "fr" : "en";
+    if (wanted === current) return;
+    var target = wanted === "en" ? "/en" + (p === "/" ? "/" : p) : p.replace(/^\/en(\/|$)/, "/");
+    location.replace(target + location.search + location.hash);
+  })();
+</script>
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={siteTitle} />
 <meta property="og:description" content={description} />
-<meta property="og:locale" content={siteConfig.ogLocale} />
+<meta property="og:locale" content={ui[locale].ogLocale} />
 <meta property="og:site_name" content={siteConfig.title} />
 <meta property="og:image" content={new URL("/og.jpg", Astro.site ?? siteConfig.url)} />
 <meta property="og:image:width" content="1200" />

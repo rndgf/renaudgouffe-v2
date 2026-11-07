@@ -1,17 +1,26 @@
 ---
 import { siteConfig } from "@/site.config";
+import { localeOf, localePath, splitLocale, ui } from "@/i18n";
 
 const year = new Date().getFullYear();
+const locale = localeOf(Astro.currentLocale);
+const copy = ui[locale];
+// Chemin sans préfixe de langue : le switch mène à la même page dans l'autre langue.
+const { path } = splitLocale(Astro.url.pathname);
 
 const links = [
-  { href: "/references", label: "références" },
-  { href: "/cv", label: "à propos" },
-  { href: "/contact", label: "contact" },
+  { href: localePath(locale, "/references"), label: copy.references },
+  { href: localePath(locale, "/cv"), label: copy.about },
+  { href: localePath(locale, "/contact"), label: copy.contact },
 ];
 const external = [
   { href: siteConfig.linkedin, label: "linkedin ↗" },
   { href: "https://www.colorz.fr", label: "colorz ↗" },
 ];
+const languages = [
+  { code: "fr", label: "FR" },
+  { code: "en", label: "EN" },
+] as const;
 ---
 
 <footer class="mt-auto border-t border-white/7 bg-bg-deep">
@@ -24,7 +33,7 @@ const external = [
     >
     <nav
       class="mx-auto grid grid-flow-col grid-cols-[auto_auto] grid-rows-3 gap-x-10 gap-y-3.5 text-center sm:mx-0 sm:flex sm:flex-wrap sm:gap-x-5.5 sm:gap-y-2 sm:text-left"
-      aria-label="Navigation pied de page"
+      aria-label={copy.footerNav}
     >
       {
         links.map(({ href, label }) => (
@@ -54,5 +63,40 @@ const external = [
         <span class="text-coral">/dev/</span><span class="font-semibold text-strong">null</span> ↗
       </a>
     </nav>
+    <!-- Switch de langue : le choix est mémorisé (voir le script en bas) et prime sur
+         la langue du navigateur au prochain chargement (BaseHead). -->
+    <nav class="mx-auto flex items-center gap-2 sm:mx-0" aria-label={copy.language}>
+      {
+        languages.map(({ code, label }, i) => (
+          <>
+            {i > 0 && <span class="text-text/30" aria-hidden="true">/</span>}
+            <a
+              href={localePath(code, path)}
+              hreflang={code}
+              lang={code}
+              data-lang={code}
+              aria-current={code === locale ? "true" : undefined}
+              class:list={[
+                "transition-colors",
+                code === locale ? "text-strong" : "text-text/60 hover:text-strong",
+              ]}
+            >
+              {label}
+            </a>
+          </>
+        ))
+      }
+    </nav>
   </div>
 </footer>
+
+<script>
+  // Délégation : un seul écouteur, qui survit aux navigations ClientRouter.
+  document.addEventListener("click", (event) => {
+    const link = (event.target as Element).closest<HTMLElement>("[data-lang]");
+    if (!link?.dataset.lang) return;
+    try {
+      localStorage.setItem("lang", link.dataset.lang);
+    } catch {}
+  });
+</script>

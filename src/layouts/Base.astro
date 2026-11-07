@@ -3,18 +3,19 @@ import type { SiteMeta } from "@/types";
 import BaseHead from "@/components/BaseHead.astro";
 import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
-import { siteConfig } from "@/site.config";
+import { localeOf, ui } from "@/i18n";
 
 interface Props {
   meta: SiteMeta & { robots?: string };
 }
 
+const locale = localeOf(Astro.currentLocale);
 const {
-  meta: { title, robots, description = siteConfig.description },
+  meta: { title, robots, description = ui[locale].siteDescription },
 } = Astro.props;
 ---
 
-<html lang={siteConfig.lang}>
+<html lang={ui[locale].lang}>
   <head>
     <BaseHead title={title} description={description} robots={robots} />
   </head>
@@ -23,7 +24,7 @@ const {
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-coral focus:px-4 focus:py-2 focus:text-bg"
     >
-      Aller au contenu
+      {ui[locale].skipToContent}
     </a>
     <Header />
     <main id="main" class="relative flex-1">

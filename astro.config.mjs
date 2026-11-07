@@ -11,11 +11,18 @@ export default defineConfig({
   // les espaces entre éléments inline et colle des mots ("l'agenceColorzen tant
   // que", "8PROJETS"). On garde la compression HTML historique.
   compressHTML: true,
+  // Français à la racine, anglais sous /en/ : les pages vivent dans src/pages/[...locale]/.
+  i18n: {
+    defaultLocale: "fr",
+    locales: ["fr", "en"],
+    routing: { prefixDefaultLocale: false },
+  },
   integrations: [
     sitemap({
       // Les pages en noindex ne doivent pas figurer au sitemap
       // (les URLs générées portent un slash final).
-      filter: (page) => !page.endsWith("/references/") && !page.endsWith("/cv/"),
+      filter: (page) =>
+        !page.endsWith("/references/") && !page.endsWith("/cv/") && !page.endsWith("/404/"),
     }),
   ],
   vite: {

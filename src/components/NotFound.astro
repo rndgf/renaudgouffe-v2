@@ -1,0 +1,70 @@
+---
+// Page 404 : rendue à la racine (404.html servi par GitHub Pages) et sous /en/404/.
+import PageLayout from "@/layouts/Base.astro";
+import { localePath, type Locale } from "@/i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = {
+  fr: {
+    title: "Page introuvable",
+    description:
+      "La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil pour continuer votre navigation.",
+    eyebrow: "Erreur 404",
+    h1: "Cette page est en rupture de stock",
+    text: "L'adresse demandée n'existe pas ou a été déplacée. Tout le reste du catalogue est disponible :",
+    nav: "Pages du site",
+    links: ["accueil", "références", "à propos", "contact"],
+  },
+  en: {
+    title: "Page not found",
+    description:
+      "The page you are looking for does not exist or has been moved. Go back to the home page to carry on.",
+    eyebrow: "Error 404",
+    h1: "This page is out of stock",
+    text: "The requested address does not exist or has been moved. The rest of the catalogue is available:",
+    nav: "Site pages",
+    links: ["home", "references", "about", "contact"],
+  },
+}[locale];
+
+const meta = { title: copy.title, description: copy.description, robots: "noindex, nofollow" };
+const hrefs = ["/", "/references", "/cv", "/contact"];
+---
+
+<PageLayout meta={meta}>
+  {
+    /* GitHub Pages ne sert que /404.html : une adresse anglaise inconnue bascule sur la 404 anglaise. */
+    locale === "fr" && (
+      <script is:inline>
+        if (/^\/en(\/|$)/.test(location.pathname)) location.replace("/en/404/");
+      </script>
+    )
+  }
+  <section class="mx-auto max-w-[720px] px-5 pt-16 pb-24 text-center sm:px-8 sm:pt-22">
+    <p class="eyebrow justify-center tracking-[0.12em]">
+      <span class="eyebrow-dot"></span>{copy.eyebrow}
+    </p>
+    <h1
+      class="mt-5 text-[36px] leading-[1.08] font-medium tracking-[-0.025em] text-balance text-strong sm:text-[48px]"
+    >
+      {copy.h1}
+    </h1>
+    <p class="mx-auto mt-5.5 max-w-[500px] text-lg leading-[1.6] text-pretty text-text/70">
+      {copy.text}
+    </p>
+
+    <nav class="mt-8 flex flex-wrap items-center justify-center gap-3" aria-label={copy.nav}>
+      {
+        hrefs.map((href, i) => (
+          <a href={localePath(locale, href)} class={i === 0 ? "btn-primary" : "btn-ghost"}>
+            {copy.links[i]}
+          </a>
+        ))
+      }
+    </nav>
+  </section>
+</PageLayout>

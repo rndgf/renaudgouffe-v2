@@ -2,6 +2,7 @@
 // Bandeau d'appel à l'action en bas de page.
 import { siteConfig } from "@/site.config";
 import { SHOPIFY_ICON } from "@/data/shopify-icon";
+import { localeOf, localePath, ui } from "@/i18n";
 
 interface Props {
   title: string;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const { title, text, shopify = false } = Astro.props;
+const locale = localeOf(Astro.currentLocale);
 ---
 
 <section class="pt-8 pb-9 sm:pt-16 sm:pb-24">
@@ -37,7 +39,7 @@ const { title, text, shopify = false } = Astro.props;
       </div>
     </div>
     <div class="relative flex flex-wrap items-center gap-3 sm:mr-[120px]">
-    <a href="/contact" class="btn-white pr-3">
+    <a href={localePath(locale, "/contact")} class="btn-white pr-3">
       <svg
         width="15"
         height="15"
@@ -51,7 +53,7 @@ const { title, text, shopify = false } = Astro.props;
       >
         <rect x="3" y="5" width="18" height="14" rx="2"></rect>
         <path d="M3 7l9 6 9-6"></path>
-      </svg>me contacter
+      </svg>{ui[locale].contactMe}
     </a>
     <a
       href={siteConfig.linkedin}
