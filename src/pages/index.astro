@@ -58,7 +58,7 @@ const steps: FlowStep[] = [
   }}
 >
   <div class="mx-auto max-w-[1240px] px-5 sm:px-8">
-    <section class="pt-12 sm:pt-18">
+    <section class="pt-8 sm:pt-18">
       <p class="eyebrow flex-wrap gap-x-2.5 gap-y-2">
         <span class="text-strong">Renaud Gouffé</span>
         <span class="hidden text-text/40 sm:inline" aria-hidden="true">·</span>
@@ -112,7 +112,7 @@ const steps: FlowStep[] = [
       </p>
 
       <!-- Qui je suis / ce que je fais -->
-      <div class="mt-16 grid gap-5 md:grid-cols-2">
+      <div class="mt-9 grid gap-5 sm:mt-16 md:grid-cols-2">
         <div class="card card-lift px-6 pt-6 pb-6.5">
           <h2
             class="mb-2.5 flex items-center gap-2.5 text-base font-medium text-text/72 before:size-3 before:rounded-full before:bg-teal before:content-['']"
@@ -142,13 +142,15 @@ const steps: FlowStep[] = [
         </div>
       </div>
 
-      <h2 class="mt-16 text-[30px] leading-tight font-semibold tracking-[-0.015em] text-strong">
+      <h2
+        class="mt-9 text-[20px] leading-tight font-semibold tracking-[-0.015em] whitespace-nowrap text-strong sm:mt-16 sm:text-[30px]"
+      >
         Comment je travaille aujourd'hui
       </h2>
       <ArchitectFlow steps={steps} />
     </section>
 
-    <div class="-mt-4">
+    <div class="sm:-mt-4">
       <Contact
         title="Échangeons"
         text="Replatforming, intégration SI, question d'architecture ou de code : écrivez-moi."

@@ -155,13 +155,11 @@ function initArchitectFlow(flow: HTMLElement): void {
     const lastStep = at(steps, steps.length - 1);
     const panel = document.createElement("div");
     panel.className = "af-panel";
-    const panelTop = firstStep.offsetTop - 56;
     const panelLeft = firstStep.offsetLeft - 20;
     if (vertical) {
       panel.style.left = "0px";
       panel.style.width = `${width}px`;
-      panel.style.top = `${panelTop}px`;
-      panel.style.height = `${lastStep.offsetTop + lastStep.offsetHeight - panelTop + 16}px`;
+      panel.style.height = `${flow.offsetHeight}px`;
     } else {
       panel.style.left = `${panelLeft}px`;
       panel.style.width = `${lastStep.offsetLeft + lastStep.offsetWidth - panelLeft + 20}px`;
@@ -172,8 +170,7 @@ function initArchitectFlow(flow: HTMLElement): void {
       if (!label || (idx > 0 && at(steps, idx - 1).dataset["panel"] === label)) return;
       const cap = document.createElement("span");
       cap.textContent = label;
-      if (vertical) cap.style.top = `${s.offsetTop - 56 - panelTop + 14}px`;
-      else cap.style.left = `${s.offsetLeft - panelLeft}px`;
+      if (!vertical) cap.style.left = `${s.offsetLeft - panelLeft}px`;
       panel.appendChild(cap);
     });
     flow.insertBefore(panel, flow.firstChild);
@@ -398,6 +395,12 @@ function initArchitectFlow(flow: HTMLElement): void {
 
   function tick(now: number): void {
     stepBurst(now);
+    // Démarrage dès que le schéma entre dans l'écran, sans IntersectionObserver :
+    // une mesure par image jusqu'au départ, puis plus rien.
+    if (!started) {
+      const r = flow.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.8 && r.bottom > window.innerHeight * 0.15) start();
+    }
     if (started && model) {
       const dt = now - t0;
       if (dt < DRAW_MS) {
@@ -439,24 +442,20 @@ function initArchitectFlow(flow: HTMLElement): void {
   );
   if (reduce) return;
   requestAnimationFrame(tick);
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          start();
-          io.disconnect();
-        }
-      },
-      { threshold: 0.2 },
-    );
-    io.observe(flow);
-  } else {
-    start();
-  }
 }
 
 // Le module ne s'exécute qu'une fois par visite (ClientRouter) : init à chaque page.
-document.addEventListener("astro:page-load", () => {
+function boot(): void {
   const flow = document.getElementById("architect-flow");
-  if (flow && !flow.classList.contains("af-ready")) initArchitectFlow(flow);
-});
+  if (!flow || flow.classList.contains("af-ready")) return;
+  try {
+    initArchitectFlow(flow);
+  } catch (err) {
+    // Sans script le schéma reste lisible (filet continu) ; l'erreur doit se voir en console.
+    console.error("architect-flow", err);
+  }
+}
+document.addEventListener("astro:page-load", boot);
+// Si l'événement a déjà eu lieu quand ce module s'exécute (ordre de chargement variable
+// selon le navigateur), on démarre quand même.
+if (document.readyState !== "loading") boot();

@@ -227,25 +227,19 @@ const { steps } = Astro.props;
       width: 1px;
       height: auto;
     }
+    /* Même hauteur minimale pour toutes les étapes : le tracé garde un rythme régulier,
+       avec ou sans embranchement. */
     .af-step {
-      padding: 6px 16px 22px 100px;
+      padding: 6px 16px 20px 100px;
+      min-height: 132px;
+      box-sizing: border-box;
     }
-    .af-step.af-first {
-      margin-top: 56px;
-    }
-    .af-step.af-last {
-      margin-bottom: 28px;
-    }
-    .af-step[data-lanes="2"],
-    .af-step[data-kind="fork"] {
-      min-height: 120px;
-    }
-    .af-step[data-lanes="3"] {
-      min-height: 150px;
+    /* Pas de séparation entre les deux groupes : libellés masqués, rythme continu. */
+    .af-flow {
+      padding: 16px 0 4px;
     }
     .af-panel span {
-      top: 14px;
-      left: 100px;
+      display: none;
     }
   }
 

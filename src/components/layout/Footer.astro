@@ -18,9 +18,12 @@ const external = [
   <div
     class="mx-auto flex max-w-[1240px] flex-col gap-5 px-5 py-6 font-mono text-xs text-text/60 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4 sm:px-8 sm:py-5.5"
   >
-    <span>v21.0 · © {year} rndgf</span>
+    <!-- Mobile : version et copyright après les liens, centrés, sous un filet discret -->
+    <span class="order-last border-t border-text/8 pt-5 text-center sm:order-none sm:border-0 sm:pt-0 sm:text-left"
+      >v21.0 · © {year} rndgf</span
+    >
     <nav
-      class="grid grid-cols-2 gap-x-6 gap-y-3.5 sm:flex sm:flex-wrap sm:gap-x-5.5 sm:gap-y-2"
+      class="mx-auto grid grid-flow-col grid-cols-[auto_auto] grid-rows-3 gap-x-10 gap-y-3.5 text-center sm:mx-0 sm:flex sm:flex-wrap sm:gap-x-5.5 sm:gap-y-2 sm:text-left"
       aria-label="Navigation pied de page"
     >
       {
