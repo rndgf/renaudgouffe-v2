@@ -4,7 +4,7 @@
 // ArchitectFlow.astro) ; ce module ajoute le tracé SVG et l'animation.
 
 const NS = "http://www.w3.org/2000/svg";
-const LANE_COLORS = ["#e36261", "#e8a463", "#c77fb6"] as const;
+const LANE_COLORS = ["#f2622b", "#f4b834", "#3dc4b0"] as const;
 const LANE_OFFSETS: Record<number, readonly number[]> = { 2: [-24, 24], 3: [-30, 0, 30] };
 // Horizontal : v = y. Vertical (mobile) : v = x. Les valeurs sont dans le repère (u, v)
 // où u est l'axe de progression du tracé.
@@ -14,7 +14,26 @@ const MOBILE_QUERY = "(max-width: 759px)";
 const DRAW_MS = 2800;
 const LOOP_MS = 4200;
 const BURST_MS = 1300;
-const BURST_COLORS = ["#ffffff", "#e36261", "#e8a463", "#f5f1f8", "#e36261"] as const;
+const BURST_COLORS = ["#fff4dc", "#f2622b", "#f4b834", "#3dc4b0", "#f2622b"] as const;
+// Pictos en trait (viewBox 24), un par étape dans l'ordre : personnes, couches, document,
+// code, coche, panier. Dessinés à l'échelle ICON_SCALE dans un anneau de NODE_R.
+const NODE_R = 13;
+const ICON_SCALE = 0.5;
+const ICONS: readonly (readonly string[])[] = [
+  [
+    "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",
+    "M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z",
+    "M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+  ],
+  ["M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"],
+  ["M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"],
+  ["m16 18 6-6-6-6M8 6l-6 6 6 6"],
+  ["M20 6 9 17l-5-5"],
+  [
+    "M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12",
+    "M9 21a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM20 21a1 1 0 1 1-2 0 1 1 0 0 1 2 0z",
+  ],
+];
 
 type Attrs = Record<string, string | number>;
 
@@ -50,7 +69,7 @@ interface Burst {
   cy: number;
   fx: SVGGElement;
   wave: SVGCircleElement;
-  items: { el: SVGCircleElement; dx: number; dy: number }[];
+  items: { el: SVGTextElement; dx: number; dy: number }[];
   over: boolean;
 }
 
@@ -77,6 +96,8 @@ function initArchitectFlow(flow: HTMLElement): void {
   let burst: Burst | null = null;
   let vertical = false;
   let started = false;
+  let alive = true;
+  let lastLap = -1;
   let t0 = 0;
 
   // (u, v) → coordonnées d'écran
@@ -170,9 +191,9 @@ function initArchitectFlow(flow: HTMLElement): void {
         : { id: "af-grad", gradientUnits: "userSpaceOnUse", x1: first, y1: 0, x2: last, y2: 0 },
       defs,
     );
-    svgEl("stop", { offset: "0", "stop-color": "#873579" }, grad);
-    svgEl("stop", { offset: "0.55", "stop-color": "#b14675" }, grad);
-    svgEl("stop", { offset: "1", "stop-color": "#e36261" }, grad);
+    svgEl("stop", { offset: "0", "stop-color": "#9c3f25" }, grad);
+    svgEl("stop", { offset: "0.55", "stop-color": "#f2622b" }, grad);
+    svgEl("stop", { offset: "1", "stop-color": "#f4b834" }, grad);
 
     // Ligne principale sinueuse
     let d = `M${P(first, nodeV(0))}`;
@@ -221,27 +242,25 @@ function initArchitectFlow(flow: HTMLElement): void {
       });
     });
 
-    // Nœuds : point plein, anneau à coche (tests), drapeau (arrivée)
+    /** Picto 24×24 centré sur (x, y), à l'échelle k ; trait épaissi pour compenser l'échelle. */
+    const icon = (paths: readonly string[], x: number, y: number, k: number): SVGElement[] => {
+      const g = svgEl("g", { transform: `translate(${x - 12 * k} ${y - 12 * k}) scale(${k})` }, root);
+      return paths.map((d) => {
+        const p = svgEl("path", { d, class: "af-flag" }, g);
+        p.style.strokeWidth = String(1.5 / k); // la classe .af-flag fixe 1.5, l'échelle le réduirait
+        return p;
+      });
+    };
+
+    // Nœuds : un anneau et un picto par étape ; point plein si l'étape n'a pas de picto
     const nodes: StepNode[] = steps.map((s, idx) => {
       const c = pt(at(us, idx), nodeV(idx));
       const { x, y } = c;
       const parts: SVGElement[] = [];
-      if (s.dataset["kind"] === "test") {
-        parts.push(svgEl("circle", { cx: x, cy: y, r: 10, class: "af-endring" }, root));
-        parts.push(svgEl("path", { d: `M${x - 4} ${y + 0.5} l3 3 l5 -6`, class: "af-flag" }, root));
-      } else if (idx === steps.length - 1) {
-        parts.push(svgEl("circle", { cx: x, cy: y, r: 12, class: "af-endring" }, root));
-        parts.push(svgEl("path", { d: `M${x - 3.5} ${y - 6} V${y + 6.5}`, class: "af-flag" }, root));
-        parts.push(
-          svgEl(
-            "path",
-            {
-              d: `M${x - 3.5} ${y - 5.5} L${x + 5.5} ${y - 2} L${x - 3.5} ${y + 1.5} Z`,
-              class: "af-flag af-pennant",
-            },
-            root,
-          ),
-        );
+      const paths = ICONS[idx];
+      if (paths) {
+        parts.push(svgEl("circle", { cx: x, cy: y, r: NODE_R, class: "af-endring" }, root));
+        parts.push(...icon(paths, x, y, ICON_SCALE));
       } else {
         parts.push(svgEl("circle", { cx: x, cy: y, r: 6, class: "af-node" }, root));
       }
@@ -329,23 +348,29 @@ function initArchitectFlow(flow: HTMLElement): void {
     const c = pt(at(model.us, n), nodeV(n));
     const wave = svgEl(
       "circle",
-      { cx: c.x, cy: c.y, r: 12, fill: "none", stroke: "#e36261", "stroke-width": 1 },
+      { cx: c.x, cy: c.y, r: 12, fill: "none", stroke: "#f2622b", "stroke-width": 1 },
       model.fx,
     );
+    // Gerbe de mini symboles euros
     const items: Burst["items"] = [];
     for (let i = 0; i < 26; i++) {
       const a = Math.random() * Math.PI * 2;
       const dist = 14 + Math.random() * 40;
       const el = svgEl(
-        "circle",
+        "text",
         {
-          cx: c.x,
-          cy: c.y,
-          r: (0.6 + Math.random() * 0.7).toFixed(2),
+          x: c.x,
+          y: c.y,
+          "font-size": (5 + Math.random() * 4).toFixed(1),
+          "font-family": "var(--font-mono)",
+          "font-weight": 500,
+          "text-anchor": "middle",
+          "dominant-baseline": "middle",
           fill: at(BURST_COLORS, i % BURST_COLORS.length),
         },
         model.fx,
       );
+      el.textContent = "€";
       items.push({ el, dx: Math.cos(a) * dist, dy: Math.sin(a) * dist * 0.55 });
     }
     burst = { t0: now, cx: c.x, cy: c.y, fx: model.fx, wave, items, over: false };
@@ -362,8 +387,8 @@ function initArchitectFlow(flow: HTMLElement): void {
     }
     const k = 1 - (1 - u) ** 3;
     for (const it of burst.items) {
-      it.el.setAttribute("cx", String(burst.cx + it.dx * k));
-      it.el.setAttribute("cy", String(burst.cy + it.dy * k));
+      it.el.setAttribute("x", String(burst.cx + it.dx * k));
+      it.el.setAttribute("y", String(burst.cy + it.dy * k));
       it.el.setAttribute("opacity", (0.75 * (1 - u)).toFixed(2));
     }
     const w = clamp(u / 0.55, 0, 1);
@@ -380,13 +405,18 @@ function initArchitectFlow(flow: HTMLElement): void {
         apply(t * t * (3 - 2 * t));
       } else {
         if (model.p < 1) apply(1);
-        if (!burst) startBurst(now);
+        // Gerbe à l'arrivée du tracé, puis à chaque passage de la bille au bout de la ligne.
+        const lap = Math.floor((dt - DRAW_MS) / LOOP_MS);
+        if (lap !== lastLap) {
+          lastLap = lap;
+          startBurst(now);
+        }
         const u = ((dt - DRAW_MS) % LOOP_MS) / LOOP_MS;
         const e = u * u * (3 - 2 * u);
         movePulse(model.main.getPointAtLength(model.mainLen * e), Math.sin(u * Math.PI));
       }
     }
-    requestAnimationFrame(tick);
+    if (alive) requestAnimationFrame(tick);
   }
 
   function start(): void {
@@ -398,6 +428,15 @@ function initArchitectFlow(flow: HTMLElement): void {
   build();
   window.addEventListener("resize", build);
   void document.fonts?.ready.then(build);
+  // Arrêt propre quand ClientRouter remplace la page : plus de resize ni de tick orphelins.
+  document.addEventListener(
+    "astro:before-swap",
+    () => {
+      window.removeEventListener("resize", build);
+      alive = false;
+    },
+    { once: true },
+  );
   if (reduce) return;
   requestAnimationFrame(tick);
   if ("IntersectionObserver" in window) {
@@ -416,5 +455,8 @@ function initArchitectFlow(flow: HTMLElement): void {
   }
 }
 
-const flow = document.getElementById("architect-flow");
-if (flow) initArchitectFlow(flow);
+// Le module ne s'exécute qu'une fois par visite (ClientRouter) : init à chaque page.
+document.addEventListener("astro:page-load", () => {
+  const flow = document.getElementById("architect-flow");
+  if (flow && !flow.classList.contains("af-ready")) initArchitectFlow(flow);
+});

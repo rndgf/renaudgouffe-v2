@@ -31,7 +31,7 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
     </p>
 
     <div
-      class="card mt-12 px-5 pt-10 pb-7 hover:border-white/9 sm:px-8"
+      class="card card-lift mt-12 px-5 pt-10 pb-7 hover:border-text/14 sm:px-8"
       id="contact-card"
       data-u={reversedUser}
       data-d={reversedDomain}
@@ -106,7 +106,10 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
 
   <script>
     // Assemble l'adresse côté client uniquement — jamais présente dans le HTML.
+    // Relancé à chaque arrivée sur la page (ClientRouter) : le module ne s'exécute qu'une fois.
+    document.addEventListener("astro:page-load", () => {
     const card = document.getElementById("contact-card");
+    if (!card) return;
     const emailLink = document.getElementById("contact-email");
     const mailtoBtn = document.getElementById("contact-mailto");
     const copyBtn = document.getElementById("contact-copy");
@@ -140,6 +143,7 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
         copyBtn.classList.remove("text-amber");
         if (feedback) feedback.textContent = "";
       }, 1600);
+    });
     });
   </script>
 </PageLayout>

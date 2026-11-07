@@ -21,13 +21,16 @@ const {
   <body class="flex min-h-dvh flex-col overflow-x-clip bg-bg">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-purple focus:px-4 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-coral focus:px-4 focus:py-2 focus:text-bg"
     >
       Aller au contenu
     </a>
     <Header />
-    <main id="main" class="flex-1">
-      <slot />
+    <main id="main" class="relative flex-1">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="relative">
+        <slot />
+      </div>
     </main>
     <Footer />
   </body>

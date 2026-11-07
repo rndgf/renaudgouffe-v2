@@ -86,8 +86,12 @@ const { steps } = Astro.props;
   .af-panel {
     position: absolute;
     top: 0;
-    border-radius: 8px;
-    background: rgb(255 255 255 / 0.03);
+    border-radius: 10px;
+    border: 1px solid rgb(234 223 200 / 0.12);
+    background-color: rgb(234 223 200 / 0.03);
+    /* Trame de points très discrète, 5 % */
+    background-image: radial-gradient(rgb(234 223 200 / 0.05) 1px, transparent 1.2px);
+    background-size: 16px 16px;
     pointer-events: none;
   }
   .af-panel span {
@@ -97,7 +101,7 @@ const { steps } = Astro.props;
     font: 500 11px/1.2 var(--font-mono);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgb(236 232 240 / 0.55);
+    color: rgb(234 223 200 / 0.6);
   }
 
   .af-step {
@@ -170,7 +174,7 @@ const { steps } = Astro.props;
       stroke 0.4s;
   }
   .af-endring.af-on {
-    fill: #2a2226;
+    fill: #2a1f18;
     stroke: var(--color-coral);
   }
   .af-flag {
@@ -201,7 +205,7 @@ const { steps } = Astro.props;
     opacity: 1;
   }
   .af-pulse {
-    fill: #fff;
+    fill: #fff4dc;
   }
 
   /* Mobile : le chemin devient vertical, les étapes s'empilent à droite de la ligne. */

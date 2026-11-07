@@ -5,7 +5,7 @@
       "name": "renaudgouffe-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "cwd": "/home/renaud/www/renaudgouffe",
+      "cwd": "/home/renaud/www/PERSO/rndgf",
       "port": 4321
     }
   ]

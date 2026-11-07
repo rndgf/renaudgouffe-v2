@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import { siteConfig } from "@/site.config";
 import "@/styles/global.css";
 // Préchargement des deux fontes critiques (corps + mono de la navigation) : supprime le
@@ -73,7 +74,10 @@ const jsonLd = JSON.stringify({
 
 <link rel="preload" href={jostWoff2} as="font" type="font/woff2" crossorigin />
 <link rel="preload" href={plexMonoWoff2} as="font" type="font/woff2" crossorigin />
-<meta name="theme-color" content="#1a181e" />
+<meta name="theme-color" content="#15110e" />
+
+<!-- Transitions entre pages (fondu) : le script du schéma se relance sur astro:page-load -->
+<ClientRouter />
 
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
