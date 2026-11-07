@@ -3,6 +3,7 @@ import PageLayout from "@/layouts/Base.astro";
 import Contact from "@/components/Contact.astro";
 import ArchitectFlow from "@/components/ArchitectFlow.astro";
 import type { FlowStep } from "@/components/ArchitectFlow.astro";
+import { SHOPIFY_ICON } from "@/data/shopify-icon";
 
 // Étapes du schéma, de l'écoute à la mise en production.
 const steps: FlowStep[] = [
@@ -16,7 +17,7 @@ const steps: FlowStep[] = [
   {
     tag: "Architecturer",
     title: "Définir l'architecture",
-    text: "Choix de la plateforme cible, interfaces entre les différentes briques de l'écosystème (ERP, OMS, PIM, marketplace...).",
+    text: "Shopify comme plateforme cible, interfaces entre les différentes briques de l'écosystème (ERP, OMS, PIM, marketplace...).",
     kind: "fork",
     panel: "Cadrage & architecture",
   },
@@ -106,9 +107,17 @@ const steps: FlowStep[] = [
         Architecte Solutions <span class="whitespace-nowrap">e‑commerce</span>
       </h1>
       <p
-        class="mt-5 text-[21px] leading-[1.3] tracking-[-0.01em] text-text/80 sm:text-[26px] lg:whitespace-nowrap"
+        class="mt-5 flex items-center gap-2.5 text-[21px] leading-[1.3] tracking-[-0.01em] text-text/80 sm:gap-3 sm:text-[26px] lg:whitespace-nowrap"
       >
-        Spécialisé Shopify, du cadrage à la mise en production.
+        <svg
+          viewBox={SHOPIFY_ICON.viewBox}
+          class="size-[0.95em] shrink-0 text-strong"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d={SHOPIFY_ICON.path}></path>
+        </svg>
+        <span>Spécialisé Shopify, du cadrage à la mise en production.</span>
       </p>
 
       <!-- Qui je suis / ce que je fais -->

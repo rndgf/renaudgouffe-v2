@@ -3,6 +3,8 @@
 // gerbe de particules à l'arrivée. Tout est lisible sans script (voir
 // ArchitectFlow.astro) ; ce module ajoute le tracé SVG et l'animation.
 
+import { SHOPIFY_ICON } from "@/data/shopify-icon";
+
 const NS = "http://www.w3.org/2000/svg";
 const LANE_COLORS = ["#f2622b", "#f4b834", "#3dc4b0"] as const;
 const LANE_OFFSETS: Record<number, readonly number[]> = { 2: [-24, 24], 3: [-30, 0, 30] };
@@ -15,17 +17,23 @@ const DRAW_MS = 2800;
 const LOOP_MS = 4200;
 const BURST_MS = 1300;
 const BURST_COLORS = ["#fff4dc", "#f2622b", "#f4b834", "#3dc4b0", "#f2622b"] as const;
-// Pictos en trait (viewBox 24), un par étape dans l'ordre : personnes, couches, document,
-// code, coche, panier. Dessinés à l'échelle ICON_SCALE dans un anneau de NODE_R.
+// Pictos en trait (viewBox 24), un par étape dans l'ordre : personnes, Shopify (plein),
+// document, code, coche, panier. Dessinés à l'échelle ICON_SCALE dans un anneau de NODE_R.
 const NODE_R = 13;
 const ICON_SCALE = 0.5;
-const ICONS: readonly (readonly string[])[] = [
+/** Picto plein : chemins dans un viewBox w×h, remplis au lieu d'être tracés. */
+interface FilledIcon {
+  paths: readonly string[];
+  w: number;
+  h: number;
+}
+const ICONS: readonly (readonly string[] | FilledIcon)[] = [
   [
     "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",
     "M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z",
     "M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
   ],
-  ["M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"],
+  { paths: [SHOPIFY_ICON.path], w: SHOPIFY_ICON.width, h: SHOPIFY_ICON.height },
   ["M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"],
   ["m16 18 6-6-6-6M8 6l-6 6 6 6"],
   ["M20 6 9 17l-5-5"],
@@ -239,9 +247,25 @@ function initArchitectFlow(flow: HTMLElement): void {
     });
 
     /** Picto 24×24 centré sur (x, y), à l'échelle k ; trait épaissi pour compenser l'échelle. */
-    const icon = (paths: readonly string[], x: number, y: number, k: number): SVGElement[] => {
+    const icon = (
+      def: readonly string[] | FilledIcon,
+      x: number,
+      y: number,
+      k: number,
+    ): SVGElement[] => {
+      if (!Array.isArray(def)) {
+        // Picto plein : ramené à 20 unités de haut (marge dans l'anneau), centré.
+        const { paths, w, h } = def as FilledIcon;
+        const s = (k * 20) / Math.max(w, h);
+        const g = svgEl(
+          "g",
+          { transform: `translate(${x - (w * s) / 2} ${y - (h * s) / 2}) scale(${s})` },
+          root,
+        );
+        return paths.map((d) => svgEl("path", { d, class: "af-fill" }, g));
+      }
       const g = svgEl("g", { transform: `translate(${x - 12 * k} ${y - 12 * k}) scale(${k})` }, root);
-      return paths.map((d) => {
+      return def.map((d) => {
         const p = svgEl("path", { d, class: "af-flag" }, g);
         p.style.strokeWidth = String(1.5 / k); // la classe .af-flag fixe 1.5, l'échelle le réduirait
         return p;
