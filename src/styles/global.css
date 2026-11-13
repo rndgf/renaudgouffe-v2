@@ -23,6 +23,11 @@
   --color-rose: #f4b834; /* jaune : liens */
   --color-amber: #f4b834; /* jaune : état courant */
   --color-teal: #3dc4b0; /* vert-de-gris : grille radar, troisième voie */
+
+  /* ------ Bandes de l'en-tête : rouge, jaune, vert, cyan néon ------ */
+  --color-red: #e5302a;
+  --color-green: #2dbe5c;
+  --color-cyan: #6ee6e0;
 }
 
 @layer base {
@@ -99,12 +104,42 @@
     mask-image: radial-gradient(ellipse 70% 100% at 50% 0%, #000 30%, transparent 100%);
   }
 
-  /* Trois filets de marque sous la navigation */
+  /* Quatre bandes horizontales sous la navigation ; la cyan se courbe vers le bas
+     et sort par le bord gauche de la page (tracé SVG de 180 px, voir Header.astro) */
   .brand-stripes {
-    @apply flex flex-col gap-0.5;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
   .brand-stripes > span {
-    @apply h-px;
+    height: 3px;
+  }
+  .brand-stripes > .stripe-cyan {
+    margin-left: 180px;
+  }
+  .brand-stripes > .stripe-cyan,
+  .brand-stripes > svg {
+    filter: drop-shadow(0 0 4px var(--color-cyan));
+  }
+  .brand-stripes > svg {
+    position: absolute;
+    left: 0;
+    top: 15px; /* 3 bandes de 3 px + 3 écarts de 2 px */
+    pointer-events: none;
+  }
+  /* Fondu sous les bandes : le contenu qui défile sous l'en-tête collant s'efface
+     au lieu d'être coupé net. z-index -1 : sous la courbe cyan. */
+  .brand-stripes::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 28px;
+    background: linear-gradient(color-mix(in srgb, var(--color-bg-deep) 95%, transparent), transparent);
+    pointer-events: none;
   }
 
   /* Lien de texte souligné */
@@ -143,16 +178,15 @@
     top: 0;
     bottom: 0;
     right: -40px;
-    width: 150px;
+    width: 180px;
     transform: skewX(-20deg);
-    opacity: 0.55;
+    /* Mêmes bandes que l'en-tête, pleines : à 55 % le rouge se fondait dans l'orange */
     background: linear-gradient(
       90deg,
-      var(--color-purple) 0 32%,
-      transparent 32% 36%,
-      var(--color-amber) 36% 64%,
-      transparent 64% 68%,
-      var(--color-teal) 68% 100%
+      var(--color-red) 0 25%,
+      var(--color-amber) 25% 50%,
+      var(--color-green) 50% 75%,
+      var(--color-cyan) 75% 100%
     );
   }
 
