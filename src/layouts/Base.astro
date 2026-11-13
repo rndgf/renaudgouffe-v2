@@ -3,6 +3,7 @@ import type { SiteMeta } from "@/types";
 import BaseHead from "@/components/BaseHead.astro";
 import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
+import GridDot from "@/components/GridDot.astro";
 import { localeOf, ui } from "@/i18n";
 
 interface Props {
@@ -28,7 +29,7 @@ const {
     </a>
     <Header />
     <main id="main" class="relative flex-1">
-      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-grid" aria-hidden="true"><GridDot /></div>
       <div class="relative">
         <slot />
       </div>

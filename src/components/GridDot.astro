@@ -1,0 +1,191 @@
+---
+// Point lumineux qui parcourt la grille radar de .hero-grid (global.css) :
+// il suit les lignes tous les 40 px et ne revient pas sur ses pas.
+// Traînée discrète façon phosphore ; un faisceau radar, centré sur les anneaux
+// (82 %, 38 %), ravive le point à chaque passage.
+---
+
+<canvas class="grid-dot" aria-hidden="true"></canvas>
+
+<style>
+  .grid-dot {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  // Géométrie de .hero-grid : à garder alignée avec global.css.
+  const STEP = 40;
+  const LINE = 0.5; // milieu du trait de 1 px
+  const CYAN = [110, 230, 224]; // --color-cyan
+
+  const SPEED = 90; // px/s
+  const TRAIL = 2.4; // durée de la traînée, en s
+  const TURN = 0.3; // probabilité de tourner à un carrefour
+
+  const rgba = (a: number) => `rgba(${CYAN.join(",")},${a})`;
+  const rnd = (n: number) => Math.floor(Math.random() * Math.max(1, n));
+
+  const canvas = document.querySelector<HTMLCanvasElement>(".grid-dot");
+  const ctx = canvas?.getContext("2d");
+
+  if (canvas && ctx) {
+    let W = 0;
+    let H = 0;
+    let cx = 0;
+    let cy = 0;
+    const resize = () => {
+      const dpr = Math.min(devicePixelRatio, 2);
+      W = canvas.clientWidth;
+      H = canvas.clientHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cx = W * 0.82;
+      cy = H * 0.38;
+    };
+    resize();
+    new ResizeObserver(resize).observe(canvas);
+
+    // Le point va de carrefour en carrefour sur les lignes de la grille, jamais en diagonale.
+    // (i, j) : indices du dernier carrefour franchi ; d : direction dans DIRS.
+    const DIRS = [
+      [1, 0],
+      [0, 1],
+      [-1, 0],
+      [0, -1],
+    ] as const;
+    const at = (n: number) => LINE + STEP * n;
+    // Zone visible du masque de .hero-grid (ellipse 70 % × 100 % en haut au centre).
+    const visible = (i: number, j: number) =>
+      at(i) > 4 && at(i) < W - 4 && at(j) > 4 && ((at(i) - W / 2) / (0.7 * W)) ** 2 + (at(j) / H) ** 2 < 0.55;
+
+    let i = 0;
+    let j = 0;
+    for (let k = 0; k < 50 && !visible(i, j); k++) {
+      i = rnd(W / STEP);
+      j = rnd(H / STEP);
+    }
+    let d = rnd(4);
+    let along = 0; // distance parcourue depuis le carrefour (i, j)
+    let x = at(i);
+    let y = at(j);
+    const recent: string[] = []; // derniers carrefours franchis, à ne pas repasser
+    const trail: { x: number; y: number; t: number }[] = [];
+    const blips: { x: number; y: number; t: number }[] = [];
+
+    // Tout droit, à gauche ou à droite ; demi-tour seulement en cul-de-sac.
+    const choose = () => {
+      const next = (k: number) => [i + DIRS[k]![0], j + DIRS[k]![1]] as const;
+      const options = [d, (d + 1) % 4, (d + 3) % 4].filter((k) => visible(...next(k)));
+      const fresh = options.filter((k) => !recent.includes(next(k).join(",")));
+      const pool = fresh.length ? fresh : options;
+      if (!pool.length) return (d + 2) % 4;
+      return pool.includes(d) && Math.random() > TURN ? d : pool[rnd(pool.length)]!;
+    };
+    d = choose();
+
+    const move = (ds: number, t: number) => {
+      along += ds;
+      while (along >= STEP) {
+        along -= STEP;
+        i += DIRS[d]![0];
+        j += DIRS[d]![1];
+        trail.push({ x: at(i), y: at(j), t }); // angle net dans la traînée
+        recent.push(`${i},${j}`);
+        if (recent.length > 16) recent.shift();
+        d = choose();
+      }
+      x = at(i) + DIRS[d]![0] * along;
+      y = at(j) + DIRS[d]![1] * along;
+    };
+
+    let lastSweep = 0;
+    const draw = (t: number) => {
+      ctx.clearRect(0, 0, W, H);
+      // Faisceau : un tour en 4 s ; le point s'allume à son passage puis retombe.
+      const a = ((t * Math.PI * 2) / 4) % (Math.PI * 2);
+      const g = ctx.createConicGradient(a - 0.8, cx, cy);
+      g.addColorStop(0, rgba(0));
+      g.addColorStop(0.8 / (Math.PI * 2), rgba(0.09));
+      g.addColorStop(0.8 / (Math.PI * 2) + 0.001, rgba(0));
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+      const since = (((a - Math.atan2(y - cy, x - cx)) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+      if (since < lastSweep) blips.push({ x, y, t });
+      lastSweep = since;
+      const glow = 0.35 + 0.65 * Math.exp(-since * 1.2);
+      while (blips.length && t - blips[0]!.t > 3) blips.shift();
+      for (const b of blips) {
+        ctx.globalAlpha = 1 - (t - b.t) / 3;
+        ctx.strokeStyle = rgba(0.5);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, 4 + (t - b.t) * 6, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Traînée : un trait large et pâle (halo) sous un trait fin.
+      ctx.lineCap = "round";
+      for (const [width, alpha] of [
+        [6, 0.05],
+        [1.2, 0.3],
+      ] as const) {
+        ctx.lineWidth = width;
+        ctx.strokeStyle = rgba(alpha);
+        for (let k = 1; k < trail.length; k++) {
+          const p = trail[k - 1]!;
+          const q = trail[k]!;
+          if (Math.abs(q.x - p.x) + Math.abs(q.y - p.y) > 20) continue; // saut après redimensionnement
+          ctx.globalAlpha = (1 - (t - q.t) / TRAIL) ** 2;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.stroke();
+        }
+      }
+
+      // Point : halo, puis cœur presque blanc ; le halo grandit au passage du faisceau.
+      const radius = 12 + 8 * glow;
+      const halo = ctx.createRadialGradient(x, y, 0, x, y, radius);
+      halo.addColorStop(0, rgba(0.55));
+      halo.addColorStop(0.35, rgba(0.18));
+      halo.addColorStop(1, rgba(0));
+      ctx.globalAlpha = glow;
+      ctx.fillStyle = halo;
+      ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+      ctx.fillStyle = "#effffd";
+      ctx.beginPath();
+      ctx.arc(x, y, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    let last = performance.now();
+    let running = false;
+    let raf = 0;
+    const frame = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      const t = now / 1000;
+      move(SPEED * dt, t);
+      trail.push({ x, y, t });
+      while (trail.length && t - trail[0]!.t > TRAIL) trail.shift();
+      draw(t);
+      if (running) raf = requestAnimationFrame(frame);
+    };
+
+    // Animation arrêtée quand la grille sort de l'écran.
+    new IntersectionObserver(([entry]) => {
+      cancelAnimationFrame(raf);
+      running = !!entry?.isIntersecting;
+      if (running) {
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+    }).observe(canvas);
+  }
+</script>
