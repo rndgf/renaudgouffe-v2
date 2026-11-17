@@ -29,14 +29,15 @@ const copy = ({
     ctaTitle: "Échangeons",
     ctaText: "Replatforming, intégration SI, question d'architecture ou de code : écrivez-moi.",
     scoping: "Cadrage & architecture",
-    delivery: "Développement, tests et livraison",
+    delivery: "Développement, recette et mise en ligne",
+    iterate: "itérer",
     steps: [
-      ["Écouter", "Comprendre le métier", "Discuter avec les acteurs métier, cartographier les process et comprendre les contraintes du SI."],
-      ["Architecturer", "Définir l'architecture", "Shopify comme plateforme cible, interfaces entre les différentes briques de l'écosystème (ERP, OMS, PIM, marketplace...)."],
-      ["Cadrer", "Écrire les intentions", "En se basant sur SDD : définir les intentions et les ADRs, verrouiller le périmètre et les contrats d'interface."],
+      ["Découvrir", "Comprendre le métier et le SI", "Ateliers avec les équipes métier, échanges avec la DSI : process, existant, contraintes."],
+      ["Architecturer", "Définir l'architecture cible", "Shopify comme plateforme cible, flux avec ERP, OMS, PIM et marketplace, décisions tracées en ADR."],
+      ["Cadrer", "Écrire les intentions", "En SDD : intentions, contrats d'interface et périmètre, qui bornent le développement."],
       ["Développer", "Développer avec des agents", "Les agents codent, bornés par la spécification et les harnais. Des développeurs relisent et valident."],
-      ["Tester", "Vérifier avant de livrer", "Tests unitaires, end-to-end, stress tests."],
-      ["Livrer", "Déployer en production", "CI/CD, déploiement, playbook, plans de bascule, jusqu'au go-live."],
+      ["Recetter", "Vérifier avant de livrer", "Tests unitaires, end-to-end, stress tests, puis recette avec le métier."],
+      ["Mettre en ligne", "Déployer en production", "CI/CD, playbook, plan de bascule, jusqu'au go-live sur Shopify."],
     ],
   },
   en: {
@@ -55,31 +56,27 @@ const copy = ({
     ctaTitle: "Let's talk",
     ctaText: "Replatforming, system integration, architecture or code question: drop me a line.",
     scoping: "Scoping & architecture",
-    delivery: "Development, testing and delivery",
+    delivery: "Build, test and go-live",
+    iterate: "iterate",
     steps: [
-      ["Listen", "Understand the business", "Talk with business stakeholders, map the processes and understand the constraints of the information system."],
-      ["Architect", "Define the architecture", "Shopify as the target platform, interfaces between the building blocks of the ecosystem (ERP, OMS, PIM, marketplace...)."],
-      ["Scope", "Write the intentions", "Based on SDD: define intentions and ADRs, lock the scope and the interface contracts."],
-      ["Build", "Develop with agents", "Agents write the code, bounded by the specification and the harnesses. Developers review and validate."],
-      ["Test", "Check before shipping", "Unit tests, end-to-end tests, stress tests."],
-      ["Ship", "Deploy to production", "CI/CD, deployment, playbook, cut-over plans, up to go-live."],
+      ["Discover", "Understand the business and the IT landscape", "Workshops with business teams, talks with IT: processes, existing systems, constraints."],
+      ["Architect", "Define the target architecture", "Shopify as the target platform, flows with ERP, OMS, PIM and marketplace, decisions recorded as ADRs."],
+      ["Scope", "Write the intentions", "With SDD: intentions, interface contracts and scope that bound development."],
+      ["Build", "Build with agents", "Agents write the code, bounded by the specification and the harnesses. Developers review and validate."],
+      ["Test", "Verify before shipping", "Unit, end-to-end and stress tests, then user acceptance with the business."],
+      ["Go live", "Deploy to production", "CI/CD, playbook, cutover plan, through to go-live on Shopify."],
     ],
   },
 } satisfies Record<Locale, { steps: [string, string, string][] } & Record<string, unknown>>)[locale];
 
-const shapes: Pick<FlowStep, "kind" | "lanes">[] = [
-  { kind: "node" },
-  { kind: "fork" },
-  { kind: "node" },
-  { kind: "fork" },
-  { kind: "test", lanes: 3 },
-  { kind: "node" },
-];
+// Un picto par étape ; la deuxième étape (architecture) boucle vers la première.
+const icons: FlowStep["icon"][] = ["people", "layers", "doc", "code", "check", "shop"];
 const steps: FlowStep[] = copy.steps.map(([tag, title, text], i) => ({
   tag,
   title,
   text,
-  ...shapes[i]!,
+  icon: icons[i]!,
+  loopTo: i === 1 ? 0 : undefined,
   panel: i < 3 ? copy.scoping : copy.delivery,
 }));
 ---
@@ -178,7 +175,7 @@ const steps: FlowStep[] = copy.steps.map(([tag, title, text], i) => ({
       >
         {copy.how}
       </h2>
-      <ArchitectFlow steps={steps} />
+      <ArchitectFlow steps={steps} loopLabel={copy.iterate} />
     </section>
 
     <div class="sm:-mt-4">

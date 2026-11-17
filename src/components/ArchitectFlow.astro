@@ -1,36 +1,36 @@
 ---
-// Schéma horizontal « Comment je travaille ». Le HTML suffit sans JavaScript ;
-// src/scripts/architect-flow.ts trace la ligne, les embranchements et l'animation.
+// Schéma « Comment je travaille ». Le HTML suffit sans JavaScript ;
+// src/scripts/architect-flow.ts trace la courbe, les étiquettes, les pictos,
+// la boucle d'itération et l'animation.
 export interface FlowStep {
   tag: string;
   title: string;
   text: string;
-  /** node : point plein · fork : embranchements · test : anneau à coche */
-  kind: "node" | "fork" | "test";
-  /** Nombre de chemins après l'étape (2 par défaut pour fork). */
-  lanes?: number;
+  /** Picto qui apparaît au passage de la courbe. */
+  icon: "people" | "layers" | "doc" | "code" | "check" | "shop";
+  /** Étape vers laquelle on revient après celle-ci (boucle d'itération). */
+  loopTo?: number | undefined;
   /** Étapes consécutives de même libellé : regroupées dans un panneau. */
   panel: string;
 }
 
 interface Props {
   steps: FlowStep[];
+  /** Libellé de la boucle d'itération (« itérer »). */
+  loopLabel: string;
 }
 
-const { steps } = Astro.props;
+const { steps, loopLabel } = Astro.props;
 ---
 
 <div class="af-scroll">
-  <ol class="af-flow" id="architect-flow">
+  <ol class="af-flow" id="architect-flow" data-loop-label={loopLabel}>
     {
-      steps.map(({ tag, title, text, kind, lanes, panel }, i) => (
-        <li
-          class="af-step"
-          data-kind={kind}
-          data-lanes={lanes}
-          data-panel={panel}
-        >
-          <div class="af-tag"><b>{String(i + 1).padStart(2, "0")}</b> {tag}</div>
+      steps.map(({ tag, title, text, icon, loopTo, panel }, i) => (
+        <li class="af-step" data-name={tag} data-icon={icon} data-loop-to={loopTo} data-panel={panel}>
+          <div class="af-tag">
+            <b>{String(i + 1).padStart(2, "0")}</b> {tag}
+          </div>
           <h3>{title}</h3>
           <p>{text}</p>
         </li>
@@ -49,15 +49,21 @@ const { steps } = Astro.props;
     overflow-x: auto;
   }
   .af-flow {
-    --af-band: 138px;
+    /* Bande du dessin au-dessus des textes ; --af-base : ligne de base. */
+    --af-band: 380px;
+    --af-base: 176px;
+    --af-line: rgb(255 255 255 / 0.14);
+    --af-off: rgb(234 223 200 / 0.16);
+    --af-on: rgb(234 223 200 / 0.5);
+    --af-muted: rgb(234 223 200 / 0.35);
     position: relative;
     min-width: 1000px;
     margin: 0;
-    padding: var(--af-band) 20px 34px;
+    padding: var(--af-band) 28px 34px;
     list-style: none;
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 0 52px;
+    gap: 0 40px;
   }
   .af-flow > svg {
     position: absolute;
@@ -66,26 +72,24 @@ const { steps } = Astro.props;
     overflow: visible;
     pointer-events: none;
   }
-  /* Sans script : un filet continu tient lieu de chemin. */
+  /* Sans script : un filet continu tient lieu de ligne de base. */
   .af-flow::before {
     content: "";
     position: absolute;
     left: 20px;
     right: 20px;
-    top: 68px;
+    top: var(--af-base);
     height: 1px;
     background: var(--af-line);
   }
   .af-flow.af-ready::before {
     display: none;
   }
-  .af-flow {
-    --af-line: rgb(255 255 255 / 0.14);
-  }
 
   .af-panel {
     position: absolute;
     top: 0;
+    height: calc(var(--af-band) - 8px);
     border-radius: 10px;
     border: 1px solid rgb(234 223 200 / 0.12);
     background-color: rgb(234 223 200 / 0.03);
@@ -96,7 +100,7 @@ const { steps } = Astro.props;
   }
   .af-panel span {
     position: absolute;
-    top: 18px;
+    bottom: 18px;
     left: 20px;
     font: 500 11px/1.2 var(--font-mono);
     letter-spacing: 0.1em;
@@ -130,7 +134,6 @@ const { steps } = Astro.props;
     line-height: 1.45;
     color: rgb(236 232 240 / 0.6);
     text-wrap: pretty;
-    transition: color 0.4s;
   }
   .af-step.af-on .af-tag {
     color: var(--color-coral);
@@ -138,116 +141,272 @@ const { steps } = Astro.props;
   .af-step.af-on h3 {
     color: var(--color-strong);
   }
-  .af-step.af-on p {
-    color: rgb(236 232 240 / 0.78);
-  }
 
-  .af-rail {
+  /* Tracé */
+  .af-base {
+    stroke: var(--af-muted);
+    stroke-width: 1.5;
+    stroke-dasharray: 1 7;
+    stroke-linecap: round;
+  }
+  .af-rail,
+  .af-lit,
+  .af-orbit,
+  .af-orbit-lit {
     fill: none;
+    stroke-linecap: round;
+  }
+  .af-rail {
     stroke: var(--af-line);
     stroke-width: 1.5;
-    stroke-linecap: round;
   }
   .af-lit {
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-  }
-  .af-node {
-    fill: var(--color-bg);
-    stroke: rgb(236 232 240 / 0.4);
-    stroke-width: 2;
-    transition:
-      fill 0.4s,
-      stroke 0.4s;
-  }
-  .af-node.af-on {
-    fill: var(--color-coral);
     stroke: var(--color-coral);
+    stroke-width: 2.5;
   }
-  .af-endring {
-    fill: var(--color-bg);
-    stroke: rgb(236 232 240 / 0.4);
-    stroke-width: 2;
-    transition:
-      fill 0.4s,
-      stroke 0.4s;
-  }
-  .af-endring.af-on {
-    fill: #2a1f18;
-    stroke: var(--color-coral);
-  }
-  .af-flag {
-    fill: none;
-    stroke: rgb(236 232 240 / 0.5);
+  .af-orbit {
+    stroke: rgb(234 223 200 / 0.14);
     stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition:
-      stroke 0.4s,
-      fill 0.4s;
+    stroke-dasharray: 0.1 6;
   }
-  .af-flag.af-on {
-    stroke: var(--color-coral);
-  }
-  .af-flag.af-pennant.af-on {
-    fill: rgb(227 98 97 / 0.4);
-  }
-  /* Picto plein (logo Shopify) */
-  .af-fill {
-    fill: rgb(236 232 240 / 0.5);
-    transition: fill 0.4s;
-  }
-  .af-fill.af-on {
-    fill: var(--color-coral);
-  }
-  .af-lane-dot {
-    fill: var(--color-bg);
+  .af-orbit-lit {
+    stroke: rgb(244 184 52 / 0.6);
     stroke-width: 2;
-    opacity: 0.6;
-    transition:
-      fill 0.4s,
-      opacity 0.4s;
   }
-  .af-lane-dot.af-on {
-    opacity: 1;
-  }
-  .af-pulse {
+  .af-head {
     fill: #fff4dc;
+    filter: drop-shadow(0 0 5px rgb(242 98 43 / 0.9));
+  }
+  .af-head.af-looping {
+    fill: var(--color-amber);
+    filter: drop-shadow(0 0 3px rgb(244 184 52 / 0.6));
+  }
+  .af-wave {
+    fill: none;
+    stroke: var(--color-coral);
+    stroke-width: 1;
+  }
+  .af-burst {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    text-anchor: middle;
+    dominant-baseline: middle;
   }
 
-  /* Mobile : le chemin devient vertical, les étapes s'empilent à droite de la ligne. */
+  /* Repères : départ, carrés d'étape, anneau final */
+  .af-start,
+  .af-sq {
+    position: absolute;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .af-start {
+    width: 11px;
+    height: 11px;
+    border: 1.5px solid rgb(234 223 200 / 0.6);
+    border-radius: 2px;
+    background: var(--color-bg);
+  }
+  .af-sq {
+    width: 8px;
+    height: 8px;
+    border-radius: 1.5px;
+    background: #5c5148;
+    transition:
+      background 0.3s,
+      box-shadow 0.5s;
+  }
+  .af-sq.af-on {
+    background: var(--color-amber);
+  }
+  .af-sq.af-end {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--af-muted);
+    background: var(--color-bg);
+  }
+  .af-sq.af-end.af-on {
+    border-color: var(--color-amber);
+    background: var(--color-amber);
+    box-shadow:
+      0 0 0 6px rgb(244 184 52 / 0.16),
+      0 0 18px 4px rgb(244 184 52 / 0.35);
+  }
+
+  /* Traits de rappel : carré → étiquette, picto → courbe */
+  .af-lead {
+    position: absolute;
+    background: var(--af-off);
+    pointer-events: none;
+    transition:
+      background 0.4s,
+      opacity 0.4s;
+  }
+  .af-lead.af-on {
+    background: var(--af-on);
+  }
+  .af-lead.af-pic-lead {
+    background: var(--af-on);
+    opacity: 0;
+  }
+  .af-lead.af-pic-lead.af-on {
+    opacity: 1;
+  }
+
+  /* Étiquette d'étape */
+  .af-chip {
+    position: absolute;
+    height: 30px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 6px;
+    border: 1px solid var(--af-off);
+    background: rgb(234 223 200 / 0.03);
+    color: rgb(234 223 200 / 0.42);
+    font: 500 12px/1 var(--font-mono);
+    white-space: nowrap;
+    transform: translateX(-50%);
+    pointer-events: none;
+    transition:
+      color 0.4s,
+      background 0.4s,
+      border-color 0.4s;
+  }
+  /* Dernière étiquette : alignée à droite sous l'anneau final, pour tenir dans le panneau. */
+  .af-chip.af-chip-end {
+    transform: translateX(calc(-100% + 16px));
+  }
+  .af-chip svg {
+    fill: none;
+    stroke: var(--color-green);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.15;
+    transition: opacity 0.4s;
+  }
+  .af-chip.af-on {
+    border-color: var(--af-on);
+    background: #221b16;
+    color: var(--color-strong);
+  }
+  .af-chip.af-on svg {
+    opacity: 1;
+  }
+
+  /* Picto : apparaît au passage de la courbe, puis reste */
+  .af-pic {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    background: #221b16;
+    color: var(--af-muted);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.55);
+    pointer-events: none;
+    transition:
+      opacity 0.35s,
+      color 0.35s,
+      transform 0.5s cubic-bezier(0.2, 1.5, 0.4, 1);
+  }
+  .af-pic svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .af-pic svg.af-filled {
+    fill: currentColor;
+    stroke: none;
+  }
+  .af-pic.af-on {
+    opacity: 1;
+    color: var(--color-amber);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .af-pic.af-on.af-pulse {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  .af-loop-label {
+    position: absolute;
+    transform: translateX(-50%);
+    font: 500 11px/1.2 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(244 184 52 / 0.7);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .af-loop-label.af-on {
+    opacity: 1;
+  }
+
+  /* Mobile : la ligne devient verticale ; pictos à gauche, étiquettes et textes à droite. */
   @media (max-width: 759px) {
     .af-scroll {
       overflow-x: visible;
     }
     .af-flow {
       min-width: 0;
-      padding: 0;
+      padding: 16px 0 4px;
       grid-template-columns: 1fr;
       gap: 0;
     }
     .af-flow::before {
-      left: 46px;
+      left: 96px;
       right: auto;
       top: 0;
       bottom: 0;
       width: 1px;
       height: auto;
     }
-    /* Même hauteur minimale pour toutes les étapes : le tracé garde un rythme régulier,
-       avec ou sans embranchement. */
+    /* Hauteur fixe par étape : le tracé garde un rythme régulier. */
     .af-step {
-      padding: 6px 16px 20px 100px;
-      min-height: 132px;
+      padding: 6px 16px 24px 124px;
+      min-height: 150px;
       box-sizing: border-box;
     }
-    /* Pas de séparation entre les deux groupes : libellés masqués, rythme continu. */
-    .af-flow {
-      padding: 16px 0 4px;
+    /* Avec le script, l'étiquette remplace le surtitre et le texte passe dessous. */
+    .af-ready .af-step {
+      padding-top: 46px;
     }
-    .af-panel span {
+    .af-ready .af-tag {
       display: none;
+    }
+    .af-step h3 {
+      font-size: 15px;
+    }
+    .af-step p {
+      font-size: 13px;
+    }
+    .af-chip {
+      transform: none;
+    }
+    .af-pic {
+      width: 40px;
+      height: 40px;
+    }
+    .af-pic svg {
+      width: 18px;
+      height: 18px;
+    }
+    .af-loop-label {
+      font-size: 10px;
     }
   }
 </style>
