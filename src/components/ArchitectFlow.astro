@@ -288,6 +288,10 @@ const { steps, loopLabel } = Astro.props;
   .af-sq.af-on {
     background: var(--color-amber);
   }
+  /* Mobile : sous un picto posé sur la courbe, le carré s'efface une fois l'étape atteinte. */
+  .af-sq.af-under.af-on {
+    background: transparent;
+  }
   .af-sq.af-end {
     width: 16px;
     height: 16px;
@@ -387,23 +391,23 @@ const { steps, loopLabel } = Astro.props;
     }
     .af-flow {
       min-width: 0;
-      /* En bas : la place de la ligne qui continue après le go-live. */
-      padding: 16px 0 64px;
+      /* En haut : la place de la boucle « itérer » ; en bas : celle de la ligne qui continue. */
+      padding: 72px 0 64px;
       grid-template-columns: 1fr;
       gap: 0;
     }
     .af-flow::before {
-      left: 96px;
+      left: 64px;
       right: auto;
       top: 0;
       bottom: 0;
       width: 1px;
       height: auto;
     }
-    /* Hauteur minimale par étape : le tracé garde un rythme régulier. */
+    /* Hauteur minimale par étape : le tracé garde un rythme régulier et de l'air. */
     .af-step {
-      padding: 6px 16px 24px 124px;
-      min-height: 150px;
+      padding: 6px 16px 32px 116px;
+      min-height: 176px;
       box-sizing: border-box;
     }
     .af-step p {

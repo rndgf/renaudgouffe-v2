@@ -12,7 +12,10 @@ import { SHOPIFY_ICON } from "@/data/shopify-icon";
 const NS = "http://www.w3.org/2000/svg";
 const MOBILE_QUERY = "(max-width: 759px)";
 /** Écart de chaque étape à la ligne de base, en px (h : desktop, v : mobile). */
-const OFFSETS = { h: [-18, 20, -14, 22, -20, 0], v: [-10, 12, -8, 12, -12, 0] } as const;
+const OFFSETS = {
+  h: [-18, 20, -14, 22, -20, 0],
+  v: [-20, 22, -18, 22, -20, 0],
+} as const;
 /** Vitesse du tracé, en px/s. */
 const SPEED = { h: 320, v: 260 } as const;
 // La boucle fait LOOP_TURNS tours en LOOP_MS.
@@ -30,9 +33,10 @@ const CHIP_IN = 40;
 // l'orbite qui les entoure reste ainsi nettement au-dessus de la courbe.
 const PIC_ROW = 80;
 // Mobile : abscisses de la ligne, des pictos et des étiquettes (voir le CSS mobile).
-const V_LINE = 96;
-const V_PIC = 40;
-const V_CHIP = 124;
+// Mobile : les pictos sont posés sur la courbe (celui du go-live à côté de l'anneau, à V_END_PIC).
+const V_LINE = 64;
+const V_END_PIC = 44;
+const V_CHIP = 116;
 const PIC_R = { h: 22, v: 20 } as const;
 const ICONS: Record<string, readonly string[]> = {
   people: [
@@ -109,11 +113,7 @@ interface Burst {
   at: XY;
 }
 
-function svgEl<K extends keyof SVGElementTagNameMap>(
-  name: K,
-  attrs: Attrs = {},
-  parent?: Element,
-): SVGElementTagNameMap[K] {
+function svgEl<K extends keyof SVGElementTagNameMap>(name: K, attrs: Attrs = {}, parent?: Element): SVGElementTagNameMap[K] {
   const n = document.createElementNS(NS, name);
   for (const k in attrs) n.setAttribute(k, String(attrs[k]));
   parent?.appendChild(n);
@@ -145,44 +145,54 @@ interface Box {
 }
 
 /**
- * Plus petite ellipse (aire a × b), centrée horizontalement en cx, qui contient tous les
- * points de « inside », ne touche aucune boîte de « avoid », et reste à droite de minLeft
- * et sous minTop. Elle est parcourue depuis son point le plus à droite, vers le haut.
+ * Plus petite ellipse (aire a × b) qui contient tous les points de « inside », ne touche
+ * aucune boîte de « avoid », et reste à droite de minLeft et sous minTop. Son centre
+ * horizontal part de cx0 et peut glisser vers la droite de cxSpan au plus.
+ * Elle est parcourue depuis son point le plus à droite, vers le haut.
  */
 function fitEllipse(
   inside: XY[],
   avoid: Box[],
-  cx: number,
+  cx0: number,
   minLeft: number,
   minTop: number,
+  cxSpan = 0,
 ): { d: string; len: number; at: (l: number) => XY; cx: number; top: number } {
   const ys = inside.map((q) => q[1]);
   const yMin = Math.min(...ys);
   const yMax = Math.max(...ys);
-  const maxDx = Math.max(...inside.map((q) => Math.abs(q[0] - cx)));
-  type Fit = { a: number; b: number; cy: number };
+  type Fit = { a: number; b: number; cy: number; cx: number };
   let best: Fit | null = null;
   let loose: Fit | null = null;
-  for (let a = maxDx + 6; a <= Math.max(maxDx + 6, cx - minLeft); a += 2) {
-    // Pour ce demi-axe a : le plus petit b, au meilleur centre vertical.
-    let fit: Fit = { a, b: Number.POSITIVE_INFINITY, cy: yMin };
-    for (let cy = yMin; cy <= yMax; cy += 1) {
-      let b = 0;
-      for (const [x, y] of inside) b = Math.max(b, Math.abs(y - cy) / Math.sqrt(1 - ((x - cx) / a) ** 2));
-      if (b < fit.b) fit = { a, b, cy };
+  for (let cx = cx0; cx <= cx0 + cxSpan; cx += 4) {
+    const maxDx = Math.max(...inside.map((q) => Math.abs(q[0] - cx)));
+    for (let a = maxDx + 6; a <= Math.max(maxDx + 6, cx - minLeft); a += 2) {
+      // Pour ce demi-axe a : le plus petit b, au meilleur centre vertical.
+      let fit: Fit = { a, b: Number.POSITIVE_INFINITY, cy: yMin, cx };
+      for (let cy = yMin; cy <= yMax; cy += 1) {
+        let b = 0;
+        for (const [x, y] of inside) b = Math.max(b, Math.abs(y - cy) / Math.sqrt(1 - ((x - cx) / a) ** 2));
+        if (b < fit.b) fit = { a, b, cy, cx };
+      }
+      if (!loose || fit.a * fit.b < loose.a * loose.b) loose = fit;
+      if (fit.cy - fit.b < minTop) continue;
+      let hits = false;
+      for (let k = 0; k < 120 && !hits; k++) {
+        const t = (2 * Math.PI * k) / 120;
+        const x = cx + a * Math.cos(t);
+        const y = fit.cy + fit.b * Math.sin(t);
+        hits = avoid.some((r) => x > r.x0 && x < r.x1 && y > r.y0 && y < r.y1);
+      }
+      if (!hits && (!best || fit.a * fit.b < best.a * best.b)) best = fit;
     }
-    if (!loose || fit.a * fit.b < loose.a * loose.b) loose = fit;
-    if (fit.cy - fit.b < minTop) continue;
-    let hits = false;
-    for (let k = 0; k < 120 && !hits; k++) {
-      const t = (2 * Math.PI * k) / 120;
-      const x = cx + a * Math.cos(t);
-      const y = fit.cy + fit.b * Math.sin(t);
-      hits = avoid.some((r) => x > r.x0 && x < r.x1 && y > r.y0 && y < r.y1);
-    }
-    if (!hits && (!best || fit.a * fit.b < best.a * best.b)) best = fit;
   }
-  const { a, b, cy } = best ?? loose ?? { a: maxDx + 6, b: (yMax - yMin) / 2 + 6, cy: (yMin + yMax) / 2 };
+  const { a, b, cy, cx } = best ??
+    loose ?? {
+      a: 40,
+      b: (yMax - yMin) / 2 + 6,
+      cy: (yMin + yMax) / 2,
+      cx: cx0,
+    };
   // Contour échantillonné : longueur et point à une longueur donnée, cohérents avec le pointillé.
   const N = 180;
   const pts = Array.from({ length: N + 1 }, (_, k): XY => {
@@ -218,7 +228,11 @@ function dotted(len: number, start: number, amount: number): string {
 
 function iconSvg(name: string): SVGSVGElement {
   if (name === "shop") {
-    const s = svgEl("svg", { viewBox: SHOPIFY_ICON.viewBox, class: "af-filled", "aria-hidden": "true" });
+    const s = svgEl("svg", {
+      viewBox: SHOPIFY_ICON.viewBox,
+      class: "af-filled",
+      "aria-hidden": "true",
+    });
     svgEl("path", { d: SHOPIFY_ICON.path }, s);
     return s;
   }
@@ -305,25 +319,26 @@ function initArchitectFlow(flow: HTMLElement): void {
     const offs = vertical ? OFFSETS.v : OFFSETS.h;
     const picR = vertical ? PIC_R.v : PIC_R.h;
 
-    // Panneaux (desktop) : un par groupe d'étapes consécutives de même data-panel.
+    // Panneau (desktop) : un seul bloc pour tout le schéma ; un titre sur sa bordure haute
+    // au début de chaque groupe d'étapes consécutives de même data-panel.
     if (!vertical) {
-      let start = 0;
+      const panel = div("af-panel", flow, { left: 0, width });
       steps.forEach((s, i) => {
-        const next = steps[i + 1];
-        if (next && next.dataset["panel"] === s.dataset["panel"]) return;
-        const first = at(steps, start);
-        const left = start === 0 ? 0 : (at(steps, start - 1).offsetLeft + at(steps, start - 1).offsetWidth + first.offsetLeft) / 2 + 6;
-        const right = next ? (s.offsetLeft + s.offsetWidth + next.offsetLeft) / 2 - 6 : width;
-        const panel = div("af-panel", flow, { left, width: right - left });
+        if (i > 0 && at(steps, i - 1).dataset["panel"] === s.dataset["panel"]) return;
         const cap = document.createElement("span");
         cap.textContent = s.dataset["panel"] ?? "";
+        cap.style.left = `${i === 0 ? 16 : s.offsetLeft - 10}px`;
         panel.appendChild(cap);
-        made.push(panel);
-        start = i + 1;
       });
+      made.push(panel);
     }
 
-    const root = svgEl("svg", { width, height, viewBox: `0 0 ${width} ${height}`, "aria-hidden": "true" });
+    const root = svgEl("svg", {
+      width,
+      height,
+      viewBox: `0 0 ${width} ${height}`,
+      "aria-hidden": "true",
+    });
     flow.insertBefore(root, flow.firstChild);
     made.push(root);
 
@@ -361,7 +376,14 @@ function initArchitectFlow(flow: HTMLElement): void {
       const a = at(pts, j);
       const b = at(pts, j + 1);
       const du = b.u - a.u;
-      const s: Seg = { u0: a.u, u1: b.u, v0: a.v, v1: b.v, c1: a.v + (at(slope, j) * du) / 3, c2: b.v - (at(slope, j + 1) * du) / 3 };
+      const s: Seg = {
+        u0: a.u,
+        u1: b.u,
+        v0: a.v,
+        v1: b.v,
+        c1: a.v + (at(slope, j) * du) / 3,
+        c2: b.v - (at(slope, j + 1) * du) / 3,
+      };
       segs.push(s);
       d += ` C${P(a.u + du / 3, s.c1).join(" ")} ${P(b.u - du / 3, s.c2).join(" ")} ${P(b.u, b.v).join(" ")}`;
       let [pu, pv] = [a.u, a.v];
@@ -383,7 +405,8 @@ function initArchitectFlow(flow: HTMLElement): void {
     const from = steps.findIndex((s) => s.dataset["loopTo"] !== undefined);
     const picAt = (i: number): XY => {
       const a = at(anchors, i);
-      return vertical ? [V_PIC, a.u] : [a.u, base - PIC_ROW];
+      if (!vertical) return [a.u, base - PIC_ROW];
+      return i === anchors.length - 1 ? [a.v - V_END_PIC, a.u] : [a.v, a.u];
     };
     if (from > 0) {
       const to = Number.parseInt(at(steps, from).dataset["loopTo"] ?? "0", 10);
@@ -395,8 +418,8 @@ function initArchitectFlow(flow: HTMLElement): void {
       const ring = (c: XY, r: number, n: number): XY[] =>
         Array.from({ length: n }, (_, k): XY => [c[0] + r * Math.cos((2 * Math.PI * k) / n), c[1] + r * Math.sin((2 * Math.PI * k) / n)]);
       const inside = [
-        ...ring([fx, fy], picR + 6, 16),
-        ...ring([gx, gy], picR + 6, 16),
+        ...ring([fx, fy], picR + (vertical ? 4 : 6), 16),
+        ...ring([gx, gy], picR + (vertical ? 4 : 6), 16),
         ...ring(P(fa.u, fa.v), 10, 8),
         ...ring(P(ga.u, ga.v), 10, 8),
       ];
@@ -405,11 +428,16 @@ function initArchitectFlow(flow: HTMLElement): void {
         const t = s.querySelector<HTMLElement>(".af-tag");
         const x = s.offsetLeft + (t?.offsetLeft ?? 0);
         const y = s.offsetTop + (t?.offsetTop ?? 0);
-        return { x0: x - 4, y0: y - 4, x1: x + (t?.offsetWidth ?? 0) + 4, y1: y + (t?.offsetHeight ?? 0) + 4 };
+        return {
+          x0: x - 4,
+          y0: y - 4,
+          x1: x + (t?.offsetWidth ?? 0) + 4,
+          y1: y + (t?.offsetHeight ?? 0) + 4,
+        };
       });
       const xs = inside.map((q) => q[0]);
       const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-      const rr = fitEllipse(inside, avoid, cx, vertical ? 4 : 10, vertical ? 0 : 52);
+      const rr = fitEllipse(inside, avoid, cx, vertical ? 14 : 10, vertical ? 4 : 52, vertical ? 40 : 0);
       // La boucle part du point de son contour le plus proche de l'étape « from ».
       const fp = P(fa.u, fa.v);
       let s0 = 0;
@@ -419,7 +447,7 @@ function initArchitectFlow(flow: HTMLElement): void {
         const dd = Math.hypot(q[0] - fp[0], q[1] - fp[1]);
         if (dd < best) [best, s0] = [dd, (k / 240) * rr.len];
       }
-      const lab: XY = vertical ? [V_PIC, (fy + gy) / 2 - 6] : [rr.cx, rr.top - 18];
+      const lab: XY = vertical ? [rr.cx, (fy + gy) / 2 - 6] : [rr.cx, rr.top - 18];
       svgEl("path", { d: rr.d, class: "af-orbit" }, root);
       const olit = svgEl("path", { d: rr.d, class: "af-orbit-lit" }, root);
       // Deux chevrons de sens, posés pendant le rendu (voir chevron()).
@@ -452,20 +480,42 @@ function initArchitectFlow(flow: HTMLElement): void {
     const parts: StepParts[] = anchors.map((a, i) => {
       const s = at(steps, i);
       const isEnd = i === anchors.length - 1;
-      const r = isEnd ? 8 : 4;
+      // Mobile : le picto posé sur la courbe recouvre le carré ; le trait part de son bord.
+      const onCurve = vertical && !isEnd;
+      const r = isEnd ? 8 : onCurve ? picR : 4;
       const [ax, ay] = P(a.u, a.v);
-      const sq = div(isEnd ? "af-sq af-end" : "af-sq", flow, { left: ax, top: ay });
+      const sq = div(isEnd ? "af-sq af-end" : onCurve ? "af-sq af-under" : "af-sq", flow, { left: ax, top: ay });
 
       const lead = vertical
-        ? div("af-lead", flow, { left: a.v + r + 1, top: a.u, width: Math.max(0, V_CHIP - a.v - r - 1), height: 1 })
-        : div("af-lead", flow, { left: a.u, top: a.v + r + 1, width: 1, height: Math.max(0, s.offsetTop - a.v - r - 1) });
+        ? div("af-lead", flow, {
+            left: a.v + r + 1,
+            top: a.u,
+            width: Math.max(0, V_CHIP - a.v - r - 1),
+            height: 1,
+          })
+        : div("af-lead", flow, {
+            left: a.u,
+            top: a.v + r + 1,
+            width: 1,
+            height: Math.max(0, s.offsetTop - a.v - r - 1),
+          });
 
       const pAt = picAt(i);
       const pic = div("af-pic", flow, { left: pAt[0], top: pAt[1] });
       pic.appendChild(iconSvg(s.dataset["icon"] ?? ""));
       const picLead = vertical
-        ? div("af-lead af-pic-lead", flow, { left: V_PIC + picR, top: a.u, width: Math.max(0, a.v - 6 - V_PIC - picR), height: 1 })
-        : div("af-lead af-pic-lead", flow, { left: a.u, top: pAt[1] + picR, width: 1, height: Math.max(0, a.v - 6 - pAt[1] - picR) });
+        ? div("af-lead af-pic-lead", flow, {
+            left: pAt[0] + picR,
+            top: a.u,
+            width: isEnd ? Math.max(0, a.v - 10 - pAt[0] - picR) : 0,
+            height: 1,
+          })
+        : div("af-lead af-pic-lead", flow, {
+            left: a.u,
+            top: pAt[1] + picR,
+            width: 1,
+            height: Math.max(0, a.v - 6 - pAt[1] - picR),
+          });
 
       const els = [s, sq, lead, pic, picLead];
       made.push(sq, lead, pic, picLead);
@@ -526,7 +576,13 @@ function initArchitectFlow(flow: HTMLElement): void {
       const dist = 14 + Math.random() * 40;
       const el = svgEl(
         "text",
-        { x: cx, y: cy, "font-size": (5 + Math.random() * 4).toFixed(1), class: "af-burst", fill: at(BURST_COLORS, i % BURST_COLORS.length) },
+        {
+          x: cx,
+          y: cy,
+          "font-size": (5 + Math.random() * 4).toFixed(1),
+          class: "af-burst",
+          fill: at(BURST_COLORS, i % BURST_COLORS.length),
+        },
         model.fx,
       );
       el.textContent = "€";
