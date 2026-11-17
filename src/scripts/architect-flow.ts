@@ -12,18 +12,23 @@ import { SHOPIFY_ICON } from "@/data/shopify-icon";
 const NS = "http://www.w3.org/2000/svg";
 const MOBILE_QUERY = "(max-width: 759px)";
 /** Écart de chaque étape à la ligne de base, en px (h : desktop, v : mobile). */
-const OFFSETS = { h: [-18, 20, -14, 22, -20, -10], v: [-10, 12, -8, 12, -12, 0] } as const;
+const OFFSETS = { h: [-18, 20, -14, 22, -20, 0], v: [-10, 12, -8, 12, -12, 0] } as const;
 /** Vitesse du tracé, en px/s. */
 const SPEED = { h: 320, v: 260 } as const;
-const LOOP_MS = 1500;
+// La boucle fait LOOP_TURNS tours en LOOP_MS.
+const LOOP_MS = 2600;
+const LOOP_TURNS = 1;
 const HOLD_MS = 2400;
 const BURST_MS = 1300;
 const BURST_COLORS = ["#fff4dc", "#f2622b", "#f4b834", "#3dc4b0", "#f2622b"] as const;
 // Desktop : marge identique entre le bord des panneaux et le départ (à gauche) ou
-// l'anneau final (à droite) ; picto au-dessus de l'ancre ; étiquette sous la ligne de base.
-const H_PAD = 56;
-const PIC_RISE = 62;
-const CHIP_DROP = 88;
+// la pointe de la flèche finale (à droite) ; l'ancre entre de CHIP_IN dans l'étiquette ;
+// picto au-dessus de l'ancre.
+const PAD = 28;
+const CHIP_IN = 40;
+// Desktop : les pictos sont alignés sur une rangée, PIC_ROW au-dessus de la ligne de base ;
+// l'orbite qui les entoure reste ainsi nettement au-dessus de la courbe.
+const PIC_ROW = 80;
 // Mobile : abscisses de la ligne, des pictos et des étiquettes (voir le CSS mobile).
 const V_LINE = 96;
 const V_PIC = 40;
@@ -61,6 +66,10 @@ interface StepParts {
 interface Orbit {
   lit: SVGPathElement;
   len: number;
+  /** Longueur, sur le contour, du point de départ de la boucle. */
+  s0: number;
+  /** Petites flèches de sens : cachées avant la boucle, elles tournent avec elle puis se figent. */
+  arrows: SVGPolylineElement[];
   at: (p: number) => XY;
   label: HTMLElement;
   from: number;
@@ -81,12 +90,16 @@ interface Model {
   lit: SVGPathElement;
   len: number;
   head: SVGCircleElement;
+  /** Pendant la boucle, la bille devient cette flèche. */
+  headArrow: SVGPolygonElement;
   steps: StepParts[];
   orbit: Orbit | null;
   phases: Phase[];
   total: number;
   tEnd: number;
   endAt: XY;
+  endU: number;
+  next: Element[];
   fx: SVGGElement;
 }
 interface Burst {
@@ -124,9 +137,84 @@ function segV(s: Seg, t: number): number {
   return w * w * w * s.v0 + 3 * w * w * t * s.c1 + 3 * w * t * t * s.c2 + t * t * t * s.v1;
 }
 
-/** Ellipse : longueur approchée (Ramanujan). */
-const ellipseLen = (rx: number, ry: number): number =>
-  Math.PI * (3 * (rx + ry) - Math.sqrt((3 * rx + ry) * (rx + 3 * ry)));
+interface Box {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+}
+
+/**
+ * Plus petite ellipse (aire a × b), centrée horizontalement en cx, qui contient tous les
+ * points de « inside », ne touche aucune boîte de « avoid », et reste à droite de minLeft
+ * et sous minTop. Elle est parcourue depuis son point le plus à droite, vers le haut.
+ */
+function fitEllipse(
+  inside: XY[],
+  avoid: Box[],
+  cx: number,
+  minLeft: number,
+  minTop: number,
+): { d: string; len: number; at: (l: number) => XY; cx: number; top: number } {
+  const ys = inside.map((q) => q[1]);
+  const yMin = Math.min(...ys);
+  const yMax = Math.max(...ys);
+  const maxDx = Math.max(...inside.map((q) => Math.abs(q[0] - cx)));
+  type Fit = { a: number; b: number; cy: number };
+  let best: Fit | null = null;
+  let loose: Fit | null = null;
+  for (let a = maxDx + 6; a <= Math.max(maxDx + 6, cx - minLeft); a += 2) {
+    // Pour ce demi-axe a : le plus petit b, au meilleur centre vertical.
+    let fit: Fit = { a, b: Number.POSITIVE_INFINITY, cy: yMin };
+    for (let cy = yMin; cy <= yMax; cy += 1) {
+      let b = 0;
+      for (const [x, y] of inside) b = Math.max(b, Math.abs(y - cy) / Math.sqrt(1 - ((x - cx) / a) ** 2));
+      if (b < fit.b) fit = { a, b, cy };
+    }
+    if (!loose || fit.a * fit.b < loose.a * loose.b) loose = fit;
+    if (fit.cy - fit.b < minTop) continue;
+    let hits = false;
+    for (let k = 0; k < 120 && !hits; k++) {
+      const t = (2 * Math.PI * k) / 120;
+      const x = cx + a * Math.cos(t);
+      const y = fit.cy + fit.b * Math.sin(t);
+      hits = avoid.some((r) => x > r.x0 && x < r.x1 && y > r.y0 && y < r.y1);
+    }
+    if (!hits && (!best || fit.a * fit.b < best.a * best.b)) best = fit;
+  }
+  const { a, b, cy } = best ?? loose ?? { a: maxDx + 6, b: (yMax - yMin) / 2 + 6, cy: (yMin + yMax) / 2 };
+  // Contour échantillonné : longueur et point à une longueur donnée, cohérents avec le pointillé.
+  const N = 180;
+  const pts = Array.from({ length: N + 1 }, (_, k): XY => {
+    const t = (2 * Math.PI * k) / N;
+    return [cx + a * Math.cos(t), cy - b * Math.sin(t)];
+  });
+  const cum = [0];
+  for (let k = 1; k <= N; k++) cum.push(at(cum, k - 1) + Math.hypot(at(pts, k)[0] - at(pts, k - 1)[0], at(pts, k)[1] - at(pts, k - 1)[1]));
+  const len = at(cum, N);
+  const d = `M${pts.map((q) => `${q[0].toFixed(1)} ${q[1].toFixed(1)}`).join(" L")}Z`;
+  const pointAt = (l: number): XY => {
+    const v = clamp(l, 0, len);
+    for (let k = 1; k <= N; k++) {
+      if (v <= at(cum, k)) {
+        const [p0, p1, c0, c1] = [at(pts, k - 1), at(pts, k), at(cum, k - 1), at(cum, k)];
+        const u = (v - c0) / (c1 - c0 || 1);
+        return [p0[0] + (p1[0] - p0[0]) * u, p0[1] + (p1[1] - p0[1]) * u];
+      }
+    }
+    return at(pts, 0);
+  };
+  return { d, len, at: pointAt, cx, top: cy - b };
+}
+
+/** Pointillé révélé sur [start, start + amount] d'un contour fermé de longueur len (6,1 px par point). */
+function dotted(len: number, start: number, amount: number): string {
+  const dots = (n: number): string => "0.1 6 ".repeat(Math.max(0, Math.floor(n / 6.1)));
+  if (start + amount <= len) return `0 ${start.toFixed(1)} ${dots(amount)}0 100000`;
+  const wrap = start + amount - len;
+  const k = Math.floor(wrap / 6.1);
+  return `${dots(wrap)}0 ${(start - k * 6.1).toFixed(1)} ${dots(len - start)}0 100000`;
+}
 
 function iconSvg(name: string): SVGSVGElement {
   if (name === "shop") {
@@ -137,6 +225,38 @@ function iconSvg(name: string): SVGSVGElement {
   const s = svgEl("svg", { viewBox: "0 0 24 24", "aria-hidden": "true" });
   for (const d of ICONS[name] ?? []) svgEl("path", { d }, s);
   return s;
+}
+
+/** Chevron de 7 px orienté dans le sens de la boucle, à la position q (0 à 1) de son parcours. */
+function chevron(o: { at: (p: number) => XY; len: number }, q: number): string {
+  const d = 3 / o.len;
+  const [px, py] = o.at(q);
+  const [ax, ay] = o.at((q + d) % 1);
+  const [bx, by] = o.at((q - d + 1) % 1);
+  const n = Math.hypot(ax - bx, ay - by) || 1;
+  const [ux, uy] = [(ax - bx) / n, (ay - by) / n];
+  const pts: XY[] = [
+    [px - ux * 4 - uy * 4, py - uy * 4 + ux * 4],
+    [px + ux * 3, py + uy * 3],
+    [px - ux * 4 + uy * 4, py - uy * 4 - ux * 4],
+  ];
+  return pts.map((v) => `${v[0].toFixed(1)},${v[1].toFixed(1)}`).join(" ");
+}
+
+/** Pointe de flèche pleine (tête de la boucle), orientée dans le sens du tour, à la position q. */
+function arrowhead(o: { at: (p: number) => XY; len: number }, q: number): string {
+  const d = 3 / o.len;
+  const [px, py] = o.at(q);
+  const [ax, ay] = o.at((q + d) % 1);
+  const [bx, by] = o.at((q - d + 1) % 1);
+  const n = Math.hypot(ax - bx, ay - by) || 1;
+  const [ux, uy] = [(ax - bx) / n, (ay - by) / n];
+  const pts: XY[] = [
+    [px + ux * 5, py + uy * 5],
+    [px - ux * 4 - uy * 4.5, py - uy * 4 + ux * 4.5],
+    [px - ux * 4 + uy * 4.5, py - uy * 4 - ux * 4.5],
+  ];
+  return pts.map((v) => `${v[0].toFixed(1)},${v[1].toFixed(1)}`).join(" ");
 }
 
 function initArchitectFlow(flow: HTMLElement): void {
@@ -179,10 +299,9 @@ function initArchitectFlow(flow: HTMLElement): void {
     flow.classList.add("af-ready");
 
     const cs = getComputedStyle(flow);
-    const band = Number.parseFloat(cs.getPropertyValue("--af-band")) || 380;
-    const base = vertical ? V_LINE : Number.parseFloat(cs.getPropertyValue("--af-base")) || 176;
+    const base = vertical ? V_LINE : Number.parseFloat(cs.getPropertyValue("--af-base")) || 200;
     const width = vertical ? flow.offsetWidth : flow.scrollWidth;
-    const height = vertical ? flow.offsetHeight : band;
+    const height = flow.offsetHeight;
     const offs = vertical ? OFFSETS.v : OFFSETS.h;
     const picR = vertical ? PIC_R.v : PIC_R.h;
 
@@ -208,23 +327,26 @@ function initArchitectFlow(flow: HTMLElement): void {
     flow.insertBefore(root, flow.firstChild);
     made.push(root);
 
-    // Ancres : centre de colonne (desktop) ou hauteur de l'étiquette (mobile).
-    // Desktop : la dernière ancre (anneau final) se place à H_PAD du bord droit.
+    // Ancres : dans l'étiquette de l'étape, à CHIP_IN de son bord gauche (desktop),
+    // ou à mi-hauteur de l'étiquette (mobile). La dernière, l'anneau du go-live, est sur la ligne de base.
     const anchors = steps.map((s, i) => ({
-      u: vertical
-        ? s.offsetTop + 21
-        : i === steps.length - 1
-          ? width - H_PAD
-          : s.offsetLeft + s.offsetWidth / 2,
+      u: vertical ? s.offsetTop + 21 : s.offsetLeft + CHIP_IN,
       v: base + at(offs, i),
     }));
-    const start = { u: vertical ? 8 : H_PAD, v: base };
+    const start = { u: vertical ? 8 : PAD, v: base };
     const pts = [start, ...anchors];
     const last = at(anchors, anchors.length - 1);
 
     const b0 = P(start.u, base);
     const b1 = P(last.u, base);
     svgEl("line", { x1: b0[0], y1: b0[1], x2: b1[0], y2: b1[1], class: "af-base" }, root);
+    // Après le go-live, la ligne continue jusqu'à une flèche : le projet continue de vivre.
+    const tip = vertical ? height - 14 : width - PAD;
+    const n0 = P(last.u + 14, base);
+    const n1 = P(tip - 3, base);
+    const next = svgEl("line", { x1: n0[0], y1: n0[1], x2: n1[0], y2: n1[1], class: "af-next" }, root);
+    const arrowPts = [P(tip - 7, base - 5), P(tip, base), P(tip - 7, base + 5)].map((q) => q.join(",")).join(" ");
+    const arrow = svgEl("polyline", { points: arrowPts, class: "af-arrow" }, root);
 
     // Courbe : tangentes estimées, u linéaire sur chaque segment.
     const n = pts.length;
@@ -255,59 +377,78 @@ function initArchitectFlow(flow: HTMLElement): void {
     const lit = svgEl("path", { d, class: "af-lit" }, root);
     lit.style.strokeDasharray = `${len} ${len + 1}`;
 
-    // Boucle d'itération : une ellipse en pointillé autour des pictos concernés.
+    // Boucle d'itération : une ellipse en pointillé qui englobe les deux étapes,
+    // pictos et points sur la courbe compris, sans toucher les étiquettes.
     let orbit: Orbit | null = null;
     const from = steps.findIndex((s) => s.dataset["loopTo"] !== undefined);
     const picAt = (i: number): XY => {
       const a = at(anchors, i);
-      return vertical ? [V_PIC, a.u] : [a.u, a.v - PIC_RISE];
+      return vertical ? [V_PIC, a.u] : [a.u, base - PIC_ROW];
     };
     if (from > 0) {
       const to = Number.parseInt(at(steps, from).dataset["loopTo"] ?? "0", 10);
+      const fa = at(anchors, from);
+      const ga = at(anchors, to);
       const [fx, fy] = picAt(from);
       const [gx, gy] = picAt(to);
-      let od: string;
-      let olen: number;
-      let oat: (p: number) => XY;
-      let lab: XY;
-      if (vertical) {
-        // Ellipse verticale ; départ en bas (picto d'arrivée de la boucle), sens horaire.
-        const cx = V_PIC;
-        const cy = (fy + gy) / 2;
-        const rx = picR + 8;
-        const ry = (fy - gy) / 2 + 34;
-        od = `M${cx} ${cy + ry} A${rx} ${ry} 0 1 1 ${cx} ${cy - ry} A${rx} ${ry} 0 1 1 ${cx} ${cy + ry}`;
-        olen = ellipseLen(rx, ry);
-        oat = (p) => [cx - rx * Math.sin(2 * Math.PI * p), cy + ry * Math.cos(2 * Math.PI * p)];
-        lab = [cx, cy - 6];
-      } else {
-        // Ellipse horizontale ; départ à droite, vers le haut. ry assez grand pour
-        // contenir les deux pictos malgré leur écart vertical.
-        const cx = (fx + gx) / 2;
-        const cy = (fy + gy) / 2;
-        const half = (fx - gx) / 2;
-        const rx = half + 44;
-        const ry = Math.max(36, (Math.abs(fy - gy) / 2 + picR + 6) / Math.sqrt(1 - (half / rx) ** 2));
-        od = `M${cx + rx} ${cy} A${rx} ${ry} 0 1 0 ${cx - rx} ${cy} A${rx} ${ry} 0 1 0 ${cx + rx} ${cy}`;
-        olen = ellipseLen(rx, ry);
-        oat = (p) => [cx + rx * Math.cos(2 * Math.PI * p), cy - ry * Math.sin(2 * Math.PI * p)];
-        lab = [cx, cy - ry - 22];
+      // Ce que l'ellipse doit englober : les deux pictos et les deux points sur la courbe.
+      const ring = (c: XY, r: number, n: number): XY[] =>
+        Array.from({ length: n }, (_, k): XY => [c[0] + r * Math.cos((2 * Math.PI * k) / n), c[1] + r * Math.sin((2 * Math.PI * k) / n)]);
+      const inside = [
+        ...ring([fx, fy], picR + 6, 16),
+        ...ring([gx, gy], picR + 6, 16),
+        ...ring(P(fa.u, fa.v), 10, 8),
+        ...ring(P(ga.u, ga.v), 10, 8),
+      ];
+      // Ce qu'elle ne doit pas toucher : les étiquettes de toutes les étapes.
+      const avoid = steps.map((s) => {
+        const t = s.querySelector<HTMLElement>(".af-tag");
+        const x = s.offsetLeft + (t?.offsetLeft ?? 0);
+        const y = s.offsetTop + (t?.offsetTop ?? 0);
+        return { x0: x - 4, y0: y - 4, x1: x + (t?.offsetWidth ?? 0) + 4, y1: y + (t?.offsetHeight ?? 0) + 4 };
+      });
+      const xs = inside.map((q) => q[0]);
+      const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+      const rr = fitEllipse(inside, avoid, cx, vertical ? 4 : 10, vertical ? 0 : 52);
+      // La boucle part du point de son contour le plus proche de l'étape « from ».
+      const fp = P(fa.u, fa.v);
+      let s0 = 0;
+      let best = Number.POSITIVE_INFINITY;
+      for (let k = 0; k < 240; k++) {
+        const q = rr.at((k / 240) * rr.len);
+        const dd = Math.hypot(q[0] - fp[0], q[1] - fp[1]);
+        if (dd < best) [best, s0] = [dd, (k / 240) * rr.len];
       }
-      svgEl("path", { d: od, class: "af-orbit" }, root);
-      const olit = svgEl("path", { d: od, class: "af-orbit-lit" }, root);
+      const lab: XY = vertical ? [V_PIC, (fy + gy) / 2 - 6] : [rr.cx, rr.top - 18];
+      svgEl("path", { d: rr.d, class: "af-orbit" }, root);
+      const olit = svgEl("path", { d: rr.d, class: "af-orbit-lit" }, root);
+      // Deux chevrons de sens, posés pendant le rendu (voir chevron()).
+      const arrows = [0, 1].map(() => svgEl("polyline", { class: "af-orbit-arrow" }, root));
       const label = div("af-loop-label", flow, { left: lab[0], top: lab[1] });
       label.textContent = flow.dataset["loopLabel"] ?? "";
       made.push(label);
-      orbit = { lit: olit, len: olen, at: oat, label, from, to, t0: 0, t1: 0 };
+      orbit = {
+        lit: olit,
+        len: rr.len,
+        s0,
+        arrows,
+        at: (p) => rr.at((s0 + p * rr.len) % rr.len),
+        label,
+        from,
+        to,
+        t0: 0,
+        t1: 0,
+      };
     }
 
     const head = svgEl("circle", { r: 5, class: "af-head", opacity: 0 }, root);
+    const headArrow = svgEl("polygon", { class: "af-head-arrow", opacity: 0 }, root);
     const fxLayer = svgEl("g", {}, root);
 
     const startPt = P(start.u, start.v);
     made.push(div("af-start", flow, { left: startPt[0], top: startPt[1] }));
 
-    // Par étape : carré (anneau pour la dernière), étiquette, picto et leurs traits.
+    // Par étape : carré (anneau pour le go-live), trait vers l'étiquette, picto et son trait.
     const parts: StepParts[] = anchors.map((a, i) => {
       const s = at(steps, i);
       const isEnd = i === anchors.length - 1;
@@ -315,17 +456,9 @@ function initArchitectFlow(flow: HTMLElement): void {
       const [ax, ay] = P(a.u, a.v);
       const sq = div(isEnd ? "af-sq af-end" : "af-sq", flow, { left: ax, top: ay });
 
-      const chip = vertical
-        ? div("af-chip", flow, { left: V_CHIP, top: a.u - 15 })
-        : div(isEnd ? "af-chip af-chip-end" : "af-chip", flow, { left: a.u, top: base + CHIP_DROP });
-      const name = document.createElement("span");
-      name.textContent = s.dataset["name"] ?? "";
-      chip.appendChild(name);
-      const ck = svgEl("svg", { viewBox: "0 0 24 24", width: 12, height: 12, "aria-hidden": "true" }, chip);
-      svgEl("polyline", { points: "20 6 9 17 4 12" }, ck);
       const lead = vertical
         ? div("af-lead", flow, { left: a.v + r + 1, top: a.u, width: Math.max(0, V_CHIP - a.v - r - 1), height: 1 })
-        : div("af-lead", flow, { left: a.u, top: a.v + r + 1, width: 1, height: Math.max(0, base + CHIP_DROP - a.v - r - 1) });
+        : div("af-lead", flow, { left: a.u, top: a.v + r + 1, width: 1, height: Math.max(0, s.offsetTop - a.v - r - 1) });
 
       const pAt = picAt(i);
       const pic = div("af-pic", flow, { left: pAt[0], top: pAt[1] });
@@ -334,8 +467,8 @@ function initArchitectFlow(flow: HTMLElement): void {
         ? div("af-lead af-pic-lead", flow, { left: V_PIC + picR, top: a.u, width: Math.max(0, a.v - 6 - V_PIC - picR), height: 1 })
         : div("af-lead af-pic-lead", flow, { left: a.u, top: pAt[1] + picR, width: 1, height: Math.max(0, a.v - 6 - pAt[1] - picR) });
 
-      const els = [s, sq, chip, lead, pic, picLead];
-      made.push(sq, chip, lead, pic, picLead);
+      const els = [s, sq, lead, pic, picLead];
+      made.push(sq, lead, pic, picLead);
       return { u: a.u, els, pic, picAt: pAt };
     });
 
@@ -368,12 +501,15 @@ function initArchitectFlow(flow: HTMLElement): void {
       lit,
       len,
       head,
+      headArrow,
       steps: parts,
       orbit,
       phases,
       total: t,
       tEnd,
       endAt: P(last.u, last.v),
+      endU: last.u,
+      next: [next, arrow],
       fx: fxLayer,
     };
     render(performance.now());
@@ -439,15 +575,23 @@ function initArchitectFlow(flow: HTMLElement): void {
       }
     }
     m.lit.style.strokeDashoffset = String(m.len - lenAt(m, u));
+    for (const e of m.next) e.classList.toggle("af-on", u >= m.endU - 0.5);
 
     const o = m.orbit;
     const op = o && started ? clamp((el - o.t0) / (o.t1 - o.t0), 0, 1) : 0;
     const looping = kind === "loop" && !!o;
-    const oHead = o && looping ? o.at(op) : null;
+    const oHead = o && looping ? o.at((op * LOOP_TURNS) % 1) : null;
     if (o) {
-      // Pointillé révélé progressivement : autant de points que la longueur parcourue.
-      const dots = Math.floor((op * o.len) / 6.1);
-      o.lit.style.strokeDasharray = `${"0.1 6 ".repeat(dots)}0 100000`;
+      // Pointillé révélé progressivement, depuis le départ de la boucle.
+      // Le pointillé se révèle pendant le premier tour, puis reste entier.
+      o.lit.style.strokeDasharray = dotted(o.len, o.s0, Math.min(1, op * LOOP_TURNS) * o.len);
+      // Flèches : cachées avant la boucle ; elles font un tour avec la tête, à un demi-tour
+      // d'écart ; à la fin elles se figent aux trois quarts et au quart du parcours.
+      o.arrows.forEach((el, k) => {
+        const q = (((op - 0.25 - 0.5 * k) % 1) + 1) % 1;
+        el.setAttribute("points", chevron(o, q));
+        el.classList.toggle("af-on", op > 0);
+      });
       o.label.classList.toggle("af-on", op > 0.4);
     }
 
@@ -458,16 +602,15 @@ function initArchitectFlow(flow: HTMLElement): void {
       s.pic.classList.toggle("af-pulse", near);
     }
 
-    let hp: XY | null = null;
-    if (kind === "travel") hp = P(u, vAt(m, u));
-    else if (oHead) hp = oHead;
+    // Sur le chemin : une bille. Dans la boucle : une flèche orientée dans le sens du tour.
+    const hp: XY | null = kind === "travel" ? P(u, vAt(m, u)) : null;
     m.head.setAttribute("opacity", hp ? "1" : "0");
-    m.head.setAttribute("r", looping ? "3" : "5");
-    m.head.classList.toggle("af-looping", looping);
     if (hp) {
       m.head.setAttribute("cx", hp[0].toFixed(1));
       m.head.setAttribute("cy", hp[1].toFixed(1));
     }
+    m.headArrow.setAttribute("opacity", o && looping ? "1" : "0");
+    if (o && looping) m.headArrow.setAttribute("points", arrowhead(o, (op * LOOP_TURNS) % 1));
   }
 
   function tick(now: number): void {

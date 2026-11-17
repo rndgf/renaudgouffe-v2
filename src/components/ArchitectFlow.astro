@@ -1,10 +1,9 @@
 ---
 // Schéma « Comment je travaille ». Le HTML suffit sans JavaScript ;
-// src/scripts/architect-flow.ts trace la courbe, les étiquettes, les pictos,
-// la boucle d'itération et l'animation.
+// src/scripts/architect-flow.ts trace la courbe, les pictos, la boucle
+// d'itération, la ligne qui continue après le go-live et l'animation.
 export interface FlowStep {
   tag: string;
-  title: string;
   text: string;
   /** Picto qui apparaît au passage de la courbe. */
   icon: "people" | "layers" | "doc" | "code" | "check" | "shop";
@@ -26,12 +25,11 @@ const { steps, loopLabel } = Astro.props;
 <div class="af-scroll">
   <ol class="af-flow" id="architect-flow" data-loop-label={loopLabel}>
     {
-      steps.map(({ tag, title, text, icon, loopTo, panel }, i) => (
-        <li class="af-step" data-name={tag} data-icon={icon} data-loop-to={loopTo} data-panel={panel}>
+      steps.map(({ tag, text, icon, loopTo, panel }, i) => (
+        <li class="af-step" data-icon={icon} data-loop-to={loopTo} data-panel={panel}>
           <div class="af-tag">
             <b>{String(i + 1).padStart(2, "0")}</b> {tag}
           </div>
-          <h3>{title}</h3>
           <p>{text}</p>
         </li>
       ))
@@ -47,11 +45,14 @@ const { steps, loopLabel } = Astro.props;
   .af-scroll {
     margin-top: 16px;
     overflow-x: auto;
+    /* Marge sous le schéma : un arrondi de sous-pixel ne rogne pas la bordure basse. */
+    padding-bottom: 2px;
   }
   .af-flow {
-    /* Bande du dessin au-dessus des textes ; --af-base : ligne de base. */
-    --af-band: 380px;
-    --af-base: 176px;
+    /* --af-row : haut des étiquettes ; --af-base : ligne de base ; --af-panel : haut des panneaux. */
+    --af-row: 264px;
+    --af-base: 200px;
+    --af-panel: 24px;
     --af-line: rgb(255 255 255 / 0.14);
     --af-off: rgb(234 223 200 / 0.16);
     --af-on: rgb(234 223 200 / 0.5);
@@ -59,7 +60,7 @@ const { steps, loopLabel } = Astro.props;
     position: relative;
     min-width: 1000px;
     margin: 0;
-    padding: var(--af-band) 28px 34px;
+    padding: var(--af-row) 28px 28px;
     list-style: none;
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -76,8 +77,8 @@ const { steps, loopLabel } = Astro.props;
   .af-flow::before {
     content: "";
     position: absolute;
-    left: 20px;
-    right: 20px;
+    left: 28px;
+    right: 28px;
     top: var(--af-base);
     height: 1px;
     background: var(--af-line);
@@ -86,10 +87,13 @@ const { steps, loopLabel } = Astro.props;
     display: none;
   }
 
+  /* Panneau : il englobe la courbe et les textes ; son titre coupe la bordure haute. */
   .af-panel {
     position: absolute;
-    top: 0;
-    height: calc(var(--af-band) - 8px);
+    top: var(--af-panel);
+    /* Le bas suit celui du schéma, bordure comprise : la zone de défilement ne le coupe pas. */
+    bottom: 0;
+    box-sizing: border-box;
     border-radius: 10px;
     border: 1px solid rgb(234 223 200 / 0.12);
     background-color: rgb(234 223 200 / 0.03);
@@ -100,54 +104,104 @@ const { steps, loopLabel } = Astro.props;
   }
   .af-panel span {
     position: absolute;
-    bottom: 18px;
-    left: 20px;
-    font: 500 11px/1.2 var(--font-mono);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    top: -13px;
+    left: 16px;
+    padding: 0 10px;
+    background: var(--color-bg);
+    font-size: 17px;
+    line-height: 24px;
+    font-weight: 400;
+    white-space: nowrap;
+    /* Plus discret que le titre de section, pour ne pas lui faire concurrence. */
     color: rgb(234 223 200 / 0.6);
   }
 
+  /* Étape : l'étiquette numérotée, puis son texte juste en dessous. */
   .af-step {
     position: relative;
-    padding-top: 6px;
   }
   .af-tag {
-    font: 500 11px/1.2 var(--font-mono);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgb(236 232 240 / 0.5);
-    transition: color 0.4s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 30px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid rgb(234 223 200 / 0.14);
+    background: rgb(234 223 200 / 0.02);
+    font: 500 12px/1 var(--font-mono);
+    white-space: nowrap;
+    color: rgb(234 223 200 / 0.55);
+    transition:
+      color 0.4s,
+      background 0.4s,
+      border-color 0.4s;
   }
-  .af-step h3 {
-    margin: 5px 0 0;
+  .af-tag b {
     font-weight: 500;
-    font-size: 16px;
-    line-height: 1.25;
-    color: var(--color-text);
-    text-wrap: balance;
+    color: rgb(234 223 200 / 0.4);
     transition: color 0.4s;
   }
   .af-step p {
-    margin: 5px 0 0;
+    margin: 12px 0 0;
     font-size: 14px;
     line-height: 1.45;
-    color: rgb(236 232 240 / 0.6);
+    color: rgb(234 223 200 / 0.5);
     text-wrap: pretty;
+    transition: color 0.4s;
   }
+  /* Sans script, tout est lisible tout de suite. */
+  .af-flow:not(.af-ready) .af-step p,
+  .af-step.af-on p {
+    color: rgb(234 223 200 / 0.82);
+  }
+  .af-flow:not(.af-ready) .af-tag,
   .af-step.af-on .af-tag {
-    color: var(--color-coral);
-  }
-  .af-step.af-on h3 {
+    border-color: var(--af-on);
+    background: #221b16;
     color: var(--color-strong);
+  }
+  .af-flow:not(.af-ready) .af-tag b,
+  .af-step.af-on .af-tag b {
+    color: var(--color-coral);
   }
 
   /* Tracé */
-  .af-base {
-    stroke: var(--af-muted);
+  .af-base,
+  .af-next {
     stroke-width: 1.5;
     stroke-dasharray: 1 7;
     stroke-linecap: round;
+  }
+  .af-base {
+    stroke: var(--af-muted);
+  }
+  /* Après le go-live, la ligne continue : ses points avancent vers la flèche. */
+  .af-next {
+    stroke: var(--af-muted);
+    stroke-width: 2;
+    transition: stroke 0.6s;
+  }
+  .af-arrow {
+    fill: none;
+    stroke: var(--af-muted);
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.6s;
+  }
+  .af-next.af-on {
+    stroke: rgb(244 184 52 / 0.75);
+    animation: af-march 0.5s linear infinite;
+  }
+  .af-arrow.af-on {
+    stroke: rgb(244 184 52 / 0.75);
+  }
+  @keyframes af-march {
+    to {
+      stroke-dashoffset: -8;
+    }
   }
   .af-rail,
   .af-lit,
@@ -164,22 +218,36 @@ const { steps, loopLabel } = Astro.props;
     stroke: var(--color-coral);
     stroke-width: 2.5;
   }
+  /* Boucle d'itération : volontairement discrète, elle ne doit pas concurrencer la courbe. */
   .af-orbit {
-    stroke: rgb(234 223 200 / 0.14);
-    stroke-width: 1.5;
+    stroke: rgb(234 223 200 / 0.08);
+    stroke-width: 1.25;
     stroke-dasharray: 0.1 6;
   }
   .af-orbit-lit {
+    stroke: rgb(244 184 52 / 0.35);
+    stroke-width: 1.5;
+  }
+  /* Chevrons qui donnent le sens de la boucle : absents avant, ils tournent avec elle puis restent. */
+  .af-orbit-arrow {
+    fill: none;
     stroke: rgb(244 184 52 / 0.6);
-    stroke-width: 2;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .af-orbit-arrow.af-on {
+    opacity: 1;
   }
   .af-head {
     fill: #fff4dc;
     filter: drop-shadow(0 0 5px rgb(242 98 43 / 0.9));
   }
-  .af-head.af-looping {
-    fill: var(--color-amber);
-    filter: drop-shadow(0 0 3px rgb(244 184 52 / 0.6));
+  /* Tête de la boucle : la bille devient une flèche le temps du tour. */
+  .af-head-arrow {
+    fill: rgb(244 184 52 / 0.8);
   }
   .af-wave {
     fill: none;
@@ -193,7 +261,7 @@ const { steps, loopLabel } = Astro.props;
     dominant-baseline: middle;
   }
 
-  /* Repères : départ, carrés d'étape, anneau final */
+  /* Repères : départ, carrés d'étape, anneau du go-live */
   .af-start,
   .af-sq {
     position: absolute;
@@ -255,50 +323,6 @@ const { steps, loopLabel } = Astro.props;
     opacity: 1;
   }
 
-  /* Étiquette d'étape */
-  .af-chip {
-    position: absolute;
-    height: 30px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border-radius: 6px;
-    border: 1px solid var(--af-off);
-    background: rgb(234 223 200 / 0.03);
-    color: rgb(234 223 200 / 0.42);
-    font: 500 12px/1 var(--font-mono);
-    white-space: nowrap;
-    transform: translateX(-50%);
-    pointer-events: none;
-    transition:
-      color 0.4s,
-      background 0.4s,
-      border-color 0.4s;
-  }
-  /* Dernière étiquette : alignée à droite sous l'anneau final, pour tenir dans le panneau. */
-  .af-chip.af-chip-end {
-    transform: translateX(calc(-100% + 16px));
-  }
-  .af-chip svg {
-    fill: none;
-    stroke: var(--color-green);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    opacity: 0.15;
-    transition: opacity 0.4s;
-  }
-  .af-chip.af-on {
-    border-color: var(--af-on);
-    background: #221b16;
-    color: var(--color-strong);
-  }
-  .af-chip.af-on svg {
-    opacity: 1;
-  }
-
   /* Picto : apparaît au passage de la courbe, puis reste */
   .af-pic {
     position: absolute;
@@ -339,15 +363,15 @@ const { steps, loopLabel } = Astro.props;
     transform: translate(-50%, -50%) scale(1);
   }
   .af-pic.af-on.af-pulse {
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translate(-50%, -50%) scale(1.05);
   }
   .af-loop-label {
     position: absolute;
     transform: translateX(-50%);
-    font: 500 11px/1.2 var(--font-mono);
+    font: 400 10px/1.2 var(--font-mono);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgb(244 184 52 / 0.7);
+    color: rgb(244 184 52 / 0.45);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s;
@@ -363,7 +387,8 @@ const { steps, loopLabel } = Astro.props;
     }
     .af-flow {
       min-width: 0;
-      padding: 16px 0 4px;
+      /* En bas : la place de la ligne qui continue après le go-live. */
+      padding: 16px 0 64px;
       grid-template-columns: 1fr;
       gap: 0;
     }
@@ -375,27 +400,15 @@ const { steps, loopLabel } = Astro.props;
       width: 1px;
       height: auto;
     }
-    /* Hauteur fixe par étape : le tracé garde un rythme régulier. */
+    /* Hauteur minimale par étape : le tracé garde un rythme régulier. */
     .af-step {
       padding: 6px 16px 24px 124px;
       min-height: 150px;
       box-sizing: border-box;
     }
-    /* Avec le script, l'étiquette remplace le surtitre et le texte passe dessous. */
-    .af-ready .af-step {
-      padding-top: 46px;
-    }
-    .af-ready .af-tag {
-      display: none;
-    }
-    .af-step h3 {
-      font-size: 15px;
-    }
     .af-step p {
+      margin-top: 10px;
       font-size: 13px;
-    }
-    .af-chip {
-      transform: none;
     }
     .af-pic {
       width: 40px;

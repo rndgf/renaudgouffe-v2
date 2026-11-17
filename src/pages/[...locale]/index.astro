@@ -11,7 +11,7 @@ export { getStaticPaths } from "@/i18n";
 const locale = localeOf(Astro.currentLocale);
 
 // Textes de la page, puis étapes du schéma (de l'écoute à la mise en production).
-// Le satisfies type les triplets [étiquette, titre, texte] en tuples.
+// Le satisfies type les paires [étiquette, texte] en tuples.
 const copy = ({
   fr: {
     title: "Architecte e-commerce — cadrage, intégrations SI et développement Shopify",
@@ -32,12 +32,12 @@ const copy = ({
     delivery: "Développement, recette et mise en ligne",
     iterate: "itérer",
     steps: [
-      ["Découvrir", "Comprendre le métier et le SI", "Ateliers avec les équipes métier, échanges avec la DSI : process, existant, contraintes."],
-      ["Architecturer", "Définir l'architecture cible", "Shopify comme plateforme cible, flux avec ERP, OMS, PIM et marketplace, décisions tracées en ADR."],
-      ["Cadrer", "Écrire les intentions", "En SDD : intentions, contrats d'interface et périmètre, qui bornent le développement."],
-      ["Développer", "Développer avec des agents", "Les agents codent, bornés par la spécification et les harnais. Des développeurs relisent et valident."],
-      ["Recetter", "Vérifier avant de livrer", "Tests unitaires, end-to-end, stress tests, puis recette avec le métier."],
-      ["Mettre en ligne", "Déployer en production", "CI/CD, playbook, plan de bascule, jusqu'au go-live sur Shopify."],
+      ["Découvrir", "Ateliers avec les équipes métier, échanges avec la DSI : process, existant, contraintes."],
+      ["Architecturer", "Shopify comme plateforme cible, flux avec ERP, OMS, PIM et marketplace, décisions tracées en ADR."],
+      ["Cadrer", "En SDD : intentions, contrats d'interface et périmètre, qui bornent le développement."],
+      ["Développer", "Les agents codent, bornés par la spécification et les harnais. Des développeurs relisent et valident."],
+      ["Recetter", "Tests unitaires, end-to-end, stress tests, puis recette avec le métier."],
+      ["Mettre en ligne", "CI/CD, playbook, plan de bascule, jusqu'au go-live sur Shopify."],
     ],
   },
   en: {
@@ -59,21 +59,20 @@ const copy = ({
     delivery: "Build, test and go-live",
     iterate: "iterate",
     steps: [
-      ["Discover", "Understand the business and the IT landscape", "Workshops with business teams, talks with IT: processes, existing systems, constraints."],
-      ["Architect", "Define the target architecture", "Shopify as the target platform, flows with ERP, OMS, PIM and marketplace, decisions recorded as ADRs."],
-      ["Scope", "Write the intentions", "With SDD: intentions, interface contracts and scope that bound development."],
-      ["Build", "Build with agents", "Agents write the code, bounded by the specification and the harnesses. Developers review and validate."],
-      ["Test", "Verify before shipping", "Unit, end-to-end and stress tests, then user acceptance with the business."],
-      ["Go live", "Deploy to production", "CI/CD, playbook, cutover plan, through to go-live on Shopify."],
+      ["Discover", "Workshops with business teams, talks with IT: processes, existing systems, constraints."],
+      ["Architect", "Shopify as the target platform, flows with ERP, OMS, PIM and marketplace, decisions recorded as ADRs."],
+      ["Scope", "With SDD: intentions, interface contracts and scope that bound development."],
+      ["Build", "Agents write the code, bounded by the specification and the harnesses. Developers review and validate."],
+      ["Test", "Unit, end-to-end and stress tests, then user acceptance with the business."],
+      ["Go live", "CI/CD, playbook, cutover plan, through to go-live on Shopify."],
     ],
   },
-} satisfies Record<Locale, { steps: [string, string, string][] } & Record<string, unknown>>)[locale];
+} satisfies Record<Locale, { steps: [string, string][] } & Record<string, unknown>>)[locale];
 
 // Un picto par étape ; la deuxième étape (architecture) boucle vers la première.
 const icons: FlowStep["icon"][] = ["people", "layers", "doc", "code", "check", "shop"];
-const steps: FlowStep[] = copy.steps.map(([tag, title, text], i) => ({
+const steps: FlowStep[] = copy.steps.map(([tag, text], i) => ({
   tag,
-  title,
   text,
   icon: icons[i]!,
   loopTo: i === 1 ? 0 : undefined,
