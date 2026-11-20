@@ -12,16 +12,11 @@ const copy = {
     title: "Curriculum Vitae",
     description: "Retrouvez ici mon CV en ligne.",
     eyebrow: "Curriculum vitae",
-    h1: "Architecte Solutions E-Commerce",
-    location: "lieu",
-    role: "poste",
-    agency: "agence",
-    inShort: "En bref",
     summary: [
-      "Passionné par le web depuis 1999, j'ai fait du développement PHP et de l'e-commerce mon métier depuis 2003.",
-      "Salarié dans l'agence Colorz depuis 2010, j'ai d'abord occupé le rôle de Senior Lead Developer Magento, en pilotant des projets e-commerce complexes pendant près de 10 ans sur cette solution.",
+      "Passionné par le web depuis 1999, j'ai fait du développement web et de l'e-commerce mon métier depuis 2003.",
+      "Employé par l'agence Colorz en 2010, j'ai d'abord occupé le rôle de Lead développeur senior Magento, en pilotant des projets e-commerce complexes pendant près de 10 ans sur cette solution.",
       "Depuis 2019, j'interviens également en tant que consultant technique e-commerce. J'accompagne les clients de l'agence sur des sujets comme le replatforming, l'architecture technique, le développement middleware ou encore l'intégration d'ERP.",
-      "Depuis 2020, je suis Solutions Architect, spécialisé dans les problématiques avancées liées au développement sur Shopify.",
+      "Désormais je suis Architecte Solutions, spécialisé dans les problématiques avancées liées au développement ou au replatforming sur Shopify.",
     ],
     ctaTitle: "Échangeons",
     ctaText: "Architecture e-commerce, intégration SI ou question technique : écrivez-moi.",
@@ -30,16 +25,11 @@ const copy = {
     title: "About",
     description: "My résumé, online.",
     eyebrow: "Résumé",
-    h1: "E-Commerce Solutions Architect",
-    location: "location",
-    role: "role",
-    agency: "agency",
-    inShort: "In short",
     summary: [
-      "Passionate about the web since 1999, I made PHP development and e-commerce my job in 2003.",
-      "Employed at the Colorz agency since 2010, I first held the role of Senior Lead Developer Magento, driving complex e-commerce projects on that platform for almost 10 years.",
+      "Passionate about the web since 1999, I made web development and e-commerce my job in 2003.",
+      "Hired by the Colorz agency in 2010, I first held the role of Senior Magento Lead Developer, driving complex e-commerce projects on that platform for almost 10 years.",
       "Since 2019, I also work as a technical e-commerce consultant. I support the agency's clients on topics such as replatforming, technical architecture, middleware development and ERP integration.",
-      "Since 2020, I am a Solutions Architect, specialised in advanced Shopify development topics.",
+      "I am now a Solutions Architect, specialised in advanced Shopify development and replatforming topics.",
     ],
     ctaTitle: "Let's talk",
     ctaText: "E-commerce architecture, system integration or technical question: drop me a line.",
@@ -47,49 +37,21 @@ const copy = {
 }[locale];
 
 const meta = { title: copy.title, description: copy.description, robots: "noindex, nofollow" };
-
-const identity = [
-  { label: copy.location, value: locale === "en" ? "rouen · normandy" : "rouen · normandie" },
-  { label: copy.role, value: "solutions architect shopify · senior lead developer" },
-];
 ---
 
 <PageLayout meta={meta}>
   <div class="mx-auto max-w-[880px] px-5 sm:px-8">
     <!-- Entête -->
-    <section class="pt-16 pb-10 sm:pt-22">
-      <p class="eyebrow"><span class="eyebrow-dot"></span>{copy.eyebrow}</p>
+    <section class="pt-16 pb-10 text-center sm:pt-22">
       <h1
         class="mt-5.5 text-[36px] leading-[1.08] font-medium tracking-[-0.025em] text-balance text-strong sm:text-[48px]"
       >
-        {copy.h1}
+        {copy.eyebrow}
       </h1>
-      <dl
-        class="mt-7 grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-5.5 gap-y-2.5 font-mono text-[13px]"
-      >
-        {
-          identity.map(({ label, value }) => (
-            <>
-              <dt class="text-[10px] tracking-widest text-text/42 uppercase">{label}</dt>
-              <dd class="text-text">{value}</dd>
-            </>
-          ))
-        }
-        <dt class="text-[10px] tracking-widest text-text/42 uppercase">{copy.agency}</dt>
-        <dd>
-          <a
-            href="https://www.colorz.fr"
-            target="_blank"
-            rel="nofollow noopener"
-            class="text-coral transition-colors hover:text-strong">colorz</a
-          >
-        </dd>
-      </dl>
     </section>
 
     <!-- En bref -->
     <section class="pb-2">
-      <h2 class="eyebrow mb-3.5">{copy.inShort}</h2>
       <div class="card card-lift flex flex-col gap-3.5 px-6 py-7 hover:border-text/14 sm:px-8">
         {copy.summary.map((p) => <p class="text-[16.5px] leading-[1.7] text-text/82">{p}</p>)}
       </div>

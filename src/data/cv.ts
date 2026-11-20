@@ -17,6 +17,11 @@ export interface CvSection {
   events: CvEvent[];
 }
 
+// Intitulés de poste, repris sur plusieurs périodes.
+const architect: Localized = { fr: "Architecte Solutions Shopify", en: "Shopify Solutions Architect" };
+const consultant: Localized = { fr: "Consultant technique senior", en: "Senior Technical Consultant" };
+const leadDev: Localized = { fr: "Lead développeur senior", en: "Senior Lead Developer" };
+
 export const cvSections: CvSection[] = [
   {
     category: { fr: "Expériences professionnelles", en: "Professional experience" },
@@ -25,26 +30,22 @@ export const cvSections: CvSection[] = [
         date: { fr: "depuis 2020", en: "since 2020" },
         org: "colorz",
         current: true,
-        lines: [
-          "Solutions Architect Shopify",
-          "Senior Technical Consultant",
-          "Senior Lead Developer",
-        ],
+        lines: [architect, consultant, leadDev],
       },
       {
         date: "2019 → 2020",
         org: "colorz",
-        lines: ["Senior Technical Consultant", "Senior Lead Developer"],
+        lines: [consultant, leadDev],
       },
-      { date: "2015 → 2019", org: "colorz", lines: ["Senior Lead Developer"] },
-      { date: "2010 → 2014", org: "colorz", lines: ["Senior Lead Developer"] },
+      { date: "2015 → 2019", org: "colorz", lines: [leadDev] },
+      { date: "2010 → 2014", org: "colorz", lines: [leadDev] },
       {
         date: "2003 → 2010",
         org: "ftel",
         lines: [
           {
-            fr: "Développeur web (dont 2 ans en formation en alternance)",
-            en: "Web developer (including 2 years as a work-study trainee)",
+            fr: "Développeur applicatifs et web (dont 2 ans en formation en alternance)",
+            en: "Application and web developer (including 2 years as a work-study trainee)",
           },
         ],
       },
