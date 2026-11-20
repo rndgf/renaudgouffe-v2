@@ -23,6 +23,8 @@ export default defineConfig({
       // (les URLs générées portent un slash final).
       filter: (page) =>
         !page.endsWith("/references/") && !page.endsWith("/cv/") && !page.endsWith("/404/"),
+      // Liens xhtml:link entre versions FR et EN, mêmes codes que les hreflang de BaseHead.
+      i18n: { defaultLocale: "fr", locales: { fr: "fr", en: "en" } },
     }),
   ],
   vite: {

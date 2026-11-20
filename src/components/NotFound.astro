@@ -1,7 +1,8 @@
 ---
 // Page 404 : rendue à la racine (404.html servi par GitHub Pages) et sous /en/404/.
+import { getRelativeLocaleUrl } from "astro:i18n";
 import PageLayout from "@/layouts/Base.astro";
-import { localePath, type Locale } from "@/i18n";
+import type { Locale } from "@/i18n";
 
 interface Props {
   locale: Locale;
@@ -32,7 +33,7 @@ const copy = {
 }[locale];
 
 const meta = { title: copy.title, description: copy.description, robots: "noindex, nofollow" };
-const hrefs = ["/", "/references", "/cv", "/contact"];
+const hrefs = ["", "references", "cv", "contact"];
 ---
 
 <PageLayout meta={meta}>
@@ -60,7 +61,7 @@ const hrefs = ["/", "/references", "/cv", "/contact"];
     <nav class="mt-8 flex flex-wrap items-center justify-center gap-3" aria-label={copy.nav}>
       {
         hrefs.map((href, i) => (
-          <a href={localePath(locale, href)} class={i === 0 ? "btn-primary" : "btn-ghost"}>
+          <a href={getRelativeLocaleUrl(locale, href)} class={i === 0 ? "btn-primary" : "btn-ghost"}>
             {copy.links[i]}
           </a>
         ))

@@ -1,17 +1,18 @@
 ---
-import { localeOf, localePath, splitLocale, ui } from "@/i18n";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { localeOf, pagePath, ui } from "@/i18n";
 
 const locale = localeOf(Astro.currentLocale);
 const copy = ui[locale];
-// Chemin sans préfixe de langue : sert à marquer le lien courant.
-const { path: pathname } = splitLocale(Astro.url.pathname);
+// Chemin sans préfixe de langue ni slash final (`""` pour l'accueil) : marque le lien courant.
+const pathname = pagePath(Astro.url.pathname, locale).replace(/\/$/, "");
 
 const links = [
-  { href: "/freelance-shopify", label: copy.freelance },
-  { href: "/references", label: copy.references },
-  { href: "/cv", label: copy.about },
+  { href: "freelance-shopify", label: copy.freelance },
+  { href: "references", label: copy.references },
+  { href: "cv", label: copy.about },
 ];
-const onContact = pathname === "/contact";
+const onContact = pathname === "contact";
 ---
 
 <header
@@ -22,10 +23,10 @@ const onContact = pathname === "/contact";
     aria-label={copy.mainNav}
   >
     <a
-      href={localePath(locale, "/")}
+      href={getRelativeLocaleUrl(locale)}
       class="flex items-center font-mono text-[15px] text-text"
       aria-label={copy.home}
-      aria-current={pathname === "/" ? "page" : undefined}
+      aria-current={pathname === "" ? "page" : undefined}
     >
       <span class="text-text/50">~/</span><span class="font-medium">rndgf</span><span
         class="mr-1.75 ml-1.5 text-coral"
@@ -89,7 +90,7 @@ const onContact = pathname === "/contact";
       {
         links.map(({ href, label }) => (
           <a
-            href={localePath(locale, href)}
+            href={getRelativeLocaleUrl(locale, href)}
             aria-current={pathname === href ? "page" : undefined}
             class:list={[
               "transition-colors",
@@ -103,7 +104,7 @@ const onContact = pathname === "/contact";
         ))
       }
       <a
-        href={localePath(locale, "/contact")}
+        href={getRelativeLocaleUrl(locale, "contact")}
         aria-current={onContact ? "page" : undefined}
         class:list={[
           "flex h-8 items-center gap-2 rounded-[5px] border border-magenta pr-2 pl-3 text-strong transition-colors hover:bg-magenta/26",

@@ -1,7 +1,7 @@
 ---
 import PageLayout from "@/layouts/Base.astro";
 import { siteConfig } from "@/site.config";
-import { localeOf } from "@/i18n";
+import { localeOf, md } from "@/i18n";
 
 export { getStaticPaths } from "@/i18n";
 
@@ -14,8 +14,8 @@ const copy = {
     intro:
       "Vous êtes un e-commerçant, une agence ou un porteur de projet Shopify ? Parlons de vos besoins et de vos enjeux techniques.",
     reveal: "Cliquez pour révéler l'adresse",
-    orLinkedin: "Ou retrouvez-moi sur ",
-    noscriptBefore: "Activez JavaScript pour afficher l'adresse email (protection anti-spam), ou retrouvez-moi via ",
+    orLinkedin: `Ou retrouvez-moi sur [LinkedIn](${siteConfig.linkedin}).`,
+    noscript: "Activez JavaScript pour afficher l'adresse email (protection anti-spam), ou retrouvez-moi via [Colorz](https://www.colorz.fr).",
   },
   en: {
     title: "Contact",
@@ -24,8 +24,8 @@ const copy = {
     intro:
       "Are you a merchant, an agency or planning a Shopify project? Let's talk about your needs and technical challenges.",
     reveal: "Click to reveal the address",
-    orLinkedin: "Or find me on ",
-    noscriptBefore: "Enable JavaScript to display the email address (anti-spam protection), or find me via ",
+    orLinkedin: `Or find me on [LinkedIn](${siteConfig.linkedin}).`,
+    noscript: "Enable JavaScript to display the email address (anti-spam protection), or find me via [Colorz](https://www.colorz.fr).",
   },
 }[locale];
 
@@ -70,19 +70,10 @@ const reversedDomain = "moc.liamg"; // gmail.com → inversé
         </a>
       </p>
 
-      <p class="mt-7 text-[15px] text-text/65">
-        {copy.orLinkedin}<a
-          href={siteConfig.linkedin}
-          target="_blank"
-          rel="nofollow noopener"
-          class="link">LinkedIn</a
-        >.
-      </p>
+      <p class="mt-7 text-[15px] text-text/65" set:html={md(copy.orLinkedin, locale)} />
 
       <noscript>
-        <p class="mt-6 text-sm text-text/65">
-          {copy.noscriptBefore}<a href="https://www.colorz.fr" class="link">Colorz</a>.
-        </p>
+        <p class="mt-6 text-sm text-text/65" set:html={md(copy.noscript, locale)} />
       </noscript>
     </div>
   </section>

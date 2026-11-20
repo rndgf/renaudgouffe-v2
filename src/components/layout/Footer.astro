@@ -1,17 +1,18 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { siteConfig } from "@/site.config";
-import { localeOf, localePath, splitLocale, ui } from "@/i18n";
+import { localeOf, pagePath, ui } from "@/i18n";
 
 const year = new Date().getFullYear();
 const locale = localeOf(Astro.currentLocale);
 const copy = ui[locale];
 // Chemin sans préfixe de langue : le switch mène à la même page dans l'autre langue.
-const { path } = splitLocale(Astro.url.pathname);
+const path = pagePath(Astro.url.pathname, locale);
 
 const links = [
-  { href: localePath(locale, "/references"), label: copy.references },
-  { href: localePath(locale, "/cv"), label: copy.about },
-  { href: localePath(locale, "/contact"), label: copy.contact },
+  { href: getRelativeLocaleUrl(locale, "references"), label: copy.references },
+  { href: getRelativeLocaleUrl(locale, "cv"), label: copy.about },
+  { href: getRelativeLocaleUrl(locale, "contact"), label: copy.contact },
 ];
 const external = [
   { href: siteConfig.linkedin, label: "linkedin ↗" },
@@ -63,15 +64,15 @@ const languages = [
         <span class="text-coral">/dev/</span><span class="font-semibold text-strong">null</span> ↗
       </a>
     </nav>
-    <!-- Switch de langue : le choix est mémorisé (voir le script en bas) et prime sur
-         la langue du navigateur au prochain chargement (BaseHead). -->
+    <!-- Switch de langue : le choix est mémorisé (voir le script en bas) ; BaseHead
+         y redirige les pages chargées ensuite dans l'autre langue. -->
     <nav class="mx-auto flex items-center gap-2 sm:mx-0" aria-label={copy.language}>
       {
         languages.map(({ code, label }, i) => (
           <>
             {i > 0 && <span class="text-text/30" aria-hidden="true">/</span>}
             <a
-              href={localePath(code, path)}
+              href={getRelativeLocaleUrl(code, path)}
               hreflang={code}
               lang={code}
               data-lang={code}

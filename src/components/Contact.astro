@@ -1,8 +1,9 @@
 ---
 // Bandeau d'appel à l'action en bas de page.
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { siteConfig } from "@/site.config";
 import { SHOPIFY_ICON } from "@/data/shopify-icon";
-import { localeOf, localePath, ui } from "@/i18n";
+import { localeOf, ui } from "@/i18n";
 
 interface Props {
   title: string;
@@ -39,7 +40,7 @@ const locale = localeOf(Astro.currentLocale);
       </div>
     </div>
     <div class="relative flex flex-wrap items-center gap-3 sm:mr-[120px]">
-    <a href={localePath(locale, "/contact")} class="btn-white pr-3">
+    <a href={getRelativeLocaleUrl(locale, "contact")} class="btn-white pr-3">
       <svg
         width="15"
         height="15"

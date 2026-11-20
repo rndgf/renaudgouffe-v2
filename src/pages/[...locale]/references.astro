@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/Base.astro";
 import { references } from "@/data/references";
 import type { Reference } from "@/data/references";
 import { SHOPIFY_ICON } from "@/data/shopify-icon";
-import { localeOf, t, ui } from "@/i18n";
+import { localeOf, md, t, ui } from "@/i18n";
 
 export { getStaticPaths } from "@/i18n";
 
@@ -13,10 +13,7 @@ const copy = {
   fr: {
     title: "Références",
     description: `Projets e-commerce réalisés en agence (Colorz) et en freelance entre 2001 et ${year} : Shopify, Magento, développement web.`,
-    introBefore: "Les projets marqués ",
-    agency: "Agence",
-    introMiddle: " ont été réalisés en équipe au sein de l'agence ",
-    introAfter: ` entre 2010 et ${year}.`,
+    intro: `Les projets marqués **Agence** ont été réalisés en équipe au sein de l'agence [Colorz](https://www.colorz.fr) entre 2010 et ${year}.`,
     projects: "projets",
     shopify:
       "Migrations, intégrations Mirakl / ERP et checkout sur-mesure — le cœur de mon activité de Solutions Architect depuis 2020.",
@@ -30,10 +27,7 @@ const copy = {
   en: {
     title: "References",
     description: `E-commerce projects delivered in agency (Colorz) and as a freelancer between 2001 and ${year}: Shopify, Magento, web development.`,
-    introBefore: "Projects marked ",
-    agency: "Agency",
-    introMiddle: " were delivered as a team at the ",
-    introAfter: ` agency between 2010 and ${year}.`,
+    intro: `Projects marked **Agency** were delivered as a team at the [Colorz](https://www.colorz.fr) agency between 2010 and ${year}.`,
     projects: "projects",
     shopify:
       "Migrations, Mirakl / ERP integrations and custom checkout — the core of my Solutions Architect work since 2020.",
@@ -115,14 +109,10 @@ const roleLabels: Record<string, { label: string; color: string }> = {
       >
         {copy.title}
       </h1>
-      <p class="mx-auto mt-5 text-[17px] leading-[1.62] text-pretty text-text/70">
-        {copy.introBefore}<span class="font-medium text-strong">{copy.agency}</span>{copy.introMiddle}<a
-          href="https://www.colorz.fr"
-          target="_blank"
-          rel="nofollow noopener"
-          class="link">Colorz</a
-        >{copy.introAfter}
-      </p>
+      <p
+        class="mx-auto mt-5 text-[17px] leading-[1.62] text-pretty text-text/70"
+        set:html={md(copy.intro, locale)}
+      />
     </section>
 
     <!-- Chapitres -->
