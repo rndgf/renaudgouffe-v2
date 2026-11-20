@@ -4,7 +4,7 @@ import Contact from "@/components/Contact.astro";
 import ArchitectFlow from "@/components/ArchitectFlow.astro";
 import type { FlowStep } from "@/components/ArchitectFlow.astro";
 import { SHOPIFY_ICON } from "@/data/shopify-icon";
-import { localeOf, type Locale } from "@/i18n";
+import { localeOf, md, type Locale } from "@/i18n";
 
 export { getStaticPaths } from "@/i18n";
 
@@ -18,14 +18,12 @@ const copy = ({
     remote: "remote / hybride",
     h1: "Architecte Solutions e‑commerce",
     tagline: "Spécialisé Shopify, du cadrage à la mise en production.",
-    whoTitle: "Qui je suis",
-    who1: "Je suis développeur à l'origine. Passionné par le web depuis 1999, j'ai fait du développement PHP et de l'e‑commerce mon métier dès 2003.",
-    whoBefore: "Chez ",
-    whoAfter:
-      " depuis 2010, j'ai été Lead Developer Magento pendant près de dix ans, je vis à Rouen en Normandie, je travaille en remote / hybride.",
-    whatTitle: "Ce que je fais",
-    what: "Je suis Solutions Architect Shopify : je comprends ce que veulent les équipes métier, je cadre les choix de plateforme et d'intégration, puis je suis les projets jusqu'à la mise en production, en codant encore, avec des agents que j'apprends à piloter. Voici comment, étape par étape.",
-    how: "Comment je travaille aujourd'hui",
+    whoTitle: "Qui je suis ?",
+    who: `Passionné par le web depuis 1999, j'ai fait du développement PHP et de l'e‑commerce mon métier dès 2003.
+Chez [Colorz](https://www.colorz.fr) depuis 2010, j'ai été Lead Developer Magento pendant près de dix ans.<br/>Je vis à Rouen en Normandie, je travaille en remote / hybride.`,
+    whatTitle: "Ce que je fais ?",
+    what: "Je suis Architecte Solutions Shopify : je discute avec les équipes métier et les équipes techniques, je cadre et architecture les choix de plateforme et d'intégration, puis je suis les projets jusqu'à la mise en production. Voici comment, étape par étape.",
+    how: "Comment je travaille ?",
     ctaTitle: "Échangeons",
     ctaText: "Replatforming, intégration SI, question d'architecture ou de code : écrivez-moi.",
     scoping: "Cadrage & architecture",
@@ -35,7 +33,7 @@ const copy = ({
       ["Découvrir", "Ateliers avec les équipes métier, échanges avec la DSI : process, existant, contraintes."],
       ["Architecturer", "Shopify comme plateforme cible, flux avec ERP, OMS, PIM et marketplace, décisions tracées en ADR."],
       ["Cadrer", "En SDD : intentions, contrats d'interface et périmètre, qui bornent le développement."],
-      ["Développer", "Les agents codent, bornés par la spécification et les harnais. Des développeurs relisent et valident."],
+      ["Développer", "Les agents codent, bornés par la spécification et les harnais. Les développeurs relisent, challengent et valident."],
       ["Recetter", "Tests unitaires, end-to-end, stress tests, puis recette avec le métier."],
       ["Mettre en ligne", "CI/CD, playbook, plan de bascule, jusqu'au go-live sur Shopify."],
     ],
@@ -45,14 +43,12 @@ const copy = ({
     remote: "remote / hybrid",
     h1: "E‑commerce Solutions Architect",
     tagline: "Shopify specialist, from scoping to go-live.",
-    whoTitle: "Who I am",
-    who1: "I am a developer at heart. Passionate about the web since 1999, I made PHP development and e‑commerce my job in 2003.",
-    whoBefore: "At ",
-    whoAfter:
-      " since 2010, I was Magento Lead Developer for almost ten years. I live in Rouen, Normandy, and work remote / hybrid.",
-    whatTitle: "What I do",
-    what: "I am a Shopify Solutions Architect: I understand what business teams want, I frame platform and integration choices, then I follow projects through to production, still writing code, with agents I am learning to drive. Here is how, step by step.",
-    how: "How I work today",
+    whoTitle: "Who am I?",
+    who: `Passionate about the web since 1999, I made PHP development and e‑commerce my job in 2003.
+At [Colorz](https://www.colorz.fr) since 2010, I was Magento Lead Developer for almost ten years. I live in Rouen, Normandy, and work remote / hybrid.`,
+    whatTitle: "What do I do?",
+    what: "I am a Shopify Solutions Architect: I talk with business teams and technical teams, I scope and design platform and integration choices, then I follow projects through to production. Here is how, step by step.",
+    how: "How do I work?",
     ctaTitle: "Let's talk",
     ctaText: "Replatforming, system integration, architecture or code question: drop me a line.",
     scoping: "Scoping & architecture",
@@ -69,13 +65,13 @@ const copy = ({
   },
 } satisfies Record<Locale, { steps: [string, string][] } & Record<string, unknown>>)[locale];
 
-// Un picto par étape ; la deuxième étape (architecture) boucle vers la première.
+// Un picto par étape ; deux boucles d'itération : architecture → découverte, recette → développement.
 const icons: FlowStep["icon"][] = ["people", "layers", "doc", "code", "check", "shop"];
 const steps: FlowStep[] = copy.steps.map(([tag, text], i) => ({
   tag,
   text,
   icon: icons[i]!,
-  loopTo: i === 1 ? 0 : undefined,
+  loopTo: i === 1 ? 0 : i === 4 ? 3 : undefined,
   panel: i < 3 ? copy.scoping : copy.delivery,
 }));
 ---
@@ -150,14 +146,7 @@ const steps: FlowStep[] = copy.steps.map(([tag, text], i) => ({
           >
             {copy.whoTitle}
           </h2>
-          <p class="text-[17px] leading-[1.62] text-pretty text-text/66">
-            {copy.who1}<br />{copy.whoBefore}<a
-              href="https://www.colorz.fr"
-              target="_blank"
-              rel="nofollow noopener"
-              class="link">Colorz</a
-            >{copy.whoAfter}
-          </p>
+          <p class="text-[17px] leading-[1.62] text-pretty text-text/66" set:html={md(copy.who, locale)} />
         </div>
         <div class="card card-lift-accent px-6 pt-6 pb-6.5">
           <h2

@@ -87,6 +87,8 @@ interface Phase {
   u0: number;
   u1: number;
   kind: "travel" | "loop" | "hold";
+  /** Pour une phase « loop » : l'index de la boucle dans Model.orbits. */
+  loop?: number;
 }
 interface Model {
   segs: Seg[];
@@ -97,7 +99,7 @@ interface Model {
   /** Pendant la boucle, la bille devient cette flèche. */
   headArrow: SVGPolygonElement;
   steps: StepParts[];
-  orbit: Orbit | null;
+  orbits: Orbit[];
   phases: Phase[];
   total: number;
   tEnd: number;
@@ -399,17 +401,17 @@ function initArchitectFlow(flow: HTMLElement): void {
     const lit = svgEl("path", { d, class: "af-lit" }, root);
     lit.style.strokeDasharray = `${len} ${len + 1}`;
 
-    // Boucle d'itération : une ellipse en pointillé qui englobe les deux étapes,
-    // pictos et points sur la courbe compris, sans toucher les étiquettes.
-    let orbit: Orbit | null = null;
-    const from = steps.findIndex((s) => s.dataset["loopTo"] !== undefined);
+    // Boucles d'itération : pour chaque étape qui porte data-loop-to, une ellipse en pointillé
+    // qui englobe les deux étapes, pictos et points sur la courbe compris, sans toucher les étiquettes.
+    const orbits: Orbit[] = [];
     const picAt = (i: number): XY => {
       const a = at(anchors, i);
       if (!vertical) return [a.u, base - PIC_ROW];
       return i === anchors.length - 1 ? [a.v - V_END_PIC, a.u] : [a.v, a.u];
     };
-    if (from > 0) {
-      const to = Number.parseInt(at(steps, from).dataset["loopTo"] ?? "0", 10);
+    steps.forEach((loopStep, from) => {
+      if (loopStep.dataset["loopTo"] === undefined) return;
+      const to = Number.parseInt(loopStep.dataset["loopTo"], 10);
       const fa = at(anchors, from);
       const ga = at(anchors, to);
       const [fx, fy] = picAt(from);
@@ -437,7 +439,7 @@ function initArchitectFlow(flow: HTMLElement): void {
       });
       const xs = inside.map((q) => q[0]);
       const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-      const rr = fitEllipse(inside, avoid, cx, vertical ? 14 : 10, vertical ? 4 : 52, vertical ? 40 : 0);
+      const rr = fitEllipse(inside, avoid, cx, vertical ? 14 : 10, vertical ? 4 : 60, vertical ? 40 : 0);
       // La boucle part du point de son contour le plus proche de l'étape « from ».
       const fp = P(fa.u, fa.v);
       let s0 = 0;
@@ -455,7 +457,7 @@ function initArchitectFlow(flow: HTMLElement): void {
       const label = div("af-loop-label", flow, { left: lab[0], top: lab[1] });
       label.textContent = flow.dataset["loopLabel"] ?? "";
       made.push(label);
-      orbit = {
+      orbits.push({
         lit: olit,
         len: rr.len,
         s0,
@@ -466,8 +468,8 @@ function initArchitectFlow(flow: HTMLElement): void {
         to,
         t0: 0,
         t1: 0,
-      };
-    }
+      });
+    });
 
     const head = svgEl("circle", { r: 5, class: "af-head", opacity: 0 }, root);
     const headArrow = svgEl("polygon", { class: "af-head-arrow", opacity: 0 }, root);
@@ -522,7 +524,7 @@ function initArchitectFlow(flow: HTMLElement): void {
       return { u: a.u, els, pic, picAt: pAt };
     });
 
-    // Chronologie : trajets, boucle à l'étape « from », pause finale.
+    // Chronologie : trajets, une boucle à chaque étape « from », pause finale.
     const speed = vertical ? SPEED.v : SPEED.h;
     const phases: Phase[] = [];
     let t = 0;
@@ -533,13 +535,13 @@ function initArchitectFlow(flow: HTMLElement): void {
       t += Math.max(0, dur);
       cu = u;
     };
-    if (orbit) {
-      travel(at(anchors, orbit.from).u);
-      orbit.t0 = t;
-      orbit.t1 = t + LOOP_MS;
-      phases.push({ t0: t, t1: t + LOOP_MS, u0: cu, u1: cu, kind: "loop" });
+    orbits.forEach((o, k) => {
+      travel(at(anchors, o.from).u);
+      o.t0 = t;
+      o.t1 = t + LOOP_MS;
+      phases.push({ t0: t, t1: t + LOOP_MS, u0: cu, u1: cu, kind: "loop", loop: k });
       t += LOOP_MS;
-    }
+    });
     travel(last.u);
     const tEnd = t;
     phases.push({ t0: t, t1: t + HOLD_MS, u0: cu, u1: cu, kind: "hold" });
@@ -553,7 +555,7 @@ function initArchitectFlow(flow: HTMLElement): void {
       head,
       headArrow,
       steps: parts,
-      orbit,
+      orbits,
       phases,
       total: t,
       tEnd,
@@ -618,12 +620,14 @@ function initArchitectFlow(flow: HTMLElement): void {
     if (!m) return;
     let u = Number.NEGATIVE_INFINITY;
     let kind: Phase["kind"] | "idle" = "idle";
+    let active = -1;
     let el = -1;
     if (started) {
       el = (now - t0) % m.total;
       const ph = m.phases.find((p) => el < p.t1) ?? at(m.phases, m.phases.length - 1);
       u = ph.u0 + (ph.u1 - ph.u0) * clamp((el - ph.t0) / (ph.t1 - ph.t0), 0, 1);
       kind = ph.kind;
+      active = ph.loop ?? -1;
       const lap = Math.floor((now - t0) / m.total);
       if (el >= m.tEnd && burstLap !== lap) {
         burstLap = lap;
@@ -633,11 +637,12 @@ function initArchitectFlow(flow: HTMLElement): void {
     m.lit.style.strokeDashoffset = String(m.len - lenAt(m, u));
     for (const e of m.next) e.classList.toggle("af-on", u >= m.endU - 0.5);
 
-    const o = m.orbit;
-    const op = o && started ? clamp((el - o.t0) / (o.t1 - o.t0), 0, 1) : 0;
-    const looping = kind === "loop" && !!o;
-    const oHead = o && looping ? o.at((op * LOOP_TURNS) % 1) : null;
-    if (o) {
+    // Boucle en cours (pendant une phase « loop ») : sa tête devient une flèche.
+    const ao = kind === "loop" ? m.orbits[active] : undefined;
+    const aop = ao ? clamp((el - ao.t0) / (ao.t1 - ao.t0), 0, 1) : 0;
+    const oHead = ao ? ao.at((aop * LOOP_TURNS) % 1) : null;
+    for (const o of m.orbits) {
+      const op = started ? clamp((el - o.t0) / (o.t1 - o.t0), 0, 1) : 0;
       // Pointillé révélé progressivement, depuis le départ de la boucle.
       // Le pointillé se révèle pendant le premier tour, puis reste entier.
       o.lit.style.strokeDasharray = dotted(o.len, o.s0, Math.min(1, op * LOOP_TURNS) * o.len);
@@ -654,7 +659,7 @@ function initArchitectFlow(flow: HTMLElement): void {
     for (const s of m.steps) {
       const on = u >= s.u - 0.5;
       for (const e of s.els) e.classList.toggle("af-on", on);
-      const near = !!oHead && Math.abs(vertical ? oHead[1] - s.picAt[1] : oHead[0] - s.picAt[0]) < 26;
+      const near = !!oHead && !!ao && (s === m.steps[ao.from] || s === m.steps[ao.to]) && Math.abs(vertical ? oHead[1] - s.picAt[1] : oHead[0] - s.picAt[0]) < 26;
       s.pic.classList.toggle("af-pulse", near);
     }
 
@@ -665,8 +670,8 @@ function initArchitectFlow(flow: HTMLElement): void {
       m.head.setAttribute("cx", hp[0].toFixed(1));
       m.head.setAttribute("cy", hp[1].toFixed(1));
     }
-    m.headArrow.setAttribute("opacity", o && looping ? "1" : "0");
-    if (o && looping) m.headArrow.setAttribute("points", arrowhead(o, (op * LOOP_TURNS) % 1));
+    m.headArrow.setAttribute("opacity", ao ? "1" : "0");
+    if (ao) m.headArrow.setAttribute("points", arrowhead(ao, (aop * LOOP_TURNS) % 1));
   }
 
   function tick(now: number): void {
